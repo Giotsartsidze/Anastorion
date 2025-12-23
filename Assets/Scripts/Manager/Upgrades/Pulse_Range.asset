@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a20b4fe17a88347d6862b8ad66a51fe1, type: 3}
-  m_Name: NewUpgrade
+  m_Name: Pulse_Range
   m_EditorClassIdentifier: 
-  upgradeName: Speed_Boost
-  description: "\u10E1\u10EC\u10E0\u10D0\u10E4\u10D8 \u10D3\u10D8\u10DC\u10D4\u10D1\u10D0"
+  upgradeName: Pulse_Range
+  description: "\u10D3\u10D8\u10D3\u10D8 \u10DC\u10D0\u10D7\u10D4\u10D1\u10D0"
   icon: {fileID: 0}
-  type: 0
-  valueModifier: 2
+  type: 1
+  valueModifier: 1.5

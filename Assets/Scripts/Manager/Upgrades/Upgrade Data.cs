@@ -1,16 +1,38 @@
 using UnityEngine;
 
-// ეს ხაზი საშუალებას მოგვცემს Right Click-ით შევქმნათ აფგრეიდის ფაილები
 [CreateAssetMenu(fileName = "NewUpgrade", menuName = "Anastorion/Upgrade")]
 public class UpgradeData : ScriptableObject
 {
-    public string upgradeName;     // აფგრეიდის სახელი
+    public string upgradeName;
     [TextArea] 
-    public string description;     // მოკლე აღწერა
-    public Sprite icon;            // სურათი (თუ გვექნება)
+    public string description;
+    public Sprite icon;
 
-    public enum UpgradeType { MoveSpeed, LightRadius, FireRate }
-    public UpgradeType type;       // რას ცვლის ეს აფგრეიდი
+    // დავამატეთ ყველა საჭირო ტიპი
+    public enum UpgradeType { 
+        MoveSpeed, 
+        LightRadius, 
+        WispCount, 
+        WispSpeed, 
+        PulseCooldown 
+    }
+    
+    // იშვიათობის სისტემა
+    public enum Rarity { Common, Rare, Legendary }
 
-    public float valueModifier;    // რა ციფრით ცვლის (მაგ: +2 ან -0.5)
+    public UpgradeType type;
+    public Rarity rarity;
+    public float valueModifier;
+
+    // დამხმარე ფუნქცია ფერებისთვის
+    public Color GetRarityColor()
+    {
+        return rarity switch
+        {
+            Rarity.Common => Color.white,
+            Rarity.Rare => new Color(0.2f, 0.6f, 1f), // ლურჯი
+            Rarity.Legendary => new Color(1f, 0.8f, 0f), // ოქროსფერი
+            _ => Color.white
+        };
+    }
 }

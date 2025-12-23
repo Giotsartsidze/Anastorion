@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a20b4fe17a88347d6862b8ad66a51fe1, type: 3}
-  m_Name: NewUpgrade 2
+  m_Name: Darts_speed
   m_EditorClassIdentifier: 
   upgradeName: Darts_Speed
   description: "\u10E1\u10EC\u10E0\u10D0\u10E4\u10D8 \u10D8\u10E1\u10E0\u10D4\u10D1\u10D8"

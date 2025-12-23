@@ -6,14 +6,17 @@ public class LootPickup : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            // ვპოულობთ სქილს მოთამაშეზე და ვრთავთ
+            // 1. ვრთავთ ახალ სკილს (Wisps)
             OrbitingWisps skill = collision.GetComponent<OrbitingWisps>();
-            if (skill != null)
-            {
-                skill.ActivateSkill();
-            }
+            if (skill != null) skill.ActivateSkill();
+
+            // 2. ვპოულობთ Victory UI-ს და ვრთავთ
+            VictoryManager victory = FindObjectOfType<VictoryManager>(true); // (true) ნიშნავს რომ გათიშულსაც იპოვის
+            if (victory != null) victory.ShowVictory();
+
+            Debug.Log("BOSS LOOT CLAIMED! VICTORY!");
             
-            // აქ შეგიძლია დაამატო აღების ხმა/ეფექტი
+            // 3. ვაქრობთ ნივთს
             Destroy(gameObject);
         }
     }

@@ -1,25 +1,31 @@
 using UnityEngine;
-using TMPro;
 using UnityEngine.UI;
+using TMPro;
 
 public class UpgradeUIElement : MonoBehaviour
 {
     public TextMeshProUGUI titleText;
-    public TextMeshProUGUI descText;
-    
-    private UpgradeData currentData;
-    private UpgradeManager manager;
+    public TextMeshProUGUI descriptionText; 
+    public Image iconImage;                
+    public Button button;                   
 
-    public void Setup(UpgradeData data, UpgradeManager mngr)
+    public void Setup(UpgradeData data, UpgradeManager manager)
     {
-        currentData = data;
-        manager = mngr;
         titleText.text = data.upgradeName;
-        descText.text = data.description;
-    }
+        descriptionText.text = data.description;
+        
+        // NULL CHECK: თუ ინსპექტორში IconImage არ ჩააგდე, ერორი რომ არ ამოაგდოს
+        if (iconImage != null && data.icon != null) 
+        {
+            iconImage.sprite = data.icon;
+        }
 
-    public void OnClick() // ამას მივაბამთ ღილაკს
-    {
-        manager.ApplyUpgrade(currentData);
+        // ბარათის ფერის შეცვლა იშვიათობის მიხედვით
+        if (GetComponent<Image>() != null)
+            GetComponent<Image>().color = data.GetRarityColor();
+
+        // ღილაკის ლოგიკა
+        button.onClick.RemoveAllListeners();
+        button.onClick.AddListener(() => manager.ApplyUpgrade(data));
     }
 }
