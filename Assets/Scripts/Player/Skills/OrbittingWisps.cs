@@ -3,47 +3,54 @@ using UnityEngine;
 public class OrbitingWisps : MonoBehaviour
 {
     public GameObject wispPrefab;
-    public int wispCount = 2;       // რამდენი ბურთულა
-    public float orbitSpeed = 100f; // ტრიალის სისწრაფე
-    public float orbitRadius = 2.5f; // მანძილი მოთამაშისგან
+    public int count = 3;
+    public float orbitSpeed = 150f;
+    public float radius = 3f;
 
-    private GameObject[] wisps;
-    private float currentAngle = 0f;
+    // ესენი აკლდა შენს კოდს, რაც ერორს იწვევდა:
+    private GameObject[] activeWisps; 
+    private float angle;
 
-    // ეს ფუნქცია გამოიძახება ლუტის აღებისას
     public void ActivateSkill()
     {
-        wisps = new GameObject[wispCount];
-        float angleStep = 360f / wispCount;
+        this.enabled = true;
 
-        for (int i = 0; i < wispCount; i++)
+        // ძველი ორბების გასუფთავება
+        if (activeWisps != null)
         {
-            wisps[i] = Instantiate(wispPrefab, transform.position, Quaternion.identity);
-            // სილამაზისთვის ცოტა დავაპატარავოთ
-            wisps[i].transform.localScale = Vector3.one * 0.5f;
+            foreach (var wisp in activeWisps) if (wisp != null) Destroy(wisp);
         }
+
+        activeWisps = new GameObject[count];
         
-        enabled = true; // ჩავრთოთ Update
-        Debug.Log("Orbiting Wisps Activated!");
+        for (int i = 0; i < count; i++)
+        {
+            activeWisps[i] = Instantiate(wispPrefab, transform.position, Quaternion.identity);
+            // ვამცირებთ ზომას, რომ მოთამაშე არ დაფარონ
+            activeWisps[i].transform.localScale = Vector3.one * 0.5f;
+        }
     }
 
     void Update()
     {
-        if (wisps == null) return;
+        if (activeWisps == null || activeWisps.Length == 0) return;
 
-        currentAngle += orbitSpeed * Time.deltaTime;
-        float angleStep = 360f / wispCount;
+        angle += orbitSpeed * Time.deltaTime;
+        
+        // წრეზე თანაბარი გადანაწილების ფორმულა
+        float angleStep = 360f / activeWisps.Length;
 
-        for (int i = 0; i < wispCount; i++)
+        for (int i = 0; i < activeWisps.Length; i++)
         {
-            if (wisps[i] == null) continue;
+            if (activeWisps[i] == null) continue;
 
-            float angle = currentAngle + (i * angleStep);
-            // მათემატიკა წრეზე ტრიალისთვის
-            float x = transform.position.x + Mathf.Cos(angle * Mathf.Deg2Rad) * orbitRadius;
-            float y = transform.position.y + Mathf.Sin(angle * Mathf.Deg2Rad) * orbitRadius;
+            float currentAngle = angle + (i * angleStep);
             
-            wisps[i].transform.position = new Vector3(x, y, 0);
+            // ტრიგონომეტრიული გამოთვლა:
+            float x = transform.position.x + Mathf.Cos(currentAngle * Mathf.Deg2Rad) * radius;
+            float y = transform.position.y + Mathf.Sin(currentAngle * Mathf.Deg2Rad) * radius;
+            
+            activeWisps[i].transform.position = new Vector3(x, y, 0);
         }
     }
 }

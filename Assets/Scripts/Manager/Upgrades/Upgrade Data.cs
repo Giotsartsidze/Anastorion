@@ -14,7 +14,9 @@ public class UpgradeData : ScriptableObject
         LightRadius, 
         WispCount, 
         WispSpeed, 
-        PulseCooldown 
+        PulseCooldown ,
+        DashCooldown,
+        DashSpeed
     }
     
     // იშვიათობის სისტემა

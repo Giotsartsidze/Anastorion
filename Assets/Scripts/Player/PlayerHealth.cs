@@ -17,14 +17,15 @@ public class PlayerHealth : MonoBehaviour
     
     [Header("Juice Effects")]
     public ParticleSystem damageParticles; // ეს ხაზი აკლდა
-    private CameraShake cameraShake;
 
     private SpriteRenderer sprite;
+    private ShakeSource shaker;
 
     void Start()
     {
         currentHealth = maxHealth;
         sprite = GetComponent<SpriteRenderer>();
+        shaker = GetComponent<ShakeSource>();
 
         // UI-ს ინიციალიზაცია
         if (healthSlider != null)
@@ -56,12 +57,12 @@ public class PlayerHealth : MonoBehaviour
     public void TakeDamage(int amount)
     {
         if (isInvincible) return;
+        Debug.Log("Damage Taken! Shaking screen...");
 
         currentHealth -= amount;
-    
+        if (shaker != null) shaker.TriggerShake();
         if(damageParticles != null) damageParticles.Play();
     
-        if(cameraShake != null) StartCoroutine(cameraShake.Shake(0.15f, 0.2f));
 
         UpdateUI();
 

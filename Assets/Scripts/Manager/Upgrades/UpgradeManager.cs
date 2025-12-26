@@ -7,6 +7,21 @@ public class UpgradeManager : MonoBehaviour
     public List<UpgradeData> allUpgrades; 
     public UpgradeUIElement[] cardUI;     
     public GameObject levelUpPanel;
+	public List<UpgradeData> activeUpgrades; // აქ მხოლოდ საწყისი აფგრეიდები (Speed, Radius)
+    public List<UpgradeData> lockedUpgrades;
+
+	public void UnlockWispUpgrades()
+{
+    // გადაგვაქვს ყველა დალოქილი აფგრეიდი აქტიურებში
+    foreach (var upgrade in lockedUpgrades)
+    {
+        if (!activeUpgrades.Contains(upgrade))
+        {
+            activeUpgrades.Add(upgrade);
+        }
+    }
+    Debug.Log("WISP UPGRADES UNLOCKED!");
+}
 
     public void ShowUpgrades()
     {
@@ -14,7 +29,7 @@ public class UpgradeManager : MonoBehaviour
         Time.timeScale = 0f; 
 
         // ვირჩევთ 3 შემთხვევითს
-        var randomUpgrades = allUpgrades.OrderBy(x => Random.value).Take(3).ToList();
+        var randomUpgrades = activeUpgrades.OrderBy(x => Random.value).Take(3).ToList();
 
         for (int i = 0; i < randomUpgrades.Count; i++)
         {
@@ -42,7 +57,7 @@ public class UpgradeManager : MonoBehaviour
                 // ვამატებთ ბურთულების რაოდენობას
                 var wisps = FindObjectOfType<OrbitingWisps>();
                 if (wisps != null) {
-                    wisps.wispCount++;
+                    wisps.count++;
                     wisps.ActivateSkill(); // ხელახლა ვრთავთ ახალი რაოდენობით
                 }
                 break;
@@ -55,6 +70,13 @@ public class UpgradeManager : MonoBehaviour
             case UpgradeData.UpgradeType.PulseCooldown:
                 // ვამცირებთ დალოდების დროს
                 FindObjectOfType<LightPulse>().cooldown -= data.valueModifier;
+                break;
+            case UpgradeData.UpgradeType.DashCooldown:
+                FindObjectOfType<PlayerDash>().dashCooldown -= 0.3f; // ამცირებს დალოდებას
+                break;
+
+            case UpgradeData.UpgradeType.DashSpeed:
+                FindObjectOfType<PlayerDash>().dashSpeed += 5f; // ზრდის მანძილს
                 break;
         }
 
