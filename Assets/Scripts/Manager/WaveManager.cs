@@ -24,6 +24,12 @@ public class WaveManager : MonoBehaviour
 	public GameObject bossWarningUI;
 	public Slider bossHealthSlider;
 
+	[Header("Ranged Enemy Settings")]
+	public GameObject rangedEnemyPrefab;
+	[Range(0, 100)]
+	public float rangedSpawnChance = 20f; // 20% შანსი, რომ Ranger გაჩნდეს
+	public float startRangedAt = 60f;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -59,21 +65,30 @@ if (!bossSpawned && gameTime >= 120f) // 120 წამი = 2 წუთი
         }
 
         // 3. სპაუნინგის ლოგიკა
+float currentSpawnRate = bossSpawned ? currentWave.rate * 3f : currentWave.rate;
         if (canSpawn && Time.time >= nextSpawnTime)
-        {
-            SpawnEnemy();
-            nextSpawnTime = Time.time + currentWave.rate;
-        }
+{
+    SpawnEnemy();
+    nextSpawnTime = Time.time + currentSpawnRate;
+}
     }
 
     void SpawnEnemy()
-    {
-        // ვირჩევთ შემთხვევით წერტილს მოთამაშის გარშემო
-        Vector2 spawnDir = Random.insideUnitCircle.normalized * 12f;
-        Vector3 spawnPos = player.position + (Vector3)spawnDir;
+{
+    Vector2 spawnDir = Random.insideUnitCircle.normalized * 24f;
+    Vector3 spawnPos = player.position + (Vector3)spawnDir;
 
+    // ლოგიკა: თუ 1 წუთი გავიდა და რენდომმა "გაამართლა", ვაჩენთ Ranger-ს
+    if (gameTime >= startRangedAt && Random.Range(0, 100) <= rangedSpawnChance)
+    {
+        Instantiate(rangedEnemyPrefab, spawnPos, Quaternion.identity);
+    }
+    else
+    {
+        // წინააღმდეგ შემთხვევაში ჩვეულებრივი მტერი
         Instantiate(currentWave.enemyPrefab, spawnPos, Quaternion.identity);
     }
+}
 
 void SpawnBoss()
 {
