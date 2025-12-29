@@ -15,5 +15,6 @@ MonoBehaviour:
   upgradeName: Darts_Speed
   description: "\u10E1\u10EC\u10E0\u10D0\u10E4\u10D8 \u10D8\u10E1\u10E0\u10D4\u10D1\u10D8"
   icon: {fileID: 0}
-  type: 2
+  type: 0
+  rarity: 0
   valueModifier: -0.2

@@ -15,5 +15,6 @@ MonoBehaviour:
   upgradeName: Wisp_Count
   description: 
   icon: {fileID: 0}
-  type: 0
+  type: 2
+  rarity: 0
   valueModifier: 1

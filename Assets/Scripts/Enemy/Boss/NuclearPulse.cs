@@ -9,6 +9,7 @@ public class NuclearPulse : MonoBehaviour
 
     void Start()
     {
+        GetComponent<ShakeSource>()?.TriggerShake();
         StartCoroutine(ExpandAndKill());
     }
 

@@ -1,10 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Unity.Cinemachine;
 
 public class BossHealth : MonoBehaviour
 {
     public int maxHealth = 100;
     private int currentHealth;
+    private ShakeSource shaker;
     private Slider bossSlider;
     public GameObject deathEffectPrefab;
     public GameObject skillLootPrefab;
@@ -13,6 +15,7 @@ public class BossHealth : MonoBehaviour
     {
         currentHealth = maxHealth;
         WaveManager waveManager = FindObjectOfType<WaveManager>();
+        shaker = GetComponent<ShakeSource>();
         
         if (waveManager != null && waveManager.bossHealthSlider != null)
         {
@@ -39,6 +42,8 @@ public class BossHealth : MonoBehaviour
     void Die()
     {
         Debug.Log("BOSS DIE FUNCTION STARTED");
+        
+        if (shaker != null) shaker.TriggerShake();
 
         if (bossSlider != null) bossSlider.gameObject.SetActive(false);
 
