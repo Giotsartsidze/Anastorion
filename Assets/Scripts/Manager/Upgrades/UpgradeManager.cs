@@ -23,22 +23,24 @@ public class UpgradeManager : MonoBehaviour
     Debug.Log("WISP UPGRADES UNLOCKED!");
 }
 
-    public void ShowUpgrades()
+  public void ShowUpgrades()
+{
+    levelUpPanel.SetActive(true);
+    Time.timeScale = 0f; 
+
+    var randomUpgrades = activeUpgrades.OrderBy(x => Random.value).Take(3).ToList();
+
+    for (int i = 0; i < randomUpgrades.Count; i++)
     {
-        levelUpPanel.SetActive(true);
-        Time.timeScale = 0f; 
-
-        // ვირჩევთ 3 შემთხვევითს
-        var randomUpgrades = activeUpgrades.OrderBy(x => Random.value).Take(3).ToList();
-
-        for (int i = 0; i < randomUpgrades.Count; i++)
+        if (i < cardUI.Length && cardUI[i] != null) 
         {
-            if (i < cardUI.Length && cardUI[i] != null) 
-            {
-                cardUI[i].Setup(randomUpgrades[i], this);
-            }
+            cardUI[i].Setup(randomUpgrades[i], this);
+            
+            // სიახლე: თითოეულ ბარათს ვაძლევთ 0.1 წამით მეტ დაყოვნებას (Cascade effect)
+            cardUI[i].AnimateIn(i * 0.15f);
         }
     }
+}
 
     public void ApplyUpgrade(UpgradeData data)
     {

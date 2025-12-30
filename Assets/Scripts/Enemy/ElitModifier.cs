@@ -1,15 +1,24 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class EliteModifier : MonoBehaviour
 {
     [Header("Elite Settings")]
-    [Range(0, 100)]
-    public float eliteChance = 10f; // 10% შანსი
+    public float eliteChance = 10f;
     public float healthMultiplier = 3f;
-    public float scaleMultiplier = 1.5f;
-    public Color eliteColor = new Color(1f, 0.8f, 0f); // ოქროსფერი
+    public float scaleMultiplier = 1.3f;
+    public GameObject auraVisual; // ჩააგდე Circle Sprite აქ
+
+    [Header("Aura Buff Settings")]
+    public float auraRadius = 5f;
+    public float speedMultiplier = 1.25f; // 25%-ით აჩქარება
+    public LayerMask enemyLayer;
+
+	[Header("Visual Identifier")]
+	public GameObject eliteIcon;
 
     private bool isElite = false;
+    private List<GameObject> buffedEnemies = new List<GameObject>();
 
     void Start()
     {
@@ -22,22 +31,55 @@ public class EliteModifier : MonoBehaviour
     void MakeElite()
     {
         isElite = true;
-
-        // 1. ვზრდით ზომას
         transform.localScale *= scaleMultiplier;
+        GetComponent<SpriteRenderer>().color = new Color(1, 0.5f, 0, 1); // ნარინჯისფერი
 
-        // 2. ვუცვლით ფერს (ვიზუალური ინდიკატორი)
-        GetComponent<SpriteRenderer>().color = eliteColor;
+        if (auraVisual != null) auraVisual.SetActive(true);
 
-        // 3. ვუზრდით სიცოცხლეს (მივმართავთ EnemyHealth-ს)
         EnemyHealth healthScript = GetComponent<EnemyHealth>();
         if (healthScript != null)
         {
-        healthScript.xpCount = 5;
             healthScript.health = Mathf.RoundToInt(healthScript.health * healthMultiplier);
+            healthScript.xpCount = 5;
         }
+
+		if (eliteIcon != null) 
+    	{
+        eliteIcon.SetActive(true);
+        // შეგვიძლია ფერიც დავუმთხვიოთ აურას
+        eliteIcon.GetComponent<SpriteRenderer>().color = Color.yellow;
+   		}
+
+        // ვიწყებთ პერიოდულ შემოწმებას (0.5 წამში ერთხელ)
+       	if (auraVisual != null) auraVisual.SetActive(true);
+    	InvokeRepeating(nameof(ApplyAuraBuff), 0.5f, 0.5f);
+    }
+
+    void ApplyAuraBuff()
+    {
+        if (!isElite) return;
+
+        // ვპოულობთ ყველა მტერს რადიუსში
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, auraRadius, enemyLayer);
         
-        // 4. ბონუსი: შეგვიძლია დავამატოთ აურა ან სხვა ეფექტი
-        Debug.Log(gameObject.name + " has evolved into an ELITE!");
+        foreach (var enemy in hitEnemies)
+        {
+            // საკუთარ თავს არ ვუფერადებთ
+            if (enemy.gameObject == this.gameObject) continue;
+
+            // ვამოწმებთ, მტერი უკვე აჩქარებულია თუ არა (რომ სტეკინგი არ მოხდეს)
+            EnemyAI ai = enemy.GetComponent<EnemyAI>() ?? enemy.GetComponentInParent<EnemyAI>();
+            if (ai != null && !ai.isBuffed)
+            {
+                ai.ApplySpeedBuff(speedMultiplier);
+            }
+        }
+    }
+    
+    // რადიუსის დახატვა ედიტორში (ვიზუალური კონტროლისთვის)
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, auraRadius);
     }
 }

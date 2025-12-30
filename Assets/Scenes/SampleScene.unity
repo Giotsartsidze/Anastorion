@@ -7617,11 +7617,26 @@ MonoBehaviour:
     enemyPrefab: {fileID: 7478513448722915515, guid: 9453ace30f34b48ce908324b109d17be, type: 3}
     count: 100
     rate: 1
+  - waveName: Wave 3
+    enemyPrefab: {fileID: 4100449751127405023, guid: f76ed59d8f01e4373a5a9da3979097fb, type: 3}
+    count: 20
+    rate: 1
+  - waveName: Wave 3
+    enemyPrefab: {fileID: 4100449751127405023, guid: f76ed59d8f01e4373a5a9da3979097fb, type: 3}
+    count: 20
+    rate: 1
+  - waveName: Wave 4
+    enemyPrefab: {fileID: 7319594996623072390, guid: 8fd27415f846c4b5f9d97ddd0607b4a1, type: 3}
+    count: 3
+    rate: 1
   spawnPoints: []
   timerText: {fileID: 40669348}
   bossPrefab: {fileID: 7478513448722915515, guid: b6bfc44fd7a50494985ccf43665fc167, type: 3}
   bossWarningUI: {fileID: 1861674241}
   bossHealthSlider: {fileID: 1162555101}
+  rangedEnemyPrefab: {fileID: 4100449751127405023, guid: f76ed59d8f01e4373a5a9da3979097fb, type: 3}
+  rangedSpawnChance: 20
+  startRangedAt: 10
 --- !u!4 &1235071717
 Transform:
   m_ObjectHideFlags: 0
