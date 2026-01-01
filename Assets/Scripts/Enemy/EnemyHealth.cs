@@ -3,44 +3,44 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
+    public enum DropType { XP, Health } // ჩამონათვალი სხვადასხვა დროპისთვის
+
+    [Header("Stats")]
     public int health = 1;
-    public GameObject coinPrefab; // აქ ჩააგდებ XP Orb-ის პრეფაბს
-	public int xpCount = 1;
-    private bool isDying = false; // რომ ზედიზედ რამდენჯერმე არ მოკვდეს
+    public DropType dropType = DropType.XP; // დეფოლტად XP
+
+    [Header("Drop Prefabs")]
+    public GameObject coinPrefab; // XP ორბი
+    public GameObject healthPackPrefab; // სიცოცხლის აღსადგენი პაკეტი
+    public int dropCount = 1;
+
+    private bool isDying = false;
 
     public void TakeDamage(int damage)
     {
         if (isDying) return;
-
         health -= damage;
 
-        if (health <= 0)
-        {
-            StartCoroutine(DeathSequence());
-        }
+        if (health <= 0) StartCoroutine(DeathSequence());
     }
 
     IEnumerator DeathSequence()
     {
         isDying = true;
-
-        // 1. აქ მტერი უკვე მიფრინავს უკან (რადგან LightPulse-მა ძალა უკვე მისცა)
-        // ვაცდით 0.15 წამს, რომ მოთამაშემ დაინახოს უკუგდება
         yield return new WaitForSeconds(0.15f);
 
-        // 2. ვაჩენთ "კოინს" (სინათლის ნამსხვრევს)
-      if (coinPrefab != null)
+        // ვირჩევთ რომელ პრეფაბს ვაჩენთ არჩეული DropType-ის მიხედვით
+        GameObject prefabToSpawn = (dropType == DropType.Health) ? healthPackPrefab : coinPrefab;
+
+        if (prefabToSpawn != null)
         {
-            // ვაჩენთ იმდენ XP ორბს, რამდენიც xpCount-ში გვიწერია
-            for (int i = 0; i < xpCount; i++)
+            for (int i = 0; i < dropCount; i++)
             {
-                // მცირე რანდომიზაცია პოზიციისთვის, რომ ორბები ერთმანეთს არ დაეფარონ
                 Vector3 randomOffset = new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0);
-                Instantiate(coinPrefab, transform.position + randomOffset, Quaternion.identity);
+                Instantiate(prefabToSpawn, transform.position + randomOffset, Quaternion.identity);
             }
         }
 
-        // 3. მტერი ქრება
         Destroy(gameObject);
     }
 }

@@ -56,14 +56,14 @@ public class ChargerEnemyAI : MonoBehaviour
         isCharging = true;
 
         // რეალური შეტევა (Charge)
-        rb.velocity = targetDir * chargeSpeed;
+        rb.linearVelocity = targetDir * chargeSpeed;
         
         // ეკრანის მცირე ზანზარი შეჯახებისას (თუ ShakeSource გაქვს)
         GetComponent<ShakeSource>()?.TriggerShake();
 
         yield return new WaitForSeconds(0.5f); // შეტევის ხანგრძლივობა
 
-        rb.velocity = Vector2.zero;
+        rb.linearVelocity = Vector2.zero;
         isCharging = false;
 
         // დასვენების ფაზა (Cooldown)

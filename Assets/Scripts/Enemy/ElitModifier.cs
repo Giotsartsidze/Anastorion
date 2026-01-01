@@ -39,8 +39,16 @@ public class EliteModifier : MonoBehaviour
         EnemyHealth healthScript = GetComponent<EnemyHealth>();
         if (healthScript != null)
         {
-            healthScript.health = Mathf.RoundToInt(healthScript.health * healthMultiplier);
-            healthScript.xpCount = 5;
+            // თუ ეს მტერი ტანკია (ანუ Health Drop-ს აგდებს)
+            if (healthScript.dropType == EnemyHealth.DropType.Health)
+            {
+                healthScript.dropCount = 3; // დააგდოს 3 გული
+                healthScript.health *= 2;   // კიდევ უფრო მეტი HP ელიტარულ ტანკს
+            }
+            else
+            {
+                healthScript.dropCount = 5; // ჩვეულებრივ ელიტარს - 5 XP
+            }
         }
 
 		if (eliteIcon != null) 

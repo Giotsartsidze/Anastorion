@@ -23,12 +23,23 @@ public class WaveManager : MonoBehaviour
 	private bool bossSpawned = false;
 	public GameObject bossWarningUI;
 	public Slider bossHealthSlider;
+    
+    [Header("Swarm Settings")]
+    public int swarmSize = 10; // რამდენი გაჩნდეს ერთად
+    [Header("Archetype Prefabs")]
+    public GameObject tankEnemyPrefab;
+    public GameObject rangedEnemyPrefab;
+    public GameObject swarmEnemyPrefab;
 
-	[Header("Ranged Enemy Settings")]
-	public GameObject rangedEnemyPrefab;
-	[Range(0, 100)]
-	public float rangedSpawnChance = 20f; // 20% შანსი, რომ Ranger გაჩნდეს
-	public float startRangedAt = 60f;
+    [Header("Spawn Chances (0-100)")]
+    public float tankChance = 10f;
+    public float rangedChance = 20f;
+    public float swarmChance = 15f;
+
+    [Header("Timing Settings")]
+    public float startTankAt = 45f;   // ტანკები 45-ე წამიდან
+    public float startRangedAt = 60f; // რეინჯერები 1 წუთიდან
+    public float startSwarmAt = 90f;  // სვორმები 1.5 წუთიდან
 
     void Start()
     {
@@ -74,21 +85,47 @@ float currentSpawnRate = bossSpawned ? currentWave.rate * 3f : currentWave.rate;
     }
 
     void SpawnEnemy()
-{
-    Vector2 spawnDir = Random.insideUnitCircle.normalized * 24f;
-    Vector3 spawnPos = player.position + (Vector3)spawnDir;
+    {
+        // 1. ვირჩევთ სპაუნის წერტილს (ეკრანის გარეთ)
+        Vector2 spawnDir = Random.insideUnitCircle.normalized * 24f;
+        Vector3 spawnPos = player.position + (Vector3)spawnDir;
 
-    // ლოგიკა: თუ 1 წუთი გავიდა და რენდომმა "გაამართლა", ვაჩენთ Ranger-ს
-    if (gameTime >= startRangedAt && Random.Range(0, 100) <= rangedSpawnChance)
-    {
-        Instantiate(rangedEnemyPrefab, spawnPos, Quaternion.identity);
+        // 2. ვირჩევთ რომელ არქეტიპს ვაჩენთ (Weighted Random)
+        float roll = Random.Range(0, 100);
+
+        // SWARM - გუნდური სპაუნინგი
+        if (gameTime >= startSwarmAt && roll < swarmChance)
+        {
+            StartCoroutine(SpawnSwarmGroup(spawnPos));
+        }
+        // TANK - მძიმე მტერი
+        else if (gameTime >= startTankAt && roll < (swarmChance + tankChance))
+        {
+            Instantiate(tankEnemyPrefab, spawnPos, Quaternion.identity);
+        }
+        // RANGER - მსროლელი
+        else if (gameTime >= startRangedAt && roll < (swarmChance + tankChance + rangedChance))
+        {
+            Instantiate(rangedEnemyPrefab, spawnPos, Quaternion.identity);
+        }
+        // DEFAULT - ჩვეულებრივი მტერი
+        else
+        {
+            Instantiate(currentWave.enemyPrefab, spawnPos, Quaternion.identity);
+        }
     }
-    else
+    
+    IEnumerator SpawnSwarmGroup(Vector3 centerPos)
     {
-        // წინააღმდეგ შემთხვევაში ჩვეულებრივი მტერი
-        Instantiate(currentWave.enemyPrefab, spawnPos, Quaternion.identity);
+        for (int i = 0; i < swarmSize; i++)
+        {
+            // გუნდის წევრები ერთმანეთთან ახლოს
+            Vector3 offset = Random.insideUnitSphere * 2f;
+            offset.z = 0;
+            Instantiate(swarmEnemyPrefab, centerPos + offset, Quaternion.identity);
+            yield return new WaitForSeconds(0.05f); 
+        }
     }
-}
 
 void SpawnBoss()
 {

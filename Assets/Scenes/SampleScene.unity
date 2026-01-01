@@ -6750,6 +6750,8 @@ MonoBehaviour:
   descriptionText: {fileID: 1014228569}
   iconImage: {fileID: 1479511014}
   button: {fileID: 863997421}
+  hoverScale: 1.1
+  scaleSpeed: 10
 --- !u!1 &940394629
 GameObject:
   m_ObjectHideFlags: 0
@@ -7504,6 +7506,8 @@ MonoBehaviour:
   descriptionText: {fileID: 1172810828}
   iconImage: {fileID: 370016492}
   button: {fileID: 1182477377}
+  hoverScale: 1.1
+  scaleSpeed: 10
 --- !u!1 &1199879263
 GameObject:
   m_ObjectHideFlags: 0
@@ -7630,10 +7634,10 @@ MonoBehaviour:
     count: 3
     rate: 1
   spawnPoints: []
-  timerText: {fileID: 40669348}
+  timerText: {fileID: 0}
   bossPrefab: {fileID: 7478513448722915515, guid: b6bfc44fd7a50494985ccf43665fc167, type: 3}
-  bossWarningUI: {fileID: 1861674241}
-  bossHealthSlider: {fileID: 1162555101}
+  bossWarningUI: {fileID: 0}
+  bossHealthSlider: {fileID: 0}
   rangedEnemyPrefab: {fileID: 4100449751127405023, guid: f76ed59d8f01e4373a5a9da3979097fb, type: 3}
   rangedSpawnChance: 20
   startRangedAt: 10
@@ -7804,6 +7808,8 @@ MonoBehaviour:
   descriptionText: {fileID: 1583844405}
   iconImage: {fileID: 585546532}
   button: {fileID: 1265784070}
+  hoverScale: 1.1
+  scaleSpeed: 10
 --- !u!1 &1284294387
 GameObject:
   m_ObjectHideFlags: 0
@@ -8235,7 +8241,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 0
-  healthSlider: {fileID: 200327880}
+  healthSlider: {fileID: 0}
   iFrameDuration: 1
   damageParticles: {fileID: 246458820}
 --- !u!96 &1470765117
