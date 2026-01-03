@@ -7634,13 +7634,20 @@ MonoBehaviour:
     count: 3
     rate: 1
   spawnPoints: []
-  timerText: {fileID: 0}
+  timerText: {fileID: 40669348}
   bossPrefab: {fileID: 7478513448722915515, guid: b6bfc44fd7a50494985ccf43665fc167, type: 3}
-  bossWarningUI: {fileID: 0}
-  bossHealthSlider: {fileID: 0}
+  bossWarningUI: {fileID: 1861674241}
+  bossHealthSlider: {fileID: 1162555101}
+  swarmSize: 10
+  tankEnemyPrefab: {fileID: 2436420002217094212, guid: 4056db84496d04d49b54fbf7171f8147, type: 3}
   rangedEnemyPrefab: {fileID: 4100449751127405023, guid: f76ed59d8f01e4373a5a9da3979097fb, type: 3}
-  rangedSpawnChance: 20
+  swarmEnemyPrefab: {fileID: 4274928541663832140, guid: cb2cb78c728524877808fb93c26cf4be, type: 3}
+  tankChance: 10
+  rangedChance: 20
+  swarmChance: 15
+  startTankAt: 45
   startRangedAt: 10
+  startSwarmAt: 90
 --- !u!4 &1235071717
 Transform:
   m_ObjectHideFlags: 0
@@ -8241,7 +8248,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 0
-  healthSlider: {fileID: 0}
+  healthSlider: {fileID: 200327880}
   iFrameDuration: 1
   damageParticles: {fileID: 246458820}
 --- !u!96 &1470765117

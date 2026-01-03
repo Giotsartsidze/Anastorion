@@ -16,6 +16,26 @@ public class EnemyHealth : MonoBehaviour
 
     private bool isDying = false;
 
+void Start()
+{
+    // უსაფრთხო შემოწმება: თუ ინსტანცია ჯერ არ არის, ვპოულობთ მას ძალით
+    if (DifficultyManager.Instance == null)
+    {
+        DifficultyManager.Instance = FindFirstObjectByType<DifficultyManager>();
+    }
+
+    // ახლა უკვე შეგვიძლია მშვიდად გამოვიძახოთ
+    if (DifficultyManager.Instance != null)
+    {
+        float multiplier = DifficultyManager.Instance.GetDifficultyMultiplier();
+        health = Mathf.RoundToInt(health * multiplier);
+    }
+    else
+    {
+        Debug.LogWarning("სენიორ, DifficultyManager სცენაზე ვერ ვიპოვე! HP დარჩა საწყისი.");
+    }
+}
+
     public void TakeDamage(int damage)
     {
         if (isDying) return;

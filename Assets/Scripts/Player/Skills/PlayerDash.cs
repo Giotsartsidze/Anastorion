@@ -49,5 +49,6 @@ public class PlayerDash : MonoBehaviour
         canDash = true;
         dashTrail.emitting = false; // კუდის გაქრობა
         
+		FindObjectOfType<UpgradeManager>().TryTriggerLightning();	
     }
 }

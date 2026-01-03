@@ -58,6 +58,15 @@ public class WaveManager : MonoBehaviour
             SpawnBoss();
         }
 
+float timeDiminisher = Mathf.Clamp(gameTime / 300f, 0, 0.5f); // მაქსიმუმ 50%-ით აჩქარდეს
+    float effectiveRate = currentWave.rate * (1 - timeDiminisher);
+
+    if (canSpawn && Time.time >= nextSpawnTime)
+    {
+        SpawnEnemy();
+        nextSpawnTime = Time.time + (bossSpawned ? effectiveRate * 3f : effectiveRate);
+    }
+
         // 1. ტაიმერის ლოგიკა
         gameTime += Time.deltaTime;
         UpdateTimerUI();
