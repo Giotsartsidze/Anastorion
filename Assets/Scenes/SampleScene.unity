@@ -5842,6 +5842,9 @@ MonoBehaviour:
   lockedUpgrades:
   - {fileID: 11400000, guid: fee7913f5262748fbbda69d1e2f5716e, type: 2}
   - {fileID: 11400000, guid: f2c9204c8bb784453bf647052a2d7ac6, type: 2}
+  supernovaPrefab: {fileID: 3832247937898278526, guid: c8be5f85c194841b5bb3abb3adddda71, type: 3}
+  supernovaCooldown: 60
+  chainLightningScript: {fileID: 289654457947297808, guid: 5b48c8c13733c4488a518d3b8d044e17, type: 3}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -7593,6 +7596,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1235071717}
   - component: {fileID: 1235071716}
+  - component: {fileID: 1235071718}
   m_Layer: 0
   m_Name: WaveManager
   m_TagString: Untagged
@@ -7615,19 +7619,19 @@ MonoBehaviour:
   waves:
   - waveName: Wave 1
     enemyPrefab: {fileID: 7478513448722915515, guid: 9453ace30f34b48ce908324b109d17be, type: 3}
-    count: 50
+    count: 10
     rate: 2
   - waveName: Wave 2
     enemyPrefab: {fileID: 7478513448722915515, guid: 9453ace30f34b48ce908324b109d17be, type: 3}
-    count: 100
+    count: 19
     rate: 1
   - waveName: Wave 3
     enemyPrefab: {fileID: 4100449751127405023, guid: f76ed59d8f01e4373a5a9da3979097fb, type: 3}
-    count: 20
+    count: 10
     rate: 1
   - waveName: Wave 3
     enemyPrefab: {fileID: 4100449751127405023, guid: f76ed59d8f01e4373a5a9da3979097fb, type: 3}
-    count: 20
+    count: 10
     rate: 1
   - waveName: Wave 4
     enemyPrefab: {fileID: 7319594996623072390, guid: 8fd27415f846c4b5f9d97ddd0607b4a1, type: 3}
@@ -7663,6 +7667,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1235071718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1235071715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cea60c47a53645cfb6a5a1642537738, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scalingFactor: 0.2
+  gameTime: 60
 --- !u!1 &1265784068
 GameObject:
   m_ObjectHideFlags: 0

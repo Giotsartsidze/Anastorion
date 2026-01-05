@@ -256,9 +256,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a26bd5b124b64fc2b6013a23adeeeaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 6
+  health: 1
+  dropType: 0
   coinPrefab: {fileID: 4083271637325336818, guid: cc35205c7abb04d9abf2abfe7b9d2160, type: 3}
-  xpCount: 1
+  healthPackPrefab: {fileID: 5905213398975661970, guid: a248ffc326784415595c0cce8077184e, type: 3}
+  shardPrefab: {fileID: 4786673971356478334, guid: d964e9d7322784239a241b8b80c930ae, type: 3}
+  dropCount: 1
+  shardDropChance: 0.2
 --- !u!50 &8642110555017556991
 Rigidbody2D:
   serializedVersion: 5
