@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -6083262662874909824}
   m_Layer: 8
   m_Name: BossProjectile
-  m_TagString: Untagged
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -182,4 +182,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   deathEffectPrefab: {fileID: 6413490928674798708, guid: 2a49367b831ff4b2d999fce5c6b23f5d, type: 3}
-  skillLootPrefab: {fileID: 0}
+  skillLootPrefab: {fileID: 5765246111510740352, guid: 05270a1a435244a628867298999addf2, type: 3}
