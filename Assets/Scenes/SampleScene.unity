@@ -598,6 +598,87 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 81335471}
   m_CullTransparentMesh: 1
+--- !u!1 &88157982
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 88157984}
+  - component: {fileID: 88157983}
+  m_Layer: 0
+  m_Name: PoolManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &88157983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 88157982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0321280a8a2b14dae9e9cd4bc8c63a0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pools:
+  - tag: Normal
+    prefab: {fileID: 7478513448722915515, guid: 9453ace30f34b48ce908324b109d17be, type: 3}
+    size: 50
+  - tag: Range
+    prefab: {fileID: 4100449751127405023, guid: f76ed59d8f01e4373a5a9da3979097fb, type: 3}
+    size: 30
+  - tag: Shield
+    prefab: {fileID: 3514117682809558022, guid: a4a23d55517f34149917e16c773a044c, type: 3}
+    size: 50
+  - tag: Swarm
+    prefab: {fileID: 4274928541663832140, guid: cb2cb78c728524877808fb93c26cf4be, type: 3}
+    size: 10
+  - tag: Exploder
+    prefab: {fileID: 5109436113338301829, guid: 4eededba2ff68420884c581a05140300, type: 3}
+    size: 10
+  - tag: Charger
+    prefab: {fileID: 7319594996623072390, guid: 8fd27415f846c4b5f9d97ddd0607b4a1, type: 3}
+    size: 10
+  - tag: Leaper
+    prefab: {fileID: 4590096939823479830, guid: 407f13d6578d64ebc9e0c759ee6b584a, type: 3}
+    size: 10
+  - tag: Sinusoidal
+    prefab: {fileID: 3308131756001518661, guid: a3ce80bc6842c4b71b61e60b9737b224, type: 3}
+    size: 10
+  - tag: Vortex
+    prefab: {fileID: 5397045279422540294, guid: 047f89e86dc89430f8d05ba96aa47ed9, type: 3}
+    size: 10
+  - tag: Summoner
+    prefab: {fileID: 2996474936208761454, guid: 1aaffd0cfad334816ac716c50745ee7e, type: 3}
+    size: 10
+  - tag: Tank
+    prefab: {fileID: 2436420002217094212, guid: 4056db84496d04d49b54fbf7171f8147, type: 3}
+    size: 10
+  - tag: Boss
+    prefab: {fileID: 6289872999900617585, guid: f0fa3ef258cde482c872497d6c65f5f6, type: 3}
+    size: 1
+--- !u!4 &88157984
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 88157982}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.822339, y: 16.40318, z: -0.5879606}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &200327878
 GameObject:
   m_ObjectHideFlags: 0
@@ -7822,6 +7903,11 @@ MonoBehaviour:
     spawnChance: 10
     startTime: 400
     isSwarm: 0
+  - name: Boss
+    prefab: {fileID: 6289872999900617585, guid: f0fa3ef258cde482c872497d6c65f5f6, type: 3}
+    spawnChance: 100
+    startTime: 500
+    isSwarm: 0
   spawnPoints: []
   timerText: {fileID: 40669348}
   bossPrefab: {fileID: 7478513448722915515, guid: b6bfc44fd7a50494985ccf43665fc167, type: 3}
@@ -9816,3 +9902,4 @@ SceneRoots:
   - {fileID: 568135498}
   - {fileID: 1235071717}
   - {fileID: 31556182}
+  - {fileID: 88157984}

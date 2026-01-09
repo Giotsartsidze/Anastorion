@@ -90,4 +90,14 @@ public class EliteModifier : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, auraRadius);
     }
+
+	void Update()
+    {
+       // EliteModifier-ის Update-ში
+if (isElite && auraVisual != null)
+{
+    float pulse = 1f + Mathf.Sin(Time.time * 3f) * 0.1f;
+    auraVisual.transform.localScale = new Vector3(pulse, pulse, 1);
+}
+    }
 }
