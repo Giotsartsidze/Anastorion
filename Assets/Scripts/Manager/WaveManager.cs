@@ -77,7 +77,7 @@ public class WaveManager : MonoBehaviour
         if (selectedEnemy.isSwarm)
             StartCoroutine(SpawnSwarmGroup(selectedEnemy.prefab, spawnPos));
         else
-            Instantiate(selectedEnemy.prefab, spawnPos, Quaternion.identity);
+            ObjectPooler.Instance.SpawnFromPool(selectedEnemy.name, spawnPos, Quaternion.identity);
     }
 
     EnemyArchetype GetRandomEnemy(List<EnemyArchetype> pool)

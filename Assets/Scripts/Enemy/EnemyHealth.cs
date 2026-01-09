@@ -59,6 +59,8 @@ public class EnemyHealth : MonoBehaviour
             Instantiate(shardPrefab, transform.position, Quaternion.identity);
         }
 
-        Destroy(gameObject);
+        health = 1; // ან ბაზისური HP
+    	isDying = false;
+    	gameObject.SetActive(false);
     }
 }

@@ -7766,42 +7766,67 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3a9e20585e8e443ba5c81711d811f5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waves:
-  - waveName: Wave 1
-    enemyPrefab: {fileID: 7478513448722915515, guid: 9453ace30f34b48ce908324b109d17be, type: 3}
-    count: 10
-    rate: 2
-  - waveName: Wave 2
-    enemyPrefab: {fileID: 7478513448722915515, guid: 9453ace30f34b48ce908324b109d17be, type: 3}
-    count: 19
-    rate: 1
-  - waveName: Wave 3
-    enemyPrefab: {fileID: 4100449751127405023, guid: f76ed59d8f01e4373a5a9da3979097fb, type: 3}
-    count: 10
-    rate: 1
-  - waveName: Wave 3
-    enemyPrefab: {fileID: 4100449751127405023, guid: f76ed59d8f01e4373a5a9da3979097fb, type: 3}
-    count: 10
-    rate: 1
-  - waveName: Wave 4
-    enemyPrefab: {fileID: 7319594996623072390, guid: 8fd27415f846c4b5f9d97ddd0607b4a1, type: 3}
-    count: 3
-    rate: 1
+  enemyPool:
+  - name: Normal
+    prefab: {fileID: 7478513448722915515, guid: 9453ace30f34b48ce908324b109d17be, type: 3}
+    spawnChance: 0
+    startTime: 0
+    isSwarm: 0
+  - name: Range
+    prefab: {fileID: 4100449751127405023, guid: f76ed59d8f01e4373a5a9da3979097fb, type: 3}
+    spawnChance: 20
+    startTime: 40
+    isSwarm: 0
+  - name: Shield
+    prefab: {fileID: 3514117682809558022, guid: a4a23d55517f34149917e16c773a044c, type: 3}
+    spawnChance: 20
+    startTime: 80
+    isSwarm: 0
+  - name: Swarm
+    prefab: {fileID: 4274928541663832140, guid: cb2cb78c728524877808fb93c26cf4be, type: 3}
+    spawnChance: 10
+    startTime: 120
+    isSwarm: 1
+  - name: Exploder
+    prefab: {fileID: 5109436113338301829, guid: 4eededba2ff68420884c581a05140300, type: 3}
+    spawnChance: 10
+    startTime: 160
+    isSwarm: 0
+  - name: Charger
+    prefab: {fileID: 7319594996623072390, guid: 8fd27415f846c4b5f9d97ddd0607b4a1, type: 3}
+    spawnChance: 10
+    startTime: 200
+    isSwarm: 0
+  - name: Leaper
+    prefab: {fileID: 4590096939823479830, guid: 407f13d6578d64ebc9e0c759ee6b584a, type: 3}
+    spawnChance: 10
+    startTime: 240
+    isSwarm: 0
+  - name: Sinusoidal
+    prefab: {fileID: 3308131756001518661, guid: a3ce80bc6842c4b71b61e60b9737b224, type: 3}
+    spawnChance: 10
+    startTime: 280
+    isSwarm: 0
+  - name: Vortex
+    prefab: {fileID: 5397045279422540294, guid: 047f89e86dc89430f8d05ba96aa47ed9, type: 3}
+    spawnChance: 10
+    startTime: 320
+    isSwarm: 0
+  - name: Summoner
+    prefab: {fileID: 2996474936208761454, guid: 1aaffd0cfad334816ac716c50745ee7e, type: 3}
+    spawnChance: 10
+    startTime: 360
+    isSwarm: 0
+  - name: Tank
+    prefab: {fileID: 2436420002217094212, guid: 4056db84496d04d49b54fbf7171f8147, type: 3}
+    spawnChance: 10
+    startTime: 400
+    isSwarm: 0
   spawnPoints: []
   timerText: {fileID: 40669348}
   bossPrefab: {fileID: 7478513448722915515, guid: b6bfc44fd7a50494985ccf43665fc167, type: 3}
   bossWarningUI: {fileID: 1861674241}
   bossHealthSlider: {fileID: 1162555101}
-  swarmSize: 10
-  tankEnemyPrefab: {fileID: 2436420002217094212, guid: 4056db84496d04d49b54fbf7171f8147, type: 3}
-  rangedEnemyPrefab: {fileID: 4100449751127405023, guid: f76ed59d8f01e4373a5a9da3979097fb, type: 3}
-  swarmEnemyPrefab: {fileID: 4274928541663832140, guid: cb2cb78c728524877808fb93c26cf4be, type: 3}
-  tankChance: 10
-  rangedChance: 20
-  swarmChance: 15
-  startTankAt: 45
-  startRangedAt: 10
-  startSwarmAt: 90
 --- !u!4 &1235071717
 Transform:
   m_ObjectHideFlags: 0
@@ -7830,7 +7855,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scalingFactor: 0.2
-  gameTime: 60
+  gameTime: 0
 --- !u!1 &1265784068
 GameObject:
   m_ObjectHideFlags: 0
