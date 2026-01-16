@@ -664,6 +664,18 @@ MonoBehaviour:
   - tag: Boss
     prefab: {fileID: 6289872999900617585, guid: f0fa3ef258cde482c872497d6c65f5f6, type: 3}
     size: 1
+  - tag: Goblin
+    prefab: {fileID: 1388909818033448563, guid: 21bd32172428d40d198bcf23cebc7976, type: 3}
+    size: 10
+  - tag: Blinker
+    prefab: {fileID: 4460573056605463184, guid: 23fc15375139e4656b68bf84d53d693a, type: 3}
+    size: 10
+  - tag: Orbiter
+    prefab: {fileID: 5260372114565654223, guid: f801614c109e34448a153d008f41e9be, type: 3}
+    size: 10
+  - tag: BarrierMaker
+    prefab: {fileID: 143261277285792420, guid: 1e1ae6c560aba45d4b8b25edc229adde, type: 3}
+    size: 10
 --- !u!4 &88157984
 Transform:
   m_ObjectHideFlags: 0
@@ -7907,6 +7919,26 @@ MonoBehaviour:
     prefab: {fileID: 6289872999900617585, guid: f0fa3ef258cde482c872497d6c65f5f6, type: 3}
     spawnChance: 100
     startTime: 500
+    isSwarm: 0
+  - name: Goblin
+    prefab: {fileID: 1388909818033448563, guid: 21bd32172428d40d198bcf23cebc7976, type: 3}
+    spawnChance: 100
+    startTime: 100
+    isSwarm: 0
+  - name: Blinker
+    prefab: {fileID: 4460573056605463184, guid: 23fc15375139e4656b68bf84d53d693a, type: 3}
+    spawnChance: 100
+    startTime: 60
+    isSwarm: 0
+  - name: Orbiter
+    prefab: {fileID: 5260372114565654223, guid: f801614c109e34448a153d008f41e9be, type: 3}
+    spawnChance: 100
+    startTime: 30
+    isSwarm: 0
+  - name: BarrierMaker
+    prefab: {fileID: 143261277285792420, guid: 1e1ae6c560aba45d4b8b25edc229adde, type: 3}
+    spawnChance: 100
+    startTime: 30
     isSwarm: 0
   spawnPoints: []
   timerText: {fileID: 40669348}

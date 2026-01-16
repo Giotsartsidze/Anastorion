@@ -7,22 +7,29 @@ public class EliteModifier : MonoBehaviour
     public float eliteChance = 10f;
     public float healthMultiplier = 3f;
     public float scaleMultiplier = 1.3f;
-    public GameObject auraVisual; // ჩააგდე Circle Sprite აქ
+    public GameObject auraVisual; 
 
     [Header("Aura Buff Settings")]
     public float auraRadius = 5f;
-    public float speedMultiplier = 1.25f; // 25%-ით აჩქარება
+    public float speedMultiplier = 1.25f; 
     public LayerMask enemyLayer;
 
-	[Header("Visual Identifier")]
-	public GameObject eliteIcon;
+    [Header("Visual Identifier")]
+    public GameObject eliteIcon;
 
     private bool isElite = false;
-    private List<GameObject> buffedEnemies = new List<GameObject>();
+
+    void Awake()
+    {
+        // Awake-ში ვთიშავთ ვიზუალებს, რომ საწყისში არ გამოჩნდეს
+        if (auraVisual != null) auraVisual.SetActive(false);
+        if (eliteIcon != null) eliteIcon.SetActive(false);
+    }
 
     void Start()
     {
-        if (Random.Range(0, 100) <= eliteChance)
+        // რენდომ შანსი ელიტარობისთვის
+        if (Random.Range(0f, 100f) <= eliteChance)
         {
             MakeElite();
         }
@@ -31,73 +38,69 @@ public class EliteModifier : MonoBehaviour
     void MakeElite()
     {
         isElite = true;
+        
+        // 1. ტრანსფორმაცია
         transform.localScale *= scaleMultiplier;
         GetComponent<SpriteRenderer>().color = new Color(1, 0.5f, 0, 1); // ნარინჯისფერი
 
-        if (auraVisual != null) auraVisual.SetActive(true);
-
+        // 2. ჯანმრთელობის მოდიფიკაცია
         EnemyHealth healthScript = GetComponent<EnemyHealth>();
         if (healthScript != null)
         {
-            // თუ ეს მტერი ტანკია (ანუ Health Drop-ს აგდებს)
             if (healthScript.dropType == EnemyHealth.DropType.Health)
             {
-                healthScript.dropCount = 3; // დააგდოს 3 გული
-                healthScript.health *= 2;   // კიდევ უფრო მეტი HP ელიტარულ ტანკს
+                healthScript.dropCount = 3;
+                healthScript.health = Mathf.RoundToInt(healthScript.health * healthMultiplier);
             }
             else
             {
-                healthScript.dropCount = 5; // ჩვეულებრივ ელიტარს - 5 XP
+                healthScript.dropCount = 5;
+                healthScript.health = Mathf.RoundToInt(healthScript.health * 1.5f); // ჩვეულებრივ ელიტარს 50%-ით მეტი HP
             }
         }
 
-		if (eliteIcon != null) 
-    	{
-        eliteIcon.SetActive(true);
-        // შეგვიძლია ფერიც დავუმთხვიოთ აურას
-        eliteIcon.GetComponent<SpriteRenderer>().color = Color.yellow;
-   		}
+        // 3. ვიზუალების ჩართვა
+        if (auraVisual != null) auraVisual.SetActive(true);
+        if (eliteIcon != null) 
+        {
+            eliteIcon.SetActive(true);
+            eliteIcon.GetComponent<SpriteRenderer>().color = Color.yellow;
+        }
 
-        // ვიწყებთ პერიოდულ შემოწმებას (0.5 წამში ერთხელ)
-       	if (auraVisual != null) auraVisual.SetActive(true);
-    	InvokeRepeating(nameof(ApplyAuraBuff), 0.5f, 0.5f);
+        // 4. აურის ლოგიკის გააქტიურება
+        InvokeRepeating(nameof(ApplyAuraBuff), 0.5f, 0.5f);
     }
 
     void ApplyAuraBuff()
     {
         if (!isElite) return;
 
-        // ვპოულობთ ყველა მტერს რადიუსში
+        // ვპოულობთ მტრებს რადიუსში
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, auraRadius, enemyLayer);
         
         foreach (var enemy in hitEnemies)
         {
-            // საკუთარ თავს არ ვუფერადებთ
             if (enemy.gameObject == this.gameObject) continue;
 
-            // ვამოწმებთ, მტერი უკვე აჩქარებულია თუ არა (რომ სტეკინგი არ მოხდეს)
-            EnemyAI ai = enemy.GetComponent<EnemyAI>() ?? enemy.GetComponentInParent<EnemyAI>();
-            if (ai != null && !ai.isBuffed)
-            {
-                ai.ApplySpeedBuff(speedMultiplier);
-            }
+            // სენიორული მიდგომა: ვიყენებთ SendMessage-ს, რომ ყველა ტიპის AI-მ გაიგოს
+            // ეს იმუშავებს Blinker-ზეც, Summoner-ზეც და ჩვეულებრივზეც
+            enemy.SendMessage("ApplySpeedBuff", speedMultiplier, SendMessageOptions.DontRequireReceiver);
         }
     }
-    
-    // რადიუსის დახატვა ედიტორში (ვიზუალური კონტროლისთვის)
+
+    void Update()
+    {
+        // აურის "Pulse" ეფექტი
+        if (isElite && auraVisual != null)
+        {
+            float pulse = 1f + Mathf.Sin(Time.time * 3f) * 0.1f;
+            auraVisual.transform.localScale = new Vector3(pulse, pulse, 1);
+        }
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, auraRadius);
-    }
-
-	void Update()
-    {
-       // EliteModifier-ის Update-ში
-if (isElite && auraVisual != null)
-{
-    float pulse = 1f + Mathf.Sin(Time.time * 3f) * 0.1f;
-    auraVisual.transform.localScale = new Vector3(pulse, pulse, 1);
-}
     }
 }
