@@ -34,9 +34,19 @@ public class EliteModifier : MonoBehaviour
             MakeElite();
         }
     }
+public void ResetEliteStatus()
+{
+    isElite = false;
+    CancelInvoke(nameof(ApplyAuraBuff));
+    if (auraVisual != null) auraVisual.SetActive(false);
+    if (eliteIcon != null) eliteIcon.SetActive(false);
+    // დაუბრუნე საწყისი ფერი და ზომა (თუ საჭიროა)
+    GetComponent<SpriteRenderer>().color = Color.white;
+}
 
-    void MakeElite()
+    public void MakeElite()
     {
+		if (isElite) return;
         isElite = true;
         
         // 1. ტრანსფორმაცია

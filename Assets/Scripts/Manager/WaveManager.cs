@@ -28,6 +28,12 @@ public class WaveManager : MonoBehaviour
     public Slider bossHealthSlider;
     private bool bossSpawned = false;
 
+[Header("Elite Event Settings")]
+    public float eventDuration = 15f;    // რამდენი ხანი გრძელდება ელიტური ტალღა
+    public GameObject eliteEventUI;     // UI ტექსტი: "ELITE WAVE!"
+    private bool isEliteEventActive = false;
+    private float lastEventMinute = 0;
+
     private float nextSpawnTime;
     private Transform player;
 
@@ -43,6 +49,13 @@ public class WaveManager : MonoBehaviour
         float currentTime = DifficultyManager.Instance.gameTime;
         UpdateTimerUI(currentTime);
 
+		float currentMinute = Mathf.Floor(currentTime / 60f);
+        if (currentMinute > lastEventMinute && currentMinute > 0)
+        {
+            lastEventMinute = currentMinute;
+            StartCoroutine(TriggerEliteEvent());
+        }
+
         // ბოსის სპაუნინგი
         if (!bossSpawned && currentTime >= 120f) SpawnBoss();
 
@@ -54,6 +67,18 @@ public class WaveManager : MonoBehaviour
             float spawnRate = 1.5f / DifficultyManager.Instance.GetDifficultyMultiplier();
             nextSpawnTime = Time.time + spawnRate;
         }
+    }
+IEnumerator TriggerEliteEvent()
+    {
+        isEliteEventActive = true;
+        if (eliteEventUI != null) eliteEventUI.SetActive(true);
+        
+        Debug.Log("EVENT: ELITE HORDE STARTED!");
+        
+        yield return new WaitForSeconds(eventDuration);
+
+        isEliteEventActive = false;
+        if (eliteEventUI != null) eliteEventUI.SetActive(false);
     }
 
     void SpawnEnemy(float currentTime)
@@ -74,10 +99,28 @@ public class WaveManager : MonoBehaviour
         Vector2 spawnDir = Random.insideUnitCircle.normalized * 22f;
         Vector3 spawnPos = player.position + (Vector3)spawnDir;
 
-        if (selectedEnemy.isSwarm)
+GameObject spawnedEnemy;
+if (selectedEnemy.isSwarm)
+        {
+            // Swarm-ის შემთხვევაში კოდი იგივე დარჩა, თუმცა Elite ლოგიკა მასზეც იმოქმედებს ქვემოთ
             StartCoroutine(SpawnSwarmGroup(selectedEnemy.prefab, spawnPos));
+            return; // Swarm-ს ცალკე ვამუშავებთ იტერაციაში
+        }
         else
-            ObjectPooler.Instance.SpawnFromPool(selectedEnemy.name, spawnPos, Quaternion.identity);
+        {
+            spawnedEnemy = ObjectPooler.Instance.SpawnFromPool(selectedEnemy.name, spawnPos, Quaternion.identity);
+        }
+
+        // --- ELITE OVERRIDE ---
+        if (isEliteEventActive && spawnedEnemy != null)
+        {
+            EliteModifier elite = spawnedEnemy.GetComponent<EliteModifier>();
+            if (elite != null)
+            {
+                // პირდაპირ ვიძახებთ MakeElite-ს, რომ 100%-ით გააქტიურდეს
+                elite.MakeElite(); 
+            }
+        }
     }
 
     EnemyArchetype GetRandomEnemy(List<EnemyArchetype> pool)

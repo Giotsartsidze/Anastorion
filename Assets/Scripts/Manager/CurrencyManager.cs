@@ -3,8 +3,6 @@ using UnityEngine;
 public class CurrencyManager : MonoBehaviour
 {
     public static CurrencyManager Instance;
-    
-    // საერთო ქოინები, რომელიც მოთამაშეს აქამდე დაუგროვდა
     public int totalShards;
 
     void Awake()
@@ -12,29 +10,29 @@ public class CurrencyManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            LoadCurrency(); // თამაშის ჩართვისას ვკითხულობთ დანაზოგს
-            DontDestroyOnLoad(gameObject); // რომ მენიუშიც გადაყვეს ეს ინფორმაცია
+            DontDestroyOnLoad(gameObject);
+            LoadCurrency();
         }
-        else Destroy(gameObject);
+        else { Destroy(gameObject); }
     }
 
-    // ქოინების დამატება (ამას ვიძახებთ თამაშის დროს)
     public void AddShards(int amount)
     {
         totalShards += amount;
         SaveCurrency();
     }
 
-    // შენახვა PlayerPrefs-ში
-    public void SaveCurrency()
+    public bool SpendShards(int amount)
     {
-        PlayerPrefs.SetInt("TotalShards", totalShards);
-        PlayerPrefs.Save();
+        if (totalShards >= amount)
+        {
+            totalShards -= amount;
+            SaveCurrency();
+            return true;
+        }
+        return false;
     }
 
-    // წაკითხვა
-    public void LoadCurrency()
-    {
-        totalShards = PlayerPrefs.GetInt("TotalShards", 0);
-    }
+    public void SaveCurrency() => PlayerPrefs.SetInt("TotalShards", totalShards);
+    private void LoadCurrency() => totalShards = PlayerPrefs.GetInt("TotalShards", 0);
 }
