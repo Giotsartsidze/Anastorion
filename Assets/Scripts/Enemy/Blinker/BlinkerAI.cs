@@ -27,15 +27,19 @@ public class BlinkerAI : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(blinkCooldown);
-            
+
+            if (player == null) yield break;
+
             // ვიზუალური გაფრთხილება (ციმციმი)
             sprite.color = new Color(1, 1, 1, 0.3f);
             yield return new WaitForSeconds(0.5f);
-            
+
+            if (player == null) yield break;
+
             // ტელეპორტაცია მოთამაშისკენ
             Vector2 blinkDir = (player.position - transform.position).normalized;
             transform.position += (Vector3)blinkDir * blinkDistance;
-            
+
             sprite.color = Color.white;
         }
     }

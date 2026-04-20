@@ -26,6 +26,18 @@ public class UpgradeManager : MonoBehaviour
     private int wispLevel = 0;
     private int radiusLevel = 0;
 
+    // Cached component references
+    private PlayerMovement playerMovement;
+    private PlayerDash playerDash;
+    private LightPulse lightPulse;
+
+    void Start()
+    {
+        playerMovement = FindObjectOfType<PlayerMovement>();
+        playerDash = FindObjectOfType<PlayerDash>();
+        lightPulse = FindObjectOfType<LightPulse>();
+    }
+
     public void UnlockWispUpgrades()
     {
         foreach (var upgrade in lockedUpgrades)
@@ -57,18 +69,18 @@ public class UpgradeManager : MonoBehaviour
         switch (data.type)
         {
             case UpgradeData.UpgradeType.MoveSpeed:
-            FindObjectOfType<PlayerMovement>().moveSpeed += data.valueModifier;
-            speedLevel++;
-            break;
+                if (playerMovement != null) playerMovement.moveSpeed += data.valueModifier;
+                speedLevel++;
+                break;
 
-        case UpgradeData.UpgradeType.DashSpeed:
-            FindObjectOfType<PlayerDash>().dashSpeed += 5f;
-            dashLevel++;
-            break;
+            case UpgradeData.UpgradeType.DashSpeed:
+                if (playerDash != null) playerDash.dashSpeed += 5f;
+                dashLevel++;
+                break;
 
             case UpgradeData.UpgradeType.LightRadius:
-                FindObjectOfType<LightPulse>().maxRadius += data.valueModifier;
-                radiusLevel++; // ვუმატებთ დონეს
+                if (lightPulse != null) lightPulse.maxRadius += data.valueModifier;
+                radiusLevel++;
                 break;
 
             case UpgradeData.UpgradeType.WispCount:
@@ -77,7 +89,7 @@ public class UpgradeManager : MonoBehaviour
                     wisps.count++;
                     wisps.ActivateSkill();
                 }
-                wispLevel++; // ვუმატებთ დონეს
+                wispLevel++;
                 break;
 
             case UpgradeData.UpgradeType.WispSpeed:
@@ -86,13 +98,12 @@ public class UpgradeManager : MonoBehaviour
                 break;
 
             case UpgradeData.UpgradeType.PulseCooldown:
-                FindObjectOfType<LightPulse>().cooldown -= data.valueModifier;
+                if (lightPulse != null) lightPulse.cooldown -= data.valueModifier;
                 break;
-                
+
             case UpgradeData.UpgradeType.DashCooldown:
-                FindObjectOfType<PlayerDash>().dashCooldown -= 0.3f;
+                if (playerDash != null) playerDash.dashCooldown -= 0.3f;
                 break;
-            
         }
 
         CheckSynergies(); // ყოველი აფგრეიდის შემდეგ ვამოწმებთ სინერგიას

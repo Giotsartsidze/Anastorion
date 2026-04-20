@@ -12,7 +12,7 @@ public class LootPickup : MonoBehaviour
         // 2. აფგრეიდების დამატება "ბარაბანში"
         FindObjectOfType<UpgradeManager>()?.UnlockWispUpgrades();
         
-        FindObjectOfType<VictoryManager>(true)?.ShowVictory();
+        FindObjectOfType<VictoryManager>()?.ShowVictory();
         Destroy(gameObject);
     }
 }

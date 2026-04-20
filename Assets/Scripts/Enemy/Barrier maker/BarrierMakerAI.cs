@@ -12,6 +12,10 @@ public class BarrierMaker : MonoBehaviour
     public float speed = 2f;
     private Transform player;
 
+    [Header("Laser")]
+    public float laserDamageInterval = 0.5f;
+    private float laserDamageTimer = 0f;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -65,12 +69,13 @@ public class BarrierMaker : MonoBehaviour
         line.SetPosition(0, transform.position);
         line.SetPosition(1, partner.transform.position);
 
-        // ზიანის მიყენება (Linecast)
-        // ვიყენებთ LayerMask-ს, რომ ლაზერმა მხოლოდ ფლეიერი დააზიანოს
+        // ზიანის მიყენება (Linecast) — cooldown prevents per-frame damage
+        laserDamageTimer -= Time.deltaTime;
         RaycastHit2D hit = Physics2D.Linecast(transform.position, partner.transform.position, LayerMask.GetMask("Player"));
-        if (hit.collider != null)
+        if (hit.collider != null && laserDamageTimer <= 0f)
         {
             hit.collider.GetComponent<PlayerHealth>()?.TakeDamage(1);
+            laserDamageTimer = laserDamageInterval;
         }
     }
 }

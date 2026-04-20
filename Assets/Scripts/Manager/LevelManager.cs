@@ -29,13 +29,15 @@ public class LevelManager : MonoBehaviour
         currentLevel++;
         currentXP -= xpToNextLevel;
         xpToNextLevel = Mathf.RoundToInt(xpToNextLevel * 1.5f); // სირთულის ზრდა
+        if (RunStats.Instance != null) RunStats.Instance.SetLevel(currentLevel);
         
         // თამაშის დაპაუზება და აფგრეიდების მენიუს გამოჩენა
         Time.timeScale = 0f; 
         levelUpPanel.SetActive(true);
         
         // აქ უნდა გაეშვას აფგრეიდების გენერაციის ლოგიკა
-        GetComponent<UpgradeManager>().ShowUpgrades();
+        UpgradeManager um = GetComponent<UpgradeManager>();
+        if (um != null) um.ShowUpgrades();
     }
 
     void UpdateUI()

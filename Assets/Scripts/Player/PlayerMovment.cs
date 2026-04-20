@@ -4,6 +4,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement Settings")]
     public float moveSpeed = 15f; // ძალა, რომლითაც ვაწვებით პერსონაჟს
+    public float maxSpeed = 12f;  // უმაღლესი სიჩქარე (upgrades won't exceed this)
     
     private Rigidbody2D rb;
     private Vector2 moveInput;
@@ -34,5 +35,7 @@ public class PlayerMovement : MonoBehaviour
             // ვიყენებთ AddForce-ს, რომ მივიღოთ რბილი, წყალქვეშა ცურვის ეფექტი
             rb.AddForce(moveInput.normalized * moveSpeed, ForceMode2D.Force);
         }
+        // clamp so speed upgrades don't make the player infinitely fast
+        rb.linearVelocity = Vector2.ClampMagnitude(rb.linearVelocity, maxSpeed);
     }
 }

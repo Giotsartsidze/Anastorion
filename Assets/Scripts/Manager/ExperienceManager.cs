@@ -31,9 +31,10 @@ public class ExperienceManager : MonoBehaviour
         currentXP = 0;
         targetXP = Mathf.RoundToInt(targetXP * 1.5f); // ექსპონენციალური ზრდა
         xpSlider.maxValue = targetXP;
+        if (RunStats.Instance != null) RunStats.Instance.SetLevel(currentLevel);
 
-		PauseGame();
-        FindObjectOfType<UpgradeManager>().ShowUpgrades();
+        PauseGame();
+        FindObjectOfType<UpgradeManager>()?.ShowUpgrades();
         Debug.Log("Anastorion evolved to Level " + currentLevel);
         // აქ მოგვიანებით დავამატებთ პაუზას და სკილის არჩევის მენიუს
     }

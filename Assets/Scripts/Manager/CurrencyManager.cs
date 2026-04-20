@@ -7,13 +7,8 @@ public class CurrencyManager : MonoBehaviour
 
     void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-            LoadCurrency();
-        }
-        else { Destroy(gameObject); }
+        Instance = this;
+        LoadCurrency();
     }
 
     public void AddShards(int amount)

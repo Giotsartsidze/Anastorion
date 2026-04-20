@@ -1,35 +1,56 @@
 using UnityEngine;
 using TMPro;
-using System.Collections;
-using UnityEngine.SceneManagement; // რესტარტისთვის
+using UnityEngine.SceneManagement;
 
 public class VictoryManager : MonoBehaviour
 {
-    public CanvasGroup canvasGroup; // დაამატე Canvas Group კომპონენტი პანელს
-    public float fadeDuration = 2f;
+    public static VictoryManager Instance;
+
+    [Header("UI")]
+    public GameObject panel;
+    public TextMeshProUGUI timeText;
+    public TextMeshProUGUI killsText;
+    public TextMeshProUGUI levelText;
+
+    [Header("Win Condition")]
+    public float surviveMinutes = 10f;
+
+    private bool victoryShown = false;
+
+    void Awake()
+    {
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+        if (panel != null) panel.SetActive(false);
+    }
+
+    void Update()
+    {
+        if (victoryShown || DifficultyManager.Instance == null) return;
+        if (DifficultyManager.Instance.gameTime >= surviveMinutes * 60f)
+            ShowVictory();
+    }
 
     public void ShowVictory()
     {
-        gameObject.SetActive(true);
-        StartCoroutine(VictoryRoutine());
-    }
+        if (victoryShown) return;
+        victoryShown = true;
 
-    IEnumerator VictoryRoutine()
-    {
-        // 1. გამოვაჩინოთ ტექსტი
-        yield return new WaitForSeconds(3f);
-    
-        // 2. გავაძლიეროთ მტრები მომავალი ტალღებისთვის
-        WaveManager waveManager = FindObjectOfType<WaveManager>();
-        if (waveManager != null)
+        Time.timeScale = 0f;
+        if (panel != null) panel.SetActive(true);
+
+        if (RunStats.Instance != null)
         {
-            // ყოველი ბოსის მოკვლის მერე მტრები 20%-ით ჩქარდებიან
-            // (დაამატე ეს ლოგიკა WaveManager-ში)
-            Debug.Log("ENEMIES ARE NOW STRONGER!");
+            if (timeText != null)  timeText.text  = "Time Survived: " + RunStats.Instance.GetFormattedTime();
+            if (killsText != null) killsText.text = "Enemies Defeated: " + RunStats.Instance.killCount;
+            if (levelText != null) levelText.text = "Level Reached: " + RunStats.Instance.GetLevel();
         }
-
-        // 3. უბრალოდ გავაქროთ პანელი და გავაგრძელოთ თამაში
-        gameObject.SetActive(false);
     }
-    
+
+    // Wire this to your Restart button in the Inspector
+    public void Restart()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 }

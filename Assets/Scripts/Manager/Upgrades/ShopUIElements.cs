@@ -12,24 +12,30 @@ public class ShopItemUI : MonoBehaviour
 
     void Start() => UpdateUI();
 
-    public void UpdateUI()
+  public void UpdateUI()
+{
+    if (data == null) return; // ← დამატება
+
+    nameText.text = data.upgradeName;
+    int level = data.GetCurrentLevel();
+
+    if (level >= data.maxLevel)
     {
-        nameText.text = data.upgradeName;
-        int level = data.GetCurrentLevel();
-        
-        if (level >= data.maxLevel)
-        {
-            costText.text = "MAX";
-            levelText.text = $"Lvl: {level}/{data.maxLevel}";
-            buyButton.interactable = false;
-        }
-        else
-        {
-            costText.text = data.GetCurrentCost().ToString();
-            levelText.text = $"Lvl: {level}/{data.maxLevel}";
-            buyButton.interactable = CurrencyManager.Instance.totalShards >= data.GetCurrentCost();
-        }
+        costText.text = "MAX";
+        levelText.text = $"Lvl: {level}/{data.maxLevel}";
+        buyButton.interactable = false;
     }
+    else
+    {
+        int cost = data.GetCurrentCost();
+        costText.text = cost.ToString();
+        levelText.text = $"Lvl: {level}/{data.maxLevel}";
+
+        // ✅ null check დამატებულია
+        if (CurrencyManager.Instance != null)
+            buyButton.interactable = CurrencyManager.Instance.totalShards >= cost;
+    }
+}
 
     public void OnBuyClicked()
     {

@@ -66,8 +66,10 @@ public class ChargerEnemyAI : MonoBehaviour
         rb.linearVelocity = Vector2.zero;
         isCharging = false;
 
-        // დასვენების ფაზა (Cooldown)
+        // დასვენების ფაზა (Cooldown) — isPreparing prevents a new charge from starting
+        isPreparing = true;
         yield return new WaitForSeconds(cooldownTime);
+        isPreparing = false;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

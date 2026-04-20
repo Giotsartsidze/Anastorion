@@ -39,8 +39,12 @@ public class SummonerAI : MonoBehaviour
         transform.localScale = new Vector3(player.position.x < transform.position.x ? -1 : 1, 1, 1);
     }
 
+    void OnDisable() => CancelInvoke(nameof(SpawnMinions));
+    void OnDestroy() => CancelInvoke(nameof(SpawnMinions));
+
     void SpawnMinions()
     {
+        if (enemyToSpawn == null) return;
         for (int i = 0; i < spawnAmount; i++)
         {
             // მინიონებს ვაჩენთ მომხმობლის გარშემო მცირე რადიუსში

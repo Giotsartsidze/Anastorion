@@ -6,12 +6,10 @@ public class SineWaveAI : MonoBehaviour
     public float frequency = 5f; // ტალღის სიხშირე
     public float magnitude = 2f; // ტალღის სიგანე
     private Transform player;
-    private Vector2 pos;
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        pos = transform.position;
     }
 
     void Update()

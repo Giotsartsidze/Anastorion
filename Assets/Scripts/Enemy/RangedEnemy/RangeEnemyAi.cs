@@ -40,7 +40,8 @@ public class RangedEnemyAI : MonoBehaviour
         else if (distance < retreatDistance)
         {
             // ძალიან ახლოსაა - დაიხიოს უკან
-            transform.position = Vector2.MoveTowards(transform.position, player.position, -speed * Time.deltaTime);
+            Vector2 retreatDir = ((Vector2)transform.position - (Vector2)player.position).normalized;
+            transform.position = (Vector2)transform.position + retreatDir * speed * Time.deltaTime;
         }
 
         // 2. სროლის ლოგიკა

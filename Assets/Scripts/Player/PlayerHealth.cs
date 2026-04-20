@@ -101,7 +101,9 @@ public class PlayerHealth : MonoBehaviour
 
     void Die()
     {
-        Debug.Log("Anastorion has faded...");
-        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+        if (GameOverManager.Instance != null)
+            GameOverManager.Instance.ShowGameOver();
+        else
+            UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     }
 }

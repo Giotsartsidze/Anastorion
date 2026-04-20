@@ -99,8 +99,8 @@ IEnumerator TriggerEliteEvent()
         Vector2 spawnDir = Random.insideUnitCircle.normalized * 22f;
         Vector3 spawnPos = player.position + (Vector3)spawnDir;
 
-GameObject spawnedEnemy;
-if (selectedEnemy.isSwarm)
+        GameObject spawnedEnemy;
+        if (selectedEnemy.isSwarm)
         {
             // Swarm-ის შემთხვევაში კოდი იგივე დარჩა, თუმცა Elite ლოგიკა მასზეც იმოქმედებს ქვემოთ
             StartCoroutine(SpawnSwarmGroup(selectedEnemy.prefab, spawnPos));
@@ -108,6 +108,7 @@ if (selectedEnemy.isSwarm)
         }
         else
         {
+            if (ObjectPooler.Instance == null) return;
             spawnedEnemy = ObjectPooler.Instance.SpawnFromPool(selectedEnemy.name, spawnPos, Quaternion.identity);
         }
 

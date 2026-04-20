@@ -11,6 +11,7 @@ public class DifficultyManager : MonoBehaviour
     void Awake()
     {
         if (Instance == null) Instance = this;
+        else Destroy(gameObject);
     }
 
     void Update()
