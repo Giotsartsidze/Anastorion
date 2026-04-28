@@ -10819,7 +10819,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f31885a818ed4484a8a9b3ba1de241e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
+  maxHealth: 100
   currentHealth: 0
   healthSlider: {fileID: 200327880}
   iFrameDuration: 1
