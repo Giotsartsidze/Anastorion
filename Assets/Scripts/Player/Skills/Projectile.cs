@@ -27,7 +27,7 @@ public class Projectile : MonoBehaviour
         // თუ მტერს მოხვდა (მოთამაშის ნასროლი)
         if (collision.CompareTag("Enemy"))
         {
-            collision.GetComponent<EnemyHealth>()?.TakeDamage(damage);
+            collision.GetComponent<EnemyHealth>()?.TakeDamage(damage, transform.position);
             collision.GetComponent<BossHealth>()?.TakeBossDamage(damage);
             Destroy(gameObject);
         }
