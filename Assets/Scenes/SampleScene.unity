@@ -957,6 +957,60 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &139763016
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 139763018}
+  - component: {fileID: 139763017}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &139763017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 139763016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c974e11c52b340cea9f831bf40a5bed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyHit: {fileID: 8300000, guid: 1d0f107adf1ee4be5b1c3ad0d4b30651, type: 3}
+  enemyDeath: {fileID: 8300000, guid: 76c6609d05d184f709b2b4231070be9b, type: 3}
+  playerHurt: {fileID: 8300000, guid: 56062f0812af04a2b82c5b65e9afd164, type: 3}
+  levelUp: {fileID: 8300000, guid: d7c31194500b346b0998b6273e1d046e, type: 3}
+  shoot: {fileID: 8300000, guid: 356391a6baa264ed289e35a0dbfbef8e, type: 3}
+  sfxVolume: 1
+  voices: 10
+  pitchRange: {x: 0.94, y: 1.06}
+  enemyHitMinInterval: 0.04
+  shootMinInterval: 0
+--- !u!4 &139763018
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 139763016}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.122581355, y: -2.1558492, z: -9.993466}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &173130669
 GameObject:
   m_ObjectHideFlags: 0
@@ -13065,3 +13119,4 @@ SceneRoots:
   - {fileID: 293498779}
   - {fileID: 184742013}
   - {fileID: 433646612}
+  - {fileID: 139763018}
