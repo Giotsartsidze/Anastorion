@@ -28,6 +28,7 @@ public class ExperienceManager : MonoBehaviour
     void LevelUp()
     {
         currentLevel++;
+        if (SoundManager.Instance != null) SoundManager.Instance.PlayLevelUp();
         currentXP = 0;
         targetXP = Mathf.RoundToInt(targetXP * 1.5f); // ექსპონენციალური ზრდა
         xpSlider.maxValue = targetXP;

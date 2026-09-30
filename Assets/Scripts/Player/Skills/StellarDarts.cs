@@ -42,6 +42,7 @@ public class StellarDarts : MonoBehaviour
             Vector2 direction = (closestEnemy.position - transform.position).normalized;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             Instantiate(dartPrefab, transform.position, Quaternion.Euler(0, 0, angle));
+            if (SoundManager.Instance != null) SoundManager.Instance.PlayShoot();
         }
     }
 }

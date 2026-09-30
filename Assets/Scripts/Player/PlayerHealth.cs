@@ -60,6 +60,7 @@ public class PlayerHealth : MonoBehaviour
         Debug.Log("Damage Taken! Shaking screen...");
 
         currentHealth -= amount;
+        if (SoundManager.Instance != null) SoundManager.Instance.PlayPlayerHurt();
         if (shaker != null) shaker.TriggerShake();
         if(damageParticles != null) damageParticles.Play();
     

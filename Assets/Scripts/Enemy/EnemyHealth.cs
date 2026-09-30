@@ -65,6 +65,7 @@ public class EnemyHealth : MonoBehaviour
         if (isDying) return;
         health -= damage;
 
+        if (SoundManager.Instance != null) SoundManager.Instance.PlayEnemyHit();
         if (hitFlash != null) hitFlash.Flash();
         if (DamagePopupSpawner.Instance != null)
             DamagePopupSpawner.Instance.Spawn(transform.position, damage);
@@ -82,6 +83,7 @@ public class EnemyHealth : MonoBehaviour
     {
         isDying = true;
 
+        if (SoundManager.Instance != null) SoundManager.Instance.PlayEnemyDeath();
         if (deathEffectPrefab != null)
             Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
         if (useHitStopOnDeath && HitStop.Instance != null)
