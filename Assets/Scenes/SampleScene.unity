@@ -9367,7 +9367,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1161925677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9887,7 +9887,7 @@ MonoBehaviour:
   enemyPool:
   - name: Normal
     prefab: {fileID: 7478513448722915515, guid: 9453ace30f34b48ce908324b109d17be, type: 3}
-    spawnChance: 0
+    spawnChance: 40.6
     startTime: 0
     isSwarm: 0
   - name: Range
@@ -9941,7 +9941,7 @@ MonoBehaviour:
     startTime: 400
     isSwarm: 0
   - name: Boss
-    prefab: {fileID: 6289872999900617585, guid: f0fa3ef258cde482c872497d6c65f5f6, type: 3}
+    prefab: {fileID: 7478513448722915515, guid: b6bfc44fd7a50494985ccf43665fc167, type: 3}
     spawnChance: 100
     startTime: 500
     isSwarm: 0
@@ -9972,6 +9972,8 @@ MonoBehaviour:
   bossHealthSlider: {fileID: 1162555101}
   eventDuration: 15
   eliteEventUI: {fileID: 0}
+  debugSpawnAll: 1
+  debugSpawnInterval: 1
 --- !u!4 &1235071717
 Transform:
   m_ObjectHideFlags: 0
@@ -10790,6 +10792,7 @@ GameObject:
   - component: {fileID: 1470765121}
   - component: {fileID: 1470765123}
   - component: {fileID: 1470765124}
+  - component: {fileID: 1470765125}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -10920,7 +10923,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1662613486703163539, guid: ea8df3aebb6714c9abad3ae126660bf5, type: 3}
+  m_Sprite: {fileID: -5819267436245108316, guid: 4b43c354e89b54918b08360664a46f0b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -10989,7 +10992,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1470765108}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8264194a213534689a22fc105080835b, type: 3}
   m_Name: 
@@ -11301,6 +11304,41 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1470765125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1470765108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 740e85884bded45d2b43c4821e32f81a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idleFrames:
+  - {fileID: -5819267436245108316, guid: 4b43c354e89b54918b08360664a46f0b, type: 3}
+  - {fileID: 4325358636504150762, guid: 4b43c354e89b54918b08360664a46f0b, type: 3}
+  - {fileID: 3920860034576357271, guid: 4b43c354e89b54918b08360664a46f0b, type: 3}
+  - {fileID: -8732613275281078453, guid: 4b43c354e89b54918b08360664a46f0b, type: 3}
+  runFrames:
+  - {fileID: -6177059742853356834, guid: 632a005fe809543d0abeef22ea1fb3ab, type: 3}
+  - {fileID: -5358311940663306773, guid: 632a005fe809543d0abeef22ea1fb3ab, type: 3}
+  - {fileID: 3876180540383803180, guid: 632a005fe809543d0abeef22ea1fb3ab, type: 3}
+  - {fileID: 805923311377756734, guid: 632a005fe809543d0abeef22ea1fb3ab, type: 3}
+  - {fileID: -5442596616201132715, guid: 632a005fe809543d0abeef22ea1fb3ab, type: 3}
+  - {fileID: -467427839949711988, guid: 632a005fe809543d0abeef22ea1fb3ab, type: 3}
+  deathFrames:
+  - {fileID: -3817348039558773959, guid: 40e9f7e54af6e41b08d44ce73d48018e, type: 3}
+  - {fileID: 6437880753971904752, guid: 40e9f7e54af6e41b08d44ce73d48018e, type: 3}
+  - {fileID: -4801407943164775457, guid: 40e9f7e54af6e41b08d44ce73d48018e, type: 3}
+  - {fileID: -7606798061227652538, guid: 40e9f7e54af6e41b08d44ce73d48018e, type: 3}
+  - {fileID: -3059529466145537724, guid: 40e9f7e54af6e41b08d44ce73d48018e, type: 3}
+  - {fileID: 308993820773957877, guid: 40e9f7e54af6e41b08d44ce73d48018e, type: 3}
+  - {fileID: -9204031664523933789, guid: 40e9f7e54af6e41b08d44ce73d48018e, type: 3}
+  attackFrames: []
+  fps: 10
+  moveThreshold: 0.002
 --- !u!1 &1475984141
 GameObject:
   m_ObjectHideFlags: 0

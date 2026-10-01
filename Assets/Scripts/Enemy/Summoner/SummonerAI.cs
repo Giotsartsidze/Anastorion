@@ -10,10 +10,12 @@ public class SummonerAI : MonoBehaviour
     public int spawnAmount = 3;
 
     private Transform player;
+    private CharacterAnimator anim;
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        anim = GetComponent<CharacterAnimator>();
         // ვიწყებთ სპაუნინგის ციკლს
         InvokeRepeating(nameof(SpawnMinions), spawnInterval, spawnInterval);
     }
@@ -44,6 +46,7 @@ public class SummonerAI : MonoBehaviour
 
     void SpawnMinions()
     {
+        if (anim != null) anim.PlayAttack();
         if (enemyToSpawn == null) return;
         for (int i = 0; i < spawnAmount; i++)
         {

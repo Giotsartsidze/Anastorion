@@ -8,8 +8,11 @@ public class BossAI : MonoBehaviour
     public float attackInterval = 3f; // ყოველ 3 წამში
     public float projectileSpeed = 5f;
 
+    private CharacterAnimator anim;
+
     void Start()
     {
+        anim = GetComponent<CharacterAnimator>();
         StartCoroutine(AttackRoutine());
     }
 
@@ -24,6 +27,7 @@ public class BossAI : MonoBehaviour
 
     void ShootStarPattern()
     {
+        if (anim != null) anim.PlayAttack();
         float angleStep = 360f / projectileCount;
         float angle = 0f;
 

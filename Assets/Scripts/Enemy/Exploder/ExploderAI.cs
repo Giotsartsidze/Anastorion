@@ -12,11 +12,13 @@ public class ExploderAI : MonoBehaviour
     private Transform player;
     private bool isPrimed = false;
     private SpriteRenderer sprite;
+    private CharacterAnimator anim;
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         sprite = GetComponent<SpriteRenderer>();
+        anim = GetComponent<CharacterAnimator>();
     }
 
     void Update()
@@ -38,6 +40,7 @@ public class ExploderAI : MonoBehaviour
     IEnumerator StartDetonation()
     {
         isPrimed = true;
+        if (anim != null) anim.PlayAttackLooping(); // swell/telegraph for the whole fuse
         float elapsed = 0;
 
         // ციმციმის ლოგიკა

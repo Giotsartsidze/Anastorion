@@ -14,10 +14,12 @@ public class RangedEnemyAI : MonoBehaviour
     private float nextFireTime;
 
     private Transform player;
+    private CharacterAnimator anim;
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        anim = GetComponent<CharacterAnimator>();
     }
 
     void Update()
@@ -60,6 +62,7 @@ public class RangedEnemyAI : MonoBehaviour
 
     void Shoot()
     {
+        if (anim != null) anim.PlayAttack();
         if (projectilePrefab != null && firePoint != null)
         {
             Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);

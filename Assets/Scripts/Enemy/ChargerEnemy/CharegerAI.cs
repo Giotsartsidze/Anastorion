@@ -14,12 +14,14 @@ public class ChargerEnemyAI : MonoBehaviour
     private bool isPreparing = false;
     private Rigidbody2D rb;
     private SpriteRenderer sprite;
+    private CharacterAnimator anim;
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
+        anim = GetComponent<CharacterAnimator>();
     }
 
     void Update()
@@ -42,7 +44,8 @@ public class ChargerEnemyAI : MonoBehaviour
     IEnumerator PerformCharge()
     {
         isPreparing = true;
-        
+        if (anim != null) anim.PlayAttackLooping(); // windup telegraph
+
         // ვიზუალური გაფრთხილება: გაწითლდეს მომზადებისას
         Color originalColor = sprite.color;
         sprite.color = Color.red;
@@ -51,6 +54,7 @@ public class ChargerEnemyAI : MonoBehaviour
         Vector2 targetDir = (player.position - transform.position).normalized;
         yield return new WaitForSeconds(prepareTime);
 
+        if (anim != null) anim.StopAttack();
         sprite.color = originalColor;
         isPreparing = false;
         isCharging = true;

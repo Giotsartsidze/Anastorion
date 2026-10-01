@@ -11,6 +11,7 @@ public class BarrierMaker : MonoBehaviour
     [Header("Movement")]
     public float speed = 2f;
     private Transform player;
+    private CharacterAnimator anim;
 
     [Header("Laser")]
     public float laserDamageInterval = 0.5f;
@@ -19,12 +20,14 @@ public class BarrierMaker : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        anim = GetComponent<CharacterAnimator>();
 
         if (partner == null)
         {
             isMaster = true;
+            if (anim != null) anim.PlayAttack(); // cast the barrier into being
             partner = Instantiate(partnerPrefab, transform.position + Vector3.right * 4f, Quaternion.identity);
-            
+
             if (partner.TryGetComponent<BarrierMaker>(out BarrierMaker partnerScript))
             {
                 partnerScript.partner = gameObject;

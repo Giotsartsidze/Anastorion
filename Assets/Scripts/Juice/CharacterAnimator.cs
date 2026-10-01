@@ -14,12 +14,14 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public class CharacterAnimator : MonoBehaviour
 {
-    public enum State { Idle, Run, Dead }
+    public enum State { Idle, Run, Dead, Attack }
 
     [Header("Frames (drag sliced sprites here, in order)")]
     public Sprite[] idleFrames;
     public Sprite[] runFrames;
     public Sprite[] deathFrames;
+    [Tooltip("Attack/cast/summon/windup frames. Trigger via PlayAttack() from the AI.")]
+    public Sprite[] attackFrames;
 
     [Header("Timing")]
     public float fps = 10f;
@@ -31,6 +33,8 @@ public class CharacterAnimator : MonoBehaviour
     private int frame;
     private float frameTimer;
     private Vector3 lastPos;
+    private Sprite[] attackPlaying;
+    private bool attackLoops;
 
     void Awake()
     {
@@ -58,12 +62,41 @@ public class CharacterAnimator : MonoBehaviour
         frameTimer = 0f;
     }
 
+    /// <summary>Play the assigned attackFrames once, then return to idle/run.</summary>
+    public void PlayAttack() => PlayAttack(attackFrames, false);
+
+    /// <summary>Play the assigned attackFrames on a loop until StopAttack() is called.</summary>
+    public void PlayAttackLooping() => PlayAttack(attackFrames, true);
+
+    /// <summary>Play a specific frame set as an attack (one-shot or looping).</summary>
+    public void PlayAttack(Sprite[] frames, bool loop = false)
+    {
+        if (frames == null || frames.Length == 0) return;
+        if (state == State.Dead) return; // death wins
+        attackPlaying = frames;
+        attackLoops = loop;
+        state = State.Attack;
+        frame = 0;
+        frameTimer = 0f;
+    }
+
+    /// <summary>End a looping attack and fall back to idle/run.</summary>
+    public void StopAttack()
+    {
+        if (state == State.Attack)
+        {
+            state = State.Idle;
+            frame = 0;
+            frameTimer = 0f;
+        }
+    }
+
     void LateUpdate()
     {
         if (sr == null) return;
 
-        // Death overrides everything until the object is disabled/respawned.
-        if (state != State.Dead)
+        // Movement only decides Idle vs Run. Death and Attack hold until they finish.
+        if (state == State.Idle || state == State.Run)
         {
             float movedSqr = (transform.position - lastPos).sqrMagnitude;
             state = movedSqr > moveThreshold * moveThreshold ? State.Run : State.Idle;
@@ -79,10 +112,32 @@ public class CharacterAnimator : MonoBehaviour
         {
             frameTimer -= frameDur;
             frame++;
+
             if (state == State.Dead)
+            {
                 frame = Mathf.Min(frame, frames.Length - 1); // hold last frame
+            }
+            else if (state == State.Attack)
+            {
+                if (frame >= frames.Length)
+                {
+                    if (attackLoops)
+                    {
+                        frame = 0;
+                    }
+                    else
+                    {
+                        state = State.Idle; // one-shot done
+                        frame = 0;
+                        frames = CurrentFrames();
+                        if (frames == null || frames.Length == 0) return;
+                    }
+                }
+            }
             else
-                frame %= frames.Length;                      // loop
+            {
+                frame %= frames.Length; // idle/run loop
+            }
         }
 
         frame = Mathf.Clamp(frame, 0, frames.Length - 1);
@@ -93,9 +148,10 @@ public class CharacterAnimator : MonoBehaviour
     {
         switch (state)
         {
-            case State.Run:  return (runFrames != null && runFrames.Length > 0) ? runFrames : idleFrames;
-            case State.Dead: return deathFrames;
-            default:         return idleFrames;
+            case State.Run:    return (runFrames != null && runFrames.Length > 0) ? runFrames : idleFrames;
+            case State.Dead:   return deathFrames;
+            case State.Attack: return attackPlaying;
+            default:           return idleFrames;
         }
     }
 }

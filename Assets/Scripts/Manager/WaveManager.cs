@@ -34,6 +34,12 @@ public class WaveManager : MonoBehaviour
     private bool isEliteEventActive = false;
     private float lastEventMinute = 0;
 
+    [Header("Debug — see every enemy quickly")]
+    [Tooltip("Ignores time-gates and cycles through ALL enemies one by one. Turn OFF for real play.")]
+    public bool debugSpawnAll = false;
+    public float debugSpawnInterval = 1f;
+    private int debugIndex = 0;
+
     private float nextSpawnTime;
     private Transform player;
 
@@ -64,7 +70,9 @@ public class WaveManager : MonoBehaviour
         {
             SpawnEnemy(currentTime);
             // სირთულის მიხედვით სპაუნინგის აჩქარება
-            float spawnRate = 1.5f / DifficultyManager.Instance.GetDifficultyMultiplier();
+            float spawnRate = debugSpawnAll
+                ? debugSpawnInterval
+                : 1.5f / DifficultyManager.Instance.GetDifficultyMultiplier();
             nextSpawnTime = Time.time + spawnRate;
         }
     }
@@ -83,6 +91,8 @@ IEnumerator TriggerEliteEvent()
 
     void SpawnEnemy(float currentTime)
     {
+        if (debugSpawnAll) { SpawnDebugCycle(); return; }
+
         // 1. ვფილტრავთ მტრებს, რომლებიც უკვე "გახსნილია" დროის მიხედვით
         List<EnemyArchetype> availableEnemies = new List<EnemyArchetype>();
         foreach (var enemy in enemyPool)
@@ -122,6 +132,24 @@ IEnumerator TriggerEliteEvent()
                 elite.MakeElite(); 
             }
         }
+    }
+
+    // Cycles through every enemy in enemyPool, ignoring time-gates & chances,
+    // so you can watch each one (and its animations) in order.
+    void SpawnDebugCycle()
+    {
+        if (enemyPool == null || enemyPool.Count == 0) return;
+
+        EnemyArchetype e = enemyPool[debugIndex % enemyPool.Count];
+        debugIndex++;
+
+        Vector2 spawnDir = Random.insideUnitCircle.normalized * 22f;
+        Vector3 spawnPos = player.position + (Vector3)spawnDir;
+
+        if (e.isSwarm)
+            StartCoroutine(SpawnSwarmGroup(e.prefab, spawnPos));
+        else if (ObjectPooler.Instance != null)
+            ObjectPooler.Instance.SpawnFromPool(e.name, spawnPos, Quaternion.identity);
     }
 
     EnemyArchetype GetRandomEnemy(List<EnemyArchetype> pool)

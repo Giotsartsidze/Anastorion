@@ -26,7 +26,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2153926414963923165
 Transform:
   m_ObjectHideFlags: 0
@@ -415,5 +415,12 @@ MonoBehaviour:
   - {fileID: -9057998312424278438, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
   - {fileID: -1281068768155045124, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
   - {fileID: -1134610626393537622, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
+  attackFrames:
+  - {fileID: -232303300531272247, guid: 0976ded946f224e9cb190907cc5be39e, type: 3}
+  - {fileID: -4218320490657615769, guid: 0976ded946f224e9cb190907cc5be39e, type: 3}
+  - {fileID: -4319034069409333015, guid: 0976ded946f224e9cb190907cc5be39e, type: 3}
+  - {fileID: 5967322235333799445, guid: 0976ded946f224e9cb190907cc5be39e, type: 3}
+  - {fileID: -20912102799302120, guid: 0976ded946f224e9cb190907cc5be39e, type: 3}
+  - {fileID: 5632927323349829027, guid: 0976ded946f224e9cb190907cc5be39e, type: 3}
   fps: 10
   moveThreshold: 0.002

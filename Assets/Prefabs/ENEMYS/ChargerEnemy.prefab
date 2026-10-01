@@ -351,6 +351,11 @@ MonoBehaviour:
   - {fileID: 305898793314600090, guid: e0e8adddb599a4c60987f5790d02f849, type: 3}
   - {fileID: 1009806186030619949, guid: e0e8adddb599a4c60987f5790d02f849, type: 3}
   - {fileID: 8693841463089790122, guid: e0e8adddb599a4c60987f5790d02f849, type: 3}
+  attackFrames:
+  - {fileID: -5346159163993762454, guid: 4cf2ab86438f741398e3d1a3c0e627eb, type: 3}
+  - {fileID: 6833727429529597179, guid: 4cf2ab86438f741398e3d1a3c0e627eb, type: 3}
+  - {fileID: -7892279362942774737, guid: 4cf2ab86438f741398e3d1a3c0e627eb, type: 3}
+  - {fileID: 7789726741915615701, guid: 4cf2ab86438f741398e3d1a3c0e627eb, type: 3}
   fps: 9
   moveThreshold: 0.002
 --- !u!1 &8423623203069631088
