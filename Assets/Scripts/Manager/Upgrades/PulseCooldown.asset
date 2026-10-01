@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: PulseCooldown
   m_EditorClassIdentifier: 
   upgradeName: 
-  description: 
-  icon: {fileID: 0}
+  description: 'Pulse cooldown '
+  icon: {fileID: -8024919112059364324, guid: 137e44b18fc8e4b5195af4fa18ed73f9, type: 3}
   type: 4
   rarity: 0
   valueModifier: -0.5

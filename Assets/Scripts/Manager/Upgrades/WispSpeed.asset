@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: WispSpeed
   m_EditorClassIdentifier: 
   upgradeName: 
-  description: 
-  icon: {fileID: 0}
+  description: Wisp Speed
+  icon: {fileID: -1768801639833352568, guid: c9735afae7315448b8934a81603990dc, type: 3}
   type: 3
   rarity: 0
   valueModifier: 50

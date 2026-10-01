@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Wisp_Count_Upgrade
   m_EditorClassIdentifier: 
   upgradeName: Wisp_Count
-  description: 
-  icon: {fileID: 0}
+  description: More and more wisps
+  icon: {fileID: -8984618052510813709, guid: a2b1c10a9b0f34526b2dfe3b3f9d4026, type: 3}
   type: 2
   rarity: 0
   valueModifier: 1

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Darts_speed
   m_EditorClassIdentifier: 
   upgradeName: Darts_Speed
-  description: "\u10E1\u10EC\u10E0\u10D0\u10E4\u10D8 \u10D8\u10E1\u10E0\u10D4\u10D1\u10D8"
-  icon: {fileID: 0}
+  description: Arrows Falling faster
+  icon: {fileID: 7988963515009030207, guid: ac3c9f9ed4df74322941bedabe922b23, type: 3}
   type: 0
   rarity: 0
   valueModifier: -0.2

@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Speed_Boos
   m_EditorClassIdentifier: 
   upgradeName: Speed_Boost
-  description: "\u10E1\u10EC\u10E0\u10D0\u10E4\u10D8 \u10D3\u10D8\u10DC\u10D4\u10D1\u10D0"
-  icon: {fileID: 0}
+  description: Speed boost
+  icon: {fileID: -5221929943807438238, guid: 876e664d0b42342d7a278f019acff0ac, type: 3}
   type: 0
+  rarity: 0
   valueModifier: 2
