@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 0dfc404d82c5a4271a428818ffd863fc
+guid: 1a0d2dd20765046429407b6ba4104904
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 372357125658175607
-    second: xp_orb_0
+      213: 2183218489919557418
+    second: skill_pickup_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -75,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -100,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: xp_orb_0
+      name: skill_pickup_0
       rect:
         serializedVersion: 2
         x: 1
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 778e07c35d0ea2500800000000000000
-      internalID: 372357125658175607
+      spriteID: a2f48be36a95c4e10800000000000000
+      internalID: 2183218489919557418
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      xp_orb_0: 372357125658175607
+      skill_pickup_0: 2183218489919557418
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

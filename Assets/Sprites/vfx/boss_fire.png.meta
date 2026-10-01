@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 0dfc404d82c5a4271a428818ffd863fc
+guid: 993eaa64581f14250a1182de22972860
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 372357125658175607
-    second: xp_orb_0
+      213: 6149188803804432763
+    second: boss_fire_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -75,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -100,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: xp_orb_0
+      name: boss_fire_0
       rect:
         serializedVersion: 2
         x: 1
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 778e07c35d0ea2500800000000000000
-      internalID: 372357125658175607
+      spriteID: b79829323ae465550800000000000000
+      internalID: 6149188803804432763
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      xp_orb_0: 372357125658175607
+      boss_fire_0: 6149188803804432763
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
