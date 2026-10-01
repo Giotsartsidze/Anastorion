@@ -102,6 +102,7 @@ GameObject:
   - component: {fileID: 376502481348651628}
   - component: {fileID: -1492548070552365568}
   - component: {fileID: 5234869818345155383}
+  - component: {fileID: 3957147213064985771}
   m_Layer: 3
   m_Name: RangeEnemy
   m_TagString: Enemy
@@ -171,12 +172,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 8179219320991236185, guid: 126af5b23cdea422dae6b23f2396cff9, type: 3}
+  m_Sprite: {fileID: -56982568189319734, guid: 84b935d51410d4b639b79893395f583d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.7916666, y: 1.7916666}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -255,6 +256,12 @@ MonoBehaviour:
   shardPrefab: {fileID: 4786673971356478334, guid: d964e9d7322784239a241b8b80c930ae, type: 3}
   dropCount: 1
   shardDropChance: 0.2
+  deathEffectPrefab: {fileID: 0}
+  useHitStopOnDeath: 0
+  hitStopDuration: 0.08
+  knockbackForce: 10
+  deathShakeForce: 0.3
+  deathPopDuration: 0.15
 --- !u!50 &-1492548070552365568
 Rigidbody2D:
   serializedVersion: 5
@@ -304,6 +311,40 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   eliteIcon: {fileID: 9151063306153490714}
+--- !u!114 &3957147213064985771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4100449751127405023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 740e85884bded45d2b43c4821e32f81a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idleFrames:
+  - {fileID: -56982568189319734, guid: 84b935d51410d4b639b79893395f583d, type: 3}
+  - {fileID: 2334825894003129078, guid: 84b935d51410d4b639b79893395f583d, type: 3}
+  - {fileID: -3842149016696800282, guid: 84b935d51410d4b639b79893395f583d, type: 3}
+  - {fileID: -8281086365222415373, guid: 84b935d51410d4b639b79893395f583d, type: 3}
+  runFrames:
+  - {fileID: -7138586463457101563, guid: 2ca08b7e3d8334101bead952d7b23e1c, type: 3}
+  - {fileID: 2236765403940239755, guid: 2ca08b7e3d8334101bead952d7b23e1c, type: 3}
+  - {fileID: 4347418110033962651, guid: 2ca08b7e3d8334101bead952d7b23e1c, type: 3}
+  - {fileID: 934075219529724872, guid: 2ca08b7e3d8334101bead952d7b23e1c, type: 3}
+  - {fileID: 2312031990338854185, guid: 2ca08b7e3d8334101bead952d7b23e1c, type: 3}
+  - {fileID: -4622505340206237111, guid: 2ca08b7e3d8334101bead952d7b23e1c, type: 3}
+  deathFrames:
+  - {fileID: -6206437413003629333, guid: af5741a4c29b3427ba4c9747e4e4e00e, type: 3}
+  - {fileID: -4061184072812250672, guid: af5741a4c29b3427ba4c9747e4e4e00e, type: 3}
+  - {fileID: -390786646917816321, guid: af5741a4c29b3427ba4c9747e4e4e00e, type: 3}
+  - {fileID: -635043785396445536, guid: af5741a4c29b3427ba4c9747e4e4e00e, type: 3}
+  - {fileID: 825800165075655514, guid: af5741a4c29b3427ba4c9747e4e4e00e, type: 3}
+  - {fileID: -1703995855467354500, guid: af5741a4c29b3427ba4c9747e4e4e00e, type: 3}
+  - {fileID: -3445150628064875588, guid: af5741a4c29b3427ba4c9747e4e4e00e, type: 3}
+  fps: 8
+  moveThreshold: 0.002
 --- !u!1 &5373360252728868681
 GameObject:
   m_ObjectHideFlags: 0

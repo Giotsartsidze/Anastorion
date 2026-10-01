@@ -1,0 +1,533 @@
+fileFormatVersion: 2
+guid: f8fff085a1b0f420187111ca4866e801
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 706023906103631341
+    second: kva_devi_death_0
+  - first:
+      213: -5132459603366587654
+    second: kva_devi_death_1
+  - first:
+      213: -665054768974467784
+    second: kva_devi_death_2
+  - first:
+      213: 1728596000393385754
+    second: kva_devi_death_3
+  - first:
+      213: -6867157388850183996
+    second: kva_devi_death_4
+  - first:
+      213: 1039895529375413794
+    second: kva_devi_death_5
+  - first:
+      213: 6150552443186856481
+    second: kva_devi_death_6
+  - first:
+      213: -1407169442739691580
+    second: kva_devi_death_7
+  - first:
+      213: -1158640567461494958
+    second: kva_devi_death_8
+  - first:
+      213: 2930503676944028209
+    second: kva_devi_death_9
+  - first:
+      213: -6439999905241588862
+    second: kva_devi_death_10
+  - first:
+      213: -5527892018602690821
+    second: kva_devi_death_11
+  - first:
+      213: -292875350212900401
+    second: kva_devi_death_12
+  - first:
+      213: -4039689866544401042
+    second: kva_devi_death_13
+  - first:
+      213: 5084742686541200121
+    second: kva_devi_death_14
+  - first:
+      213: 6532912475916498685
+    second: kva_devi_death_15
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 24
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: kva_devi_death_0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 1
+        width: 47
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ded9d3e700d4cc900800000000000000
+      internalID: 706023906103631341
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kva_devi_death_1
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 1
+        width: 47
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af2da450f27d5c8b0800000000000000
+      internalID: -5132459603366587654
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kva_devi_death_2
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 0
+        width: 47
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83de813163045c6f0800000000000000
+      internalID: -665054768974467784
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kva_devi_death_3
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 0
+        width: 47
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a17db9367e43df710800000000000000
+      internalID: 1728596000393385754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kva_devi_death_4
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 20
+        width: 21
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c0c2e41db4f2b0a0800000000000000
+      internalID: -6867157388850183996
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kva_devi_death_5
+      rect:
+        serializedVersion: 2
+        x: 219
+        y: 21
+        width: 12
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22630ff69737e6e00800000000000000
+      internalID: 1039895529375413794
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kva_devi_death_6
+      rect:
+        serializedVersion: 2
+        x: 251
+        y: 25
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 122409c2cd62b5550800000000000000
+      internalID: 6150552443186856481
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kva_devi_death_7
+      rect:
+        serializedVersion: 2
+        x: 262
+        y: 9
+        width: 18
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4cf57bae8dab87ce0800000000000000
+      internalID: -1407169442739691580
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kva_devi_death_8
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 28
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 25fb91aea8eabefe0800000000000000
+      internalID: -1158640567461494958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kva_devi_death_9
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 48
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1329935519d3ba820800000000000000
+      internalID: 2930503676944028209
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kva_devi_death_10
+      rect:
+        serializedVersion: 2
+        x: 198
+        y: 15
+        width: 10
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 28b968ee43680a6a0800000000000000
+      internalID: -6439999905241588862
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kva_devi_death_11
+      rect:
+        serializedVersion: 2
+        x: 241
+        y: 8
+        width: 17
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bf638724f7bf843b0800000000000000
+      internalID: -5527892018602690821
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kva_devi_death_12
+      rect:
+        serializedVersion: 2
+        x: 257
+        y: 19
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc98713bb6f7febf0800000000000000
+      internalID: -292875350212900401
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kva_devi_death_13
+      rect:
+        serializedVersion: 2
+        x: 282
+        y: 13
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6530e5387320f7c0800000000000000
+      internalID: -4039689866544401042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kva_devi_death_14
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 0
+        width: 49
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9fabd858882a09640800000000000000
+      internalID: 5084742686541200121
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kva_devi_death_15
+      rect:
+        serializedVersion: 2
+        x: 255
+        y: 11
+        width: 10
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df678b3b84199aa50800000000000000
+      internalID: 6532912475916498685
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      kva_devi_death_0: 706023906103631341
+      kva_devi_death_1: -5132459603366587654
+      kva_devi_death_10: -6439999905241588862
+      kva_devi_death_11: -5527892018602690821
+      kva_devi_death_12: -292875350212900401
+      kva_devi_death_13: -4039689866544401042
+      kva_devi_death_14: 5084742686541200121
+      kva_devi_death_15: 6532912475916498685
+      kva_devi_death_2: -665054768974467784
+      kva_devi_death_3: 1728596000393385754
+      kva_devi_death_4: -6867157388850183996
+      kva_devi_death_5: 1039895529375413794
+      kva_devi_death_6: 6150552443186856481
+      kva_devi_death_7: -1407169442739691580
+      kva_devi_death_8: -1158640567461494958
+      kva_devi_death_9: 2930503676944028209
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

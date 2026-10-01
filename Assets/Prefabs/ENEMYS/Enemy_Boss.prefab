@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: -3432169207953959111}
   - component: {fileID: -8699165996741751958}
   - component: {fileID: 3922819765518727427}
+  - component: {fileID: 7602150425878576640}
   m_Layer: 3
   m_Name: Enemy_Boss
   m_TagString: Enemy
@@ -85,12 +86,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -4905392893228763649, guid: 126af5b23cdea422dae6b23f2396cff9, type: 3}
+  m_Sprite: {fileID: 6849953860029773189, guid: 41d713d91e04c4bde80a4f9e94fe3613, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 3.4166667, y: 3.5833333}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -186,8 +187,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.875, y: 2}
-    newSize: {x: 1, y: 1}
+    oldSize: {x: 3.4166667, y: 3.5833333}
+    newSize: {x: 3.4166667, y: 3.5833333}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -258,6 +259,9 @@ MonoBehaviour:
   deathEffectPrefab: {fileID: 0}
   useHitStopOnDeath: 1
   hitStopDuration: 0.08
+  knockbackForce: 10
+  deathShakeForce: 0.3
+  deathPopDuration: 0.15
 --- !u!114 &1673680979979543345
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -354,3 +358,62 @@ MonoBehaviour:
     DissipationDistance: 100
     PropagationSpeed: 343
   DefaultVelocity: {x: 0, y: -1, z: 0}
+--- !u!114 &7602150425878576640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7478513448722915515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 740e85884bded45d2b43c4821e32f81a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idleFrames:
+  - {fileID: 6849953860029773189, guid: 41d713d91e04c4bde80a4f9e94fe3613, type: 3}
+  - {fileID: -4080715303010625894, guid: 41d713d91e04c4bde80a4f9e94fe3613, type: 3}
+  - {fileID: -6904637509062762666, guid: 41d713d91e04c4bde80a4f9e94fe3613, type: 3}
+  - {fileID: 1066781035948562550, guid: 41d713d91e04c4bde80a4f9e94fe3613, type: 3}
+  runFrames:
+  - {fileID: -5953536130358099158, guid: 8208d358d48d44040bc42473369129ba, type: 3}
+  - {fileID: 7726349951051079498, guid: 8208d358d48d44040bc42473369129ba, type: 3}
+  - {fileID: -4845308920206891098, guid: 8208d358d48d44040bc42473369129ba, type: 3}
+  - {fileID: -3827980675934557499, guid: 8208d358d48d44040bc42473369129ba, type: 3}
+  - {fileID: 5921070553301778877, guid: 8208d358d48d44040bc42473369129ba, type: 3}
+  - {fileID: -8368433119071228869, guid: 8208d358d48d44040bc42473369129ba, type: 3}
+  deathFrames:
+  - {fileID: 1807355090554355968, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
+  - {fileID: -5966451251320915366, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
+  - {fileID: -1726966456467859151, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
+  - {fileID: -7766757784446603887, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
+  - {fileID: 4020568270402642790, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
+  - {fileID: 2380622775669249599, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
+  - {fileID: -1743551390965314608, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
+  - {fileID: -5224595394545049046, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
+  - {fileID: -6627005419940143087, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
+  - {fileID: 8598048155722327835, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
+  - {fileID: -4089470213431211424, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
+  - {fileID: 4853405332933550061, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
+  - {fileID: 303117488338070278, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
+  - {fileID: 2311674243832038698, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
+  - {fileID: 7008768747180936041, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
+  - {fileID: 59995099942889642, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
+  - {fileID: -7228324759227538831, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
+  - {fileID: -991619618404269852, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
+  - {fileID: -2886705906895087102, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
+  - {fileID: 955725569155882697, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
+  - {fileID: 3966942549120841084, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
+  - {fileID: 7493759081742039914, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
+  - {fileID: 5239631331655732753, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
+  - {fileID: 4928089959701864107, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
+  - {fileID: 4328177688525475983, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
+  - {fileID: -5784730207536290936, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
+  - {fileID: -1711458648686872868, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
+  - {fileID: -5938348128308147679, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
+  - {fileID: -450653402982086672, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
+  - {fileID: -9057998312424278438, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
+  - {fileID: -1281068768155045124, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
+  - {fileID: -1134610626393537622, guid: 95f4366fa762c411e88edab83d54b993, type: 3}
+  fps: 10
+  moveThreshold: 0.002

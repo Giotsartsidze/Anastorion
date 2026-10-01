@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5635203082101972210}
   - component: {fileID: 354120239101851229}
   - component: {fileID: 5207732996848843393}
+  - component: {fileID: 6432334142494138049}
   m_Layer: 0
   m_Name: NuclearPulse_VFX
   m_TagString: Untagged
@@ -172,3 +173,20 @@ MonoBehaviour:
     DissipationDistance: 100
     PropagationSpeed: 343
   DefaultVelocity: {x: 0, y: -1, z: 0}
+--- !u!114 &6432334142494138049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6413490928674798708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 740e85884bded45d2b43c4821e32f81a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idleFrames: []
+  runFrames: []
+  deathFrames: []
+  fps: 10
+  moveThreshold: 0.002

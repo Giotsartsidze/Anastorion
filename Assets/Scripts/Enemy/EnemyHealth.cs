@@ -33,6 +33,7 @@ public class EnemyHealth : MonoBehaviour
     private HitFlash hitFlash;
     private Knockback knockback;
     private DeathPop deathPop;
+    private CharacterAnimator characterAnimator;
 
     void Start()
     {
@@ -52,6 +53,8 @@ public class EnemyHealth : MonoBehaviour
         if (knockback == null) knockback = gameObject.AddComponent<Knockback>();
         deathPop = GetComponent<DeathPop>();
         if (deathPop == null) deathPop = gameObject.AddComponent<DeathPop>();
+        // NOT auto-added: frame sheets must be assigned per prefab in the Inspector.
+        characterAnimator = GetComponent<CharacterAnimator>();
     }
 
     // Kept for callers that don't know the hit's origin (no knockback direction).
@@ -91,8 +94,13 @@ public class EnemyHealth : MonoBehaviour
         if (deathShakeForce > 0f && ScreenShake.Instance != null)
             ScreenShake.Instance.Shake(deathShakeForce);
 
-        // The pop plays over the death window (replaces the old flat 0.15s wait).
-        if (deathPop != null)
+        // Death frames take priority; otherwise the scale-pop; otherwise a flat wait.
+        if (characterAnimator != null && characterAnimator.HasDeath)
+        {
+            characterAnimator.PlayDeath();
+            yield return new WaitForSeconds(characterAnimator.DeathDuration);
+        }
+        else if (deathPop != null)
             yield return StartCoroutine(deathPop.Play(deathPopDuration));
         else
             yield return new WaitForSeconds(deathPopDuration);

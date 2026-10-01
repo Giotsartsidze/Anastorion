@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5221567845814657091}
   - component: {fileID: 7309115708802228568}
   - component: {fileID: 8686064146419289720}
+  - component: {fileID: -5935412665466452316}
   m_Layer: 3
   m_Name: Exploder
   m_TagString: Enemy
@@ -80,12 +81,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 4834892014007152935, guid: 126af5b23cdea422dae6b23f2396cff9, type: 3}
+  m_Sprite: {fileID: -3112530291232340744, guid: 3476706f01ce144cdb574d2b24b92be7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.2916666, y: 1.2916666}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -129,8 +130,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.875, y: 1.875}
-    newSize: {x: 1, y: 1}
+    oldSize: {x: 1.2916666, y: 1.2916666}
+    newSize: {x: 1.2916666, y: 1.2916666}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -183,6 +184,12 @@ MonoBehaviour:
   shardPrefab: {fileID: 4786673971356478334, guid: d964e9d7322784239a241b8b80c930ae, type: 3}
   dropCount: 1
   shardDropChance: 0.2
+  deathEffectPrefab: {fileID: 0}
+  useHitStopOnDeath: 0
+  hitStopDuration: 0.08
+  knockbackForce: 10
+  deathShakeForce: 0.3
+  deathPopDuration: 0.15
 --- !u!114 &8686064146419289720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200,3 +207,37 @@ MonoBehaviour:
   explosionDamage: 30
   countdownTime: 1.2
   explosionEffect: {fileID: 6413490928674798708, guid: 2a49367b831ff4b2d999fce5c6b23f5d, type: 3}
+--- !u!114 &-5935412665466452316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5109436113338301829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 740e85884bded45d2b43c4821e32f81a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idleFrames:
+  - {fileID: -3112530291232340744, guid: 3476706f01ce144cdb574d2b24b92be7, type: 3}
+  - {fileID: 6334398553130351759, guid: 3476706f01ce144cdb574d2b24b92be7, type: 3}
+  - {fileID: 3102749051046018447, guid: 3476706f01ce144cdb574d2b24b92be7, type: 3}
+  - {fileID: -5740314421818991841, guid: 3476706f01ce144cdb574d2b24b92be7, type: 3}
+  runFrames:
+  - {fileID: 6422834315482063139, guid: 7f3a36a5aa7a0450290b262838255b45, type: 3}
+  - {fileID: 6630601596894731243, guid: 7f3a36a5aa7a0450290b262838255b45, type: 3}
+  - {fileID: -8193204485382648545, guid: 7f3a36a5aa7a0450290b262838255b45, type: 3}
+  - {fileID: -6055688693762349619, guid: 7f3a36a5aa7a0450290b262838255b45, type: 3}
+  - {fileID: 6194651587201134181, guid: 7f3a36a5aa7a0450290b262838255b45, type: 3}
+  - {fileID: -8591761285334419495, guid: 7f3a36a5aa7a0450290b262838255b45, type: 3}
+  deathFrames:
+  - {fileID: 5924953482153390263, guid: 7ab9bb3c57f674c42bf3f47894e49759, type: 3}
+  - {fileID: 3652160577820891148, guid: 7ab9bb3c57f674c42bf3f47894e49759, type: 3}
+  - {fileID: -1392455886957821869, guid: 7ab9bb3c57f674c42bf3f47894e49759, type: 3}
+  - {fileID: -1060351310779138153, guid: 7ab9bb3c57f674c42bf3f47894e49759, type: 3}
+  - {fileID: -278632756702487935, guid: 7ab9bb3c57f674c42bf3f47894e49759, type: 3}
+  - {fileID: -3283959169205255939, guid: 7ab9bb3c57f674c42bf3f47894e49759, type: 3}
+  - {fileID: -7161440961689756566, guid: 7ab9bb3c57f674c42bf3f47894e49759, type: 3}
+  fps: 9
+  moveThreshold: 0.002

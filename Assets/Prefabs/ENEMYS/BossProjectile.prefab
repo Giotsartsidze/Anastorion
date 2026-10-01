@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6393197470655986133}
   - component: {fileID: 7848028418464395311}
   - component: {fileID: -6083262662874909824}
+  - component: {fileID: -394217616800908321}
   m_Layer: 8
   m_Name: BossProjectile
   m_TagString: Boss
@@ -88,7 +89,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!50 &4064976638688365738
@@ -183,3 +184,20 @@ MonoBehaviour:
   maxHealth: 100
   deathEffectPrefab: {fileID: 6413490928674798708, guid: 2a49367b831ff4b2d999fce5c6b23f5d, type: 3}
   skillLootPrefab: {fileID: 5765246111510740352, guid: 05270a1a435244a628867298999addf2, type: 3}
+--- !u!114 &-394217616800908321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6289872999900617585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 740e85884bded45d2b43c4821e32f81a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idleFrames: []
+  runFrames: []
+  deathFrames: []
+  fps: 10
+  moveThreshold: 0.002

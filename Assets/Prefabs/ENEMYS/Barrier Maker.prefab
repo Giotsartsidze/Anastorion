@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3187329749652628050}
   - component: {fileID: 1538249743451609268}
   - component: {fileID: 3409831273530770992}
+  - component: {fileID: 3899748365823601994}
   m_Layer: 3
   m_Name: Barrier Maker
   m_TagString: Enemy
@@ -80,12 +81,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -8074204374978827116, guid: 126af5b23cdea422dae6b23f2396cff9, type: 3}
+  m_Sprite: {fileID: 2972641250283645331, guid: 71b9f30cfdbf94a79ba599ae9f28d957, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.9583334, y: 1.8333334}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -110,6 +111,12 @@ MonoBehaviour:
   shardPrefab: {fileID: 4786673971356478334, guid: d964e9d7322784239a241b8b80c930ae, type: 3}
   dropCount: 1
   shardDropChance: 0.2
+  deathEffectPrefab: {fileID: 0}
+  useHitStopOnDeath: 0
+  hitStopDuration: 0.08
+  knockbackForce: 10
+  deathShakeForce: 0.3
+  deathPopDuration: 0.15
 --- !u!114 &3187329749652628050
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,8 +173,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.375, y: 2}
-    newSize: {x: 1, y: 1}
+    oldSize: {x: 1.9583334, y: 1.8333334}
+    newSize: {x: 1.9583334, y: 1.8333334}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -201,3 +208,46 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &3899748365823601994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 143261277285792420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 740e85884bded45d2b43c4821e32f81a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idleFrames:
+  - {fileID: 2972641250283645331, guid: 71b9f30cfdbf94a79ba599ae9f28d957, type: 3}
+  - {fileID: -4129101647554409823, guid: 71b9f30cfdbf94a79ba599ae9f28d957, type: 3}
+  - {fileID: 5950692542885492021, guid: 71b9f30cfdbf94a79ba599ae9f28d957, type: 3}
+  - {fileID: 270311048168508319, guid: 71b9f30cfdbf94a79ba599ae9f28d957, type: 3}
+  runFrames:
+  - {fileID: 4468334275206673596, guid: 511f44ebb22e347e3b55b5333ebb51cd, type: 3}
+  - {fileID: 9203830160758380969, guid: 511f44ebb22e347e3b55b5333ebb51cd, type: 3}
+  - {fileID: -932697549208801665, guid: 511f44ebb22e347e3b55b5333ebb51cd, type: 3}
+  - {fileID: 8115000526909941008, guid: 511f44ebb22e347e3b55b5333ebb51cd, type: 3}
+  - {fileID: -5364659112931703675, guid: 511f44ebb22e347e3b55b5333ebb51cd, type: 3}
+  - {fileID: -7554311050914196243, guid: 511f44ebb22e347e3b55b5333ebb51cd, type: 3}
+  deathFrames:
+  - {fileID: 706023906103631341, guid: f8fff085a1b0f420187111ca4866e801, type: 3}
+  - {fileID: -5132459603366587654, guid: f8fff085a1b0f420187111ca4866e801, type: 3}
+  - {fileID: -665054768974467784, guid: f8fff085a1b0f420187111ca4866e801, type: 3}
+  - {fileID: 1728596000393385754, guid: f8fff085a1b0f420187111ca4866e801, type: 3}
+  - {fileID: -6867157388850183996, guid: f8fff085a1b0f420187111ca4866e801, type: 3}
+  - {fileID: 1039895529375413794, guid: f8fff085a1b0f420187111ca4866e801, type: 3}
+  - {fileID: 6150552443186856481, guid: f8fff085a1b0f420187111ca4866e801, type: 3}
+  - {fileID: -1407169442739691580, guid: f8fff085a1b0f420187111ca4866e801, type: 3}
+  - {fileID: -1158640567461494958, guid: f8fff085a1b0f420187111ca4866e801, type: 3}
+  - {fileID: 2930503676944028209, guid: f8fff085a1b0f420187111ca4866e801, type: 3}
+  - {fileID: -6439999905241588862, guid: f8fff085a1b0f420187111ca4866e801, type: 3}
+  - {fileID: -5527892018602690821, guid: f8fff085a1b0f420187111ca4866e801, type: 3}
+  - {fileID: -292875350212900401, guid: f8fff085a1b0f420187111ca4866e801, type: 3}
+  - {fileID: -4039689866544401042, guid: f8fff085a1b0f420187111ca4866e801, type: 3}
+  - {fileID: 5084742686541200121, guid: f8fff085a1b0f420187111ca4866e801, type: 3}
+  - {fileID: 6532912475916498685, guid: f8fff085a1b0f420187111ca4866e801, type: 3}
+  fps: 7
+  moveThreshold: 0.002

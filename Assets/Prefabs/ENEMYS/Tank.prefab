@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 983065301327698739}
   - component: {fileID: 3674936567329346909}
   - component: {fileID: -3307020945639431233}
+  - component: {fileID: 4763187560273182177}
   m_Layer: 3
   m_Name: Tank
   m_TagString: Enemy
@@ -82,12 +83,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 3499036745522295064, guid: 126af5b23cdea422dae6b23f2396cff9, type: 3}
+  m_Sprite: {fileID: -2686839779017494684, guid: 33597d219b9e84ad1aad034d653c7100, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.625, y: 1.625}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -127,6 +128,12 @@ MonoBehaviour:
   shardPrefab: {fileID: 4786673971356478334, guid: d964e9d7322784239a241b8b80c930ae, type: 3}
   dropCount: 1
   shardDropChance: 0.2
+  deathEffectPrefab: {fileID: 0}
+  useHitStopOnDeath: 0
+  hitStopDuration: 0.08
+  knockbackForce: 10
+  deathShakeForce: 0.3
+  deathPopDuration: 0.15
 --- !u!61 &983065301327698739
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -165,8 +172,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.125, y: 2.0625}
-    newSize: {x: 1, y: 1}
+    oldSize: {x: 1.625, y: 1.625}
+    newSize: {x: 1.625, y: 1.625}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -222,6 +229,40 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   eliteIcon: {fileID: 0}
+--- !u!114 &4763187560273182177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2436420002217094212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 740e85884bded45d2b43c4821e32f81a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idleFrames:
+  - {fileID: -2686839779017494684, guid: 33597d219b9e84ad1aad034d653c7100, type: 3}
+  - {fileID: -2022111557891422361, guid: 33597d219b9e84ad1aad034d653c7100, type: 3}
+  - {fileID: -1228904310488417336, guid: 33597d219b9e84ad1aad034d653c7100, type: 3}
+  - {fileID: -5189584714722575194, guid: 33597d219b9e84ad1aad034d653c7100, type: 3}
+  runFrames:
+  - {fileID: -8662698623172165057, guid: d4f432fa62a174c49914898b7edae1a6, type: 3}
+  - {fileID: -7090827018677321158, guid: d4f432fa62a174c49914898b7edae1a6, type: 3}
+  - {fileID: -2545063382508549748, guid: d4f432fa62a174c49914898b7edae1a6, type: 3}
+  - {fileID: -6484227736664851764, guid: d4f432fa62a174c49914898b7edae1a6, type: 3}
+  - {fileID: 7780798004079572258, guid: d4f432fa62a174c49914898b7edae1a6, type: 3}
+  - {fileID: -6254431301023749974, guid: d4f432fa62a174c49914898b7edae1a6, type: 3}
+  deathFrames:
+  - {fileID: -4641222459196677457, guid: c260b1c36271643369e811d7a6f9d443, type: 3}
+  - {fileID: 8702327660157029047, guid: c260b1c36271643369e811d7a6f9d443, type: 3}
+  - {fileID: -4591126502034524211, guid: c260b1c36271643369e811d7a6f9d443, type: 3}
+  - {fileID: -6323696533213589325, guid: c260b1c36271643369e811d7a6f9d443, type: 3}
+  - {fileID: 1453289499783949821, guid: c260b1c36271643369e811d7a6f9d443, type: 3}
+  - {fileID: -1913491640584574855, guid: c260b1c36271643369e811d7a6f9d443, type: 3}
+  - {fileID: -6105448348070833610, guid: c260b1c36271643369e811d7a6f9d443, type: 3}
+  fps: 7
+  moveThreshold: 0.002
 --- !u!1 &6418800479865532342
 GameObject:
   m_ObjectHideFlags: 0
