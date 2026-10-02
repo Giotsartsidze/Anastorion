@@ -42,7 +42,8 @@ public class BossHealth : MonoBehaviour
     void Die()
     {
         Debug.Log("BOSS DIE FUNCTION STARTED");
-        
+
+        if (MusicManager.Instance != null) MusicManager.Instance.PlayDefault();
         if (shaker != null) shaker.TriggerShake();
 
         if (bossSlider != null) bossSlider.gameObject.SetActive(false);

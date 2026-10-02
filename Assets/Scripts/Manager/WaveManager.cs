@@ -180,6 +180,7 @@ IEnumerator TriggerEliteEvent()
     void SpawnBoss()
     {
         bossSpawned = true;
+        if (MusicManager.Instance != null) MusicManager.Instance.PlayBoss();
         bossWarningUI.SetActive(true);
         Invoke(nameof(HideWarning), 3f);
         Instantiate(bossPrefab, player.position + new Vector3(0, 15, 0), Quaternion.identity);
