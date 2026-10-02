@@ -65,15 +65,28 @@ public class ChainLightning : MonoBehaviour
         return closest;
     }
 
+    static Material _lineMat;
+
     void CreateLightningLine(Vector3 start, Vector3 end)
     {
-        if (lightningLinePrefab != null)
+        if (lightningLinePrefab == null) return;
+
+        GameObject line = Instantiate(lightningLinePrefab, Vector3.zero, Quaternion.identity);
+        LineRenderer lr = line.GetComponent<LineRenderer>();
+        if (lr != null)
         {
-            GameObject line = Instantiate(lightningLinePrefab, Vector3.zero, Quaternion.identity);
-            LineRenderer lr = line.GetComponent<LineRenderer>();
+            // Force a bright, visible bolt regardless of the prefab's (wrong) material/width.
+            if (_lineMat == null) _lineMat = new Material(Shader.Find("Sprites/Default"));
+            lr.material = _lineMat;
+            lr.startColor = new Color(0.4f, 0.9f, 1f); // cyan
+            lr.endColor = Color.white;
+            lr.startWidth = 0.12f;
+            lr.endWidth = 0.12f;
+            lr.numCapVertices = 2;
+            lr.sortingOrder = 50; // draw above enemies
             lr.SetPosition(0, start);
             lr.SetPosition(1, end);
-            Destroy(line, 0.2f); // ხაზი მალევე ქრება
         }
+        Destroy(line, 0.2f); // ხაზი მალევე ქრება
     }
 }

@@ -22,6 +22,10 @@ public class UpgradeManager : MonoBehaviour
 	private int dashLevel = 0;
 	private int speedLevel = 0;
 
+    [Header("Debug — show all evolutions (for testing / trailer)")]
+    [Tooltip("ON = Supernova + Chain Lightning active from the start. Turn OFF for real play.")]
+    public bool debugUnlockSynergies = false;
+
     // დონეების მთვლელები
     private int wispLevel = 0;
     private int radiusLevel = 0;
@@ -36,6 +40,12 @@ public class UpgradeManager : MonoBehaviour
         playerMovement = FindObjectOfType<PlayerMovement>();
         playerDash = FindObjectOfType<PlayerDash>();
         lightPulse = FindObjectOfType<LightPulse>();
+
+        if (debugUnlockSynergies)
+        {
+            isSupernovaUnlocked = true;
+            isLightningUnlocked = true;
+        }
     }
 
     public void UnlockWispUpgrades()
@@ -113,12 +123,12 @@ public class UpgradeManager : MonoBehaviour
     void CheckSynergies()
     {
         // თუ პირობა სრულდება (მაგ: Wisp დონე 5 და Radius დონე 3)
-        if (!isSupernovaUnlocked && wispLevel >= 5 && radiusLevel >= 3)
+        if (!isSupernovaUnlocked && wispLevel >= 3 && radiusLevel >= 2)
         {
             isSupernovaUnlocked = true;
             Debug.Log("SUPERNOVA EVOLUTION UNLOCKED!");
         }
-		if (!isLightningUnlocked && dashLevel >= 3 && speedLevel >= 3)
+		if (!isLightningUnlocked && dashLevel >= 2 && speedLevel >= 2)
     	{
         	isLightningUnlocked = true;
         	Debug.Log("SYNERGY UNLOCKED: CHAIN LIGHTNING!");
