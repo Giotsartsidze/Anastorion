@@ -57,7 +57,6 @@ public class ShieldLogic : MonoBehaviour
 
     void BreakShield()
     {
-        Debug.Log("Shield Destroyed!");
         // აქ შეგიძლია დაამატო ხმა ან ნამსხვრევების ეფექტი
         // ჩვენ უბრალოდ ვთიშავთ ფარს
         gameObject.SetActive(false);

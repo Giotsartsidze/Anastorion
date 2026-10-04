@@ -41,7 +41,6 @@ public class BossHealth : MonoBehaviour
 
     void Die()
     {
-        Debug.Log("BOSS DIE FUNCTION STARTED");
 
         if (MusicManager.Instance != null) MusicManager.Instance.PlayDefault();
         if (shaker != null) shaker.TriggerShake();
@@ -67,7 +66,6 @@ public class BossHealth : MonoBehaviour
     {
         if (gameObject.scene.isLoaded)
         {
-            Debug.Log("BOSS OBJECT REMOVED FROM MEMORY");
         }
     }
 }

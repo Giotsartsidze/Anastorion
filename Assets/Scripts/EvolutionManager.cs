@@ -29,7 +29,6 @@ public class EvolutionManager : MonoBehaviour
 
     void ActivateUltimate(SynergyData synergy)
     {
-        Debug.Log("ULTIMATE ACTIVATED: " + synergy.synergyName);
         // აქ ჩავრთავთ სპეციალურ ეფექტს ან ახალ სკრიპტს
     }
 }

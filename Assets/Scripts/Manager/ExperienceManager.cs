@@ -36,7 +36,6 @@ public class ExperienceManager : MonoBehaviour
 
         PauseGame();
         FindObjectOfType<UpgradeManager>()?.ShowUpgrades();
-        Debug.Log("Anastorion evolved to Level " + currentLevel);
         // აქ მოგვიანებით დავამატებთ პაუზას და სკილის არჩევის მენიუს
     }
 

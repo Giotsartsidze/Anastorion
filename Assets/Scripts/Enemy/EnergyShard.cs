@@ -36,7 +36,6 @@ public class EnergyShard : MonoBehaviour
             if (CurrencyManager.Instance != null)
             {
                 CurrencyManager.Instance.AddShards(1);
-                Debug.Log("Shard Collected! Total: " + CurrencyManager.Instance.totalShards);
             }
             Destroy(gameObject);
         }

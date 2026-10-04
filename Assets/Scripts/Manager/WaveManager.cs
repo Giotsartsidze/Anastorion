@@ -81,7 +81,6 @@ IEnumerator TriggerEliteEvent()
         isEliteEventActive = true;
         if (eliteEventUI != null) eliteEventUI.SetActive(true);
         
-        Debug.Log("EVENT: ELITE HORDE STARTED!");
         
         yield return new WaitForSeconds(eventDuration);
 

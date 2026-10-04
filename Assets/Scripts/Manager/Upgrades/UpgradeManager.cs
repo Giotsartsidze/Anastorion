@@ -54,7 +54,6 @@ public class UpgradeManager : MonoBehaviour
         {
             if (!activeUpgrades.Contains(upgrade)) activeUpgrades.Add(upgrade);
         }
-        Debug.Log("WISP UPGRADES UNLOCKED!");
     }
 
     public void ShowUpgrades()
@@ -126,12 +125,10 @@ public class UpgradeManager : MonoBehaviour
         if (!isSupernovaUnlocked && wispLevel >= 3 && radiusLevel >= 2)
         {
             isSupernovaUnlocked = true;
-            Debug.Log("SUPERNOVA EVOLUTION UNLOCKED!");
         }
 		if (!isLightningUnlocked && dashLevel >= 2 && speedLevel >= 2)
     	{
         	isLightningUnlocked = true;
-        	Debug.Log("SYNERGY UNLOCKED: CHAIN LIGHTNING!");
     	}	
     }
 

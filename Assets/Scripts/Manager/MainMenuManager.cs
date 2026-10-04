@@ -35,6 +35,5 @@ public class MainMenuManager : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
-        Debug.Log("Quit!"); // Editor-ში ეს ჩანს
     }
 }

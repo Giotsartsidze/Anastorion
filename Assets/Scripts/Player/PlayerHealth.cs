@@ -57,7 +57,6 @@ public class PlayerHealth : MonoBehaviour
     public void TakeDamage(int amount)
     {
         if (isInvincible) return;
-        Debug.Log("Damage Taken! Shaking screen...");
 
         currentHealth -= amount;
         if (SoundManager.Instance != null) SoundManager.Instance.PlayPlayerHurt();
