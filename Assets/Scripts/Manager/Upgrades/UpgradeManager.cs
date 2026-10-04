@@ -78,7 +78,11 @@ public class UpgradeManager : MonoBehaviour
         switch (data.type)
         {
             case UpgradeData.UpgradeType.MoveSpeed:
-                if (playerMovement != null) playerMovement.moveSpeed += data.valueModifier;
+                if (playerMovement != null)
+                {
+                    playerMovement.moveSpeed += data.valueModifier;
+                    playerMovement.maxSpeed += data.valueModifier; // raise the cap so it's actually felt
+                }
                 speedLevel++;
                 break;
 
