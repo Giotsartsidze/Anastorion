@@ -42,6 +42,13 @@ public class MusicManager : MonoBehaviour
     public void PlayDefault() => CrossfadeTo(defaultMusic);
     public void PlayBoss() => CrossfadeTo(bossMusic);
 
+    /// <summary>Set music volume live (called by SettingsManager).</summary>
+    public void SetVolume(float v)
+    {
+        volume = Mathf.Clamp01(v);
+        if (active != null) active.volume = volume;
+    }
+
     public void CrossfadeTo(AudioClip clip)
     {
         if (clip == null || (active != null && active.clip == clip && active.isPlaying)) return;
