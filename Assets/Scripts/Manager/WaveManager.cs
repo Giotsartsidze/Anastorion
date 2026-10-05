@@ -55,7 +55,7 @@ public class WaveManager : MonoBehaviour
         float currentTime = DifficultyManager.Instance.gameTime;
         UpdateTimerUI(currentTime);
 
-		float currentMinute = Mathf.Floor(currentTime / 60f);
+		float currentMinute = Mathf.Floor(currentTime / 120f); // elite event every 2 minutes
         if (currentMinute > lastEventMinute && currentMinute > 0)
         {
             lastEventMinute = currentMinute;
@@ -63,7 +63,7 @@ public class WaveManager : MonoBehaviour
         }
 
         // ბოსის სპაუნინგი
-        if (!bossSpawned && currentTime >= 120f) SpawnBoss();
+        if (!bossSpawned && currentTime >= 420f) SpawnBoss(); // boss as the ~7min climax
 
         // სპაუნინგის ლოგიკა
         if (Time.time >= nextSpawnTime)
@@ -72,7 +72,7 @@ public class WaveManager : MonoBehaviour
             // სირთულის მიხედვით სპაუნინგის აჩქარება
             float spawnRate = debugSpawnAll
                 ? debugSpawnInterval
-                : 1.5f / DifficultyManager.Instance.GetDifficultyMultiplier();
+                : 1.2f / DifficultyManager.Instance.GetDifficultyMultiplier();
             nextSpawnTime = Time.time + spawnRate;
         }
     }

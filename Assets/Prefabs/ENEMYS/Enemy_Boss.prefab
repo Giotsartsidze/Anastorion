@@ -293,6 +293,17 @@ MonoBehaviour:
   projectileCount: 8
   attackInterval: 3
   projectileSpeed: 5
+  moveSpeed: 2
+  biteFrames:
+  - {fileID: 553372263236673807, guid: 63aac8bd940114744837042ba7ec9102, type: 3}
+  - {fileID: 8076714434145507234, guid: 63aac8bd940114744837042ba7ec9102, type: 3}
+  - {fileID: -5008293257322844370, guid: 63aac8bd940114744837042ba7ec9102, type: 3}
+  - {fileID: 8256498148389629041, guid: 63aac8bd940114744837042ba7ec9102, type: 3}
+  - {fileID: 8739266664483850364, guid: 63aac8bd940114744837042ba7ec9102, type: 3}
+  - {fileID: -7201328924026826374, guid: 63aac8bd940114744837042ba7ec9102, type: 3}
+  meleeRange: 3
+  biteDamage: 25
+  biteCooldown: 2.5
 --- !u!114 &-8699165996741751958
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a20b4fe17a88347d6862b8ad66a51fe1, type: 3}
   m_Name: Darts_speed
   m_EditorClassIdentifier: 
-  upgradeName: Darts_Speed
-  description: Arrows Falling faster
-  icon: {fileID: 7988963515009030207, guid: ac3c9f9ed4df74322941bedabe922b23, type: 3}
-  type: 0
+  upgradeName: Darts_Count
+  description: Arrows Falling fwith more count
+  icon: {fileID: 8949373402140117973, guid: 88d4454a9f7a145578cb5c7fb6d7d87d, type: 3}
+  type: 7
   rarity: 0
-  valueModifier: -0.2
+  valueModifier: 1

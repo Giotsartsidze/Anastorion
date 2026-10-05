@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a20b4fe17a88347d6862b8ad66a51fe1, type: 3}
   m_Name: Darts_FireRate
   m_EditorClassIdentifier: 
-  upgradeName: 
-  description: 
-  icon: {fileID: 0}
-  type: 0
+  upgradeName: Rapid Darts
+  description: Darts fire faster
+  icon: {fileID: -2989074759802886608, guid: b958e1dc7b37045e69da14264f8b8b43, type: 3}
+  type: 8
   rarity: 0
-  valueModifier: 0
+  valueModifier: 0.2
