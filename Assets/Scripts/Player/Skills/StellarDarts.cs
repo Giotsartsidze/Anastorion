@@ -5,6 +5,7 @@ public class StellarDarts : MonoBehaviour
     public GameObject dartPrefab;
     public float fireRate = 1.5f;
     public float range = 10f;
+    public int dartCount = 1;   // how many darts per volley (upgradeable)
     public LayerMask enemyLayer;
 
     private float timer;
@@ -22,27 +23,28 @@ public class StellarDarts : MonoBehaviour
     void ShootNearestEnemy()
     {
         Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, range, enemyLayer);
-        
-        Transform closestEnemy = null;
-        float minDistance = Mathf.Infinity;
+        if (enemies.Length == 0) return;
 
-        foreach (var enemy in enemies)
-        {
-            float dist = Vector2.Distance(transform.position, enemy.transform.position);
-            if (dist < minDistance)
-            {
-                minDistance = dist;
-                closestEnemy = enemy.transform;
-            }
-        }
+        // nearest first
+        System.Array.Sort(enemies, (a, b) =>
+            Vector2.Distance(transform.position, a.transform.position)
+            .CompareTo(Vector2.Distance(transform.position, b.transform.position)));
 
-        if (closestEnemy != null)
+        int shots = Mathf.Max(1, dartCount);
+        for (int i = 0; i < shots; i++)
         {
-            // ვქმნით ისარს და ვატრიალებთ მტრისკენ
-            Vector2 direction = (closestEnemy.position - transform.position).normalized;
+            // target distinct nearest enemies; extra darts fan out from the nearest
+            Transform target = enemies[Mathf.Min(i, enemies.Length - 1)].transform;
+            Vector2 direction = ((Vector2)target.position - (Vector2)transform.position).normalized;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            if (i >= enemies.Length)
+            {
+                int extra = i - enemies.Length + 1;
+                angle += extra * 12f * (extra % 2 == 0 ? 1 : -1); // alternating spread
+            }
             Instantiate(dartPrefab, transform.position, Quaternion.Euler(0, 0, angle));
-            if (SoundManager.Instance != null) SoundManager.Instance.PlayShoot();
         }
+
+        if (SoundManager.Instance != null) SoundManager.Instance.PlayShoot();
     }
 }

@@ -9,14 +9,16 @@ public class UpgradeData : ScriptableObject
     public Sprite icon;
 
     // დავამატეთ ყველა საჭირო ტიპი
-    public enum UpgradeType { 
-        MoveSpeed, 
-        LightRadius, 
-        WispCount, 
-        WispSpeed, 
+    public enum UpgradeType {
+        MoveSpeed,
+        LightRadius,
+        WispCount,
+        WispSpeed,
         PulseCooldown ,
         DashCooldown,
-        DashSpeed
+        DashSpeed,
+        DartCount,
+        DartFireRate
     }
     
     // იშვიათობის სისტემა

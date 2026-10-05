@@ -117,6 +117,16 @@ public class UpgradeManager : MonoBehaviour
             case UpgradeData.UpgradeType.DashCooldown:
                 if (playerDash != null) playerDash.dashCooldown -= 0.3f;
                 break;
+
+            case UpgradeData.UpgradeType.DartCount:
+                var dartsC = FindObjectOfType<StellarDarts>();
+                if (dartsC != null) dartsC.dartCount += Mathf.Max(1, Mathf.RoundToInt(data.valueModifier));
+                break;
+
+            case UpgradeData.UpgradeType.DartFireRate:
+                var dartsF = FindObjectOfType<StellarDarts>();
+                if (dartsF != null) dartsF.fireRate = Mathf.Max(0.15f, dartsF.fireRate - data.valueModifier);
+                break;
         }
 
         CheckSynergies(); // ყოველი აფგრეიდის შემდეგ ვამოწმებთ სინერგიას
