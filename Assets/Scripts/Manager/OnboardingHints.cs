@@ -26,6 +26,8 @@ public class OnboardingHints : MonoBehaviour
     [Tooltip("Show only the first time on this machine. Off = show every run (good for Next Fest kiosks).")]
     public bool onlyFirstTime = false;
 
+    private bool sequenceActive;
+
     void Start()
     {
         if (hintText == null) return;
@@ -36,7 +38,15 @@ public class OnboardingHints : MonoBehaviour
             return;
         }
         PlayerPrefs.SetInt("seen_tutorial", 1);
+        sequenceActive = true;
         StartCoroutine(Run());
+    }
+
+    void Update()
+    {
+        // Never overlap a paused menu — pause/settings set timeScale to 0.
+        if (hintText != null && sequenceActive)
+            hintText.enabled = Time.timeScale > 0f;
     }
 
     IEnumerator Run()
@@ -45,9 +55,10 @@ public class OnboardingHints : MonoBehaviour
         {
             hintText.text = msg;
             yield return Fade(0f, 1f);
-            yield return new WaitForSeconds(secondsPerMessage);
+            yield return new WaitForSecondsRealtime(secondsPerMessage);
             yield return Fade(1f, 0f);
         }
+        sequenceActive = false;
         hintText.gameObject.SetActive(false);
     }
 
@@ -57,7 +68,7 @@ public class OnboardingHints : MonoBehaviour
         Color c = hintText.color;
         while (t < fadeTime)
         {
-            t += Time.deltaTime;
+            t += Time.unscaledDeltaTime; // realtime, so it finishes even if paused
             c.a = Mathf.Lerp(from, to, t / fadeTime);
             hintText.color = c;
             yield return null;
