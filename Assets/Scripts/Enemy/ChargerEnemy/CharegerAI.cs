@@ -80,7 +80,7 @@ public class ChargerEnemyAI : MonoBehaviour
     {
         if (collision.CompareTag("Player") && isCharging)
         {
-            collision.GetComponent<PlayerHealth>()?.TakeDamage(20); // მეტი ზიანი ვიდრე ჩვეულებრივ მტერს
+            collision.GetComponent<PlayerHealth>()?.TakeDamage(18); // მეტი ზიანი ვიდრე ჩვეულებრივ მტერს
         }
     }
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 public class EnemyProjectile : MonoBehaviour
 {
     public float speed = 7f;
-    public int damage = 10;
+    public int damage = 6;
     private Vector2 targetDirection;
 
     void Start()

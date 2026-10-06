@@ -14,7 +14,7 @@ public class BossAI : MonoBehaviour
     [Header("Bite (melee)")]
     public Sprite[] biteFrames;     // assign the gveleshapi_boss_attack_bite sheet
     public float meleeRange = 3f;
-    public int biteDamage = 25;
+    public int biteDamage = 20;
     public float biteCooldown = 2.5f;
 
     private float biteTimer;

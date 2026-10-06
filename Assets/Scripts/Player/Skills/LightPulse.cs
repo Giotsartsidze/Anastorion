@@ -77,7 +77,7 @@ public class LightPulse : MonoBehaviour
         EnemyHealth enemyHealth = enemy.GetComponent<EnemyHealth>();
         if (enemyHealth != null)
         {
-            enemyHealth.TakeDamage(1);
+            enemyHealth.TakeDamage(4);
         }
 
         // სპეციალური შემოწმება ბოსისთვის (რომ პულსმა ბოსს ბევრი არ დააკლოს)

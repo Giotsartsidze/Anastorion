@@ -255,7 +255,7 @@ MonoBehaviour:
   healthPackPrefab: {fileID: 5905213398975661970, guid: a248ffc326784415595c0cce8077184e, type: 3}
   shardPrefab: {fileID: 4786673971356478334, guid: d964e9d7322784239a241b8b80c930ae, type: 3}
   dropCount: 1
-  shardDropChance: 0.2
+  shardDropChance: 1
   deathEffectPrefab: {fileID: 0}
   useHitStopOnDeath: 1
   hitStopDuration: 0.08
@@ -274,7 +274,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f62a128a22f3847e3af3c0adf13dcbdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 50
+  maxHealth: 1000
   deathEffectPrefab: {fileID: 6413490928674798708, guid: 2a49367b831ff4b2d999fce5c6b23f5d, type: 3}
   skillLootPrefab: {fileID: 7670888100493032557, guid: 45e41582ab1b14e4687f96baa0e04b81, type: 3}
 --- !u!114 &-3432169207953959111
@@ -302,7 +302,7 @@ MonoBehaviour:
   - {fileID: 8739266664483850364, guid: 63aac8bd940114744837042ba7ec9102, type: 3}
   - {fileID: -7201328924026826374, guid: 63aac8bd940114744837042ba7ec9102, type: 3}
   meleeRange: 3
-  biteDamage: 25
+  biteDamage: 20
   biteCooldown: 2.5
 --- !u!114 &-8699165996741751958
 MonoBehaviour:

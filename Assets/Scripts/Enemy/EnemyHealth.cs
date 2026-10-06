@@ -14,7 +14,7 @@ public class EnemyHealth : MonoBehaviour
     public GameObject healthPackPrefab;  // სიცოცხლე
     public GameObject shardPrefab;      // მუდმივი ქოინი (Energy Shard)
     public int dropCount = 1;
-    [Range(0, 1)] public float shardDropChance = 0.2f; // 20% შანსი
+    [Range(0, 1)] public float shardDropChance = 0.08f; // 20% შანსი
 
     [Header("Juice")]
     [Tooltip("Optional particle/effect spawned at death (e.g. a pop/burst).")]

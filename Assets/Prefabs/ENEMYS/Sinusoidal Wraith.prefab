@@ -182,7 +182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a26bd5b124b64fc2b6013a23adeeeaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 1
+  health: 6
   dropType: 0
   coinPrefab: {fileID: 4083271637325336818, guid: cc35205c7abb04d9abf2abfe7b9d2160, type: 3}
   healthPackPrefab: {fileID: 5905213398975661970, guid: a248ffc326784415595c0cce8077184e, type: 3}
@@ -225,5 +225,6 @@ MonoBehaviour:
   - {fileID: 2114343503941601191, guid: f425e79bfd2be427eb430bd31f11789d, type: 3}
   - {fileID: -1349735423175607107, guid: f425e79bfd2be427eb430bd31f11789d, type: 3}
   - {fileID: 5571145679997384747, guid: f425e79bfd2be427eb430bd31f11789d, type: 3}
+  attackFrames: []
   fps: 9
   moveThreshold: 0.002

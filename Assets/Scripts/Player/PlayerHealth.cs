@@ -50,7 +50,7 @@ public class PlayerHealth : MonoBehaviour
     {
         if (go.CompareTag("Enemy"))
         {
-            TakeDamage(10);
+            TakeDamage(8);
         }
     }
 
