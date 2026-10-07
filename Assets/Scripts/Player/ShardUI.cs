@@ -15,7 +15,7 @@ public class ShardUI : MonoBehaviour
         if (CurrencyManager.Instance != null)
         {
             // ვაჩვენებთ საერთო ბალანსს
-            text.text = "x " + CurrencyManager.Instance.totalShards.ToString();
+            text.text = CurrencyManager.Instance.totalShards.ToString();
         }
     }
 }
