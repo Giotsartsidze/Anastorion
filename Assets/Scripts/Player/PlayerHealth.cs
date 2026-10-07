@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using System.Collections;
 
 public class PlayerHealth : MonoBehaviour
@@ -10,6 +11,7 @@ public class PlayerHealth : MonoBehaviour
 
     [Header("UI References")]
     public Slider healthSlider;
+    public TMP_Text healthText; // optional "80 / 100" overlay on the health bar
 
     [Header("I-Frame Settings")]
     public float iFrameDuration = 1f;
@@ -28,11 +30,8 @@ public class PlayerHealth : MonoBehaviour
         shaker = GetComponent<ShakeSource>();
 
         // UI-ს ინიციალიზაცია
-        if (healthSlider != null)
-        {
-            healthSlider.maxValue = maxHealth;
-            healthSlider.value = currentHealth;
-        }
+        if (healthSlider != null) healthSlider.maxValue = maxHealth;
+        UpdateUI();
     }
 
     // --- ფიზიკური შეხების დაფიქსირება ---
@@ -93,10 +92,8 @@ public class PlayerHealth : MonoBehaviour
 
     void UpdateUI()
     {
-        if (healthSlider != null)
-        {
-            healthSlider.value = currentHealth;
-        }
+        if (healthSlider != null) healthSlider.value = currentHealth;
+        if (healthText != null) healthText.text = Mathf.Max(0, currentHealth) + " / " + maxHealth;
     }
 
     void Die()
