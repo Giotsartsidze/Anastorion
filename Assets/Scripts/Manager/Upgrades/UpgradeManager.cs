@@ -145,6 +145,15 @@ public class UpgradeManager : MonoBehaviour
                     else star.meteorCount += Mathf.Max(1, Mathf.RoundToInt(data.valueModifier)); // later: more meteors
                 }
                 break;
+
+            case UpgradeData.UpgradeType.HeavenSmite:
+                var smite = FindObjectOfType<HeavenSmite>();
+                if (smite != null)
+                {
+                    if (!smite.active) smite.active = true;               // first pick: unlock
+                    else smite.damage += Mathf.Max(1, Mathf.RoundToInt(data.valueModifier)); // later: harder strikes
+                }
+                break;
         }
 
         CheckSynergies(); // ყოველი აფგრეიდის შემდეგ ვამოწმებთ სინერგიას

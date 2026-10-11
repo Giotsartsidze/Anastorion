@@ -20,7 +20,8 @@ public class UpgradeData : ScriptableObject
         DartCount,
         DartFireRate,
         FireTrail,
-        Starfall
+        Starfall,
+        HeavenSmite
     }
     
     // იშვიათობის სისტემა
