@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class XPOrb : MonoBehaviour
 {
+    // Added by the MagnetRange meta-upgrade at run start (applies to all orbs).
+    public static float BonusMagnetRadius = 0f;
+
     public float moveSpeed = 8f;
     public float collectDistance = 0.5f;
     public float magnetRadius = 5f;
@@ -25,7 +28,7 @@ public class XPOrb : MonoBehaviour
         float distance = Vector2.Distance(transform.position, player.position);
         
         // "მაგნიტის" ეფექტი
-        if (distance < magnetRadius) 
+        if (distance < magnetRadius + BonusMagnetRadius)
         {
             transform.position = Vector2.MoveTowards(transform.position, player.position, moveSpeed * Time.deltaTime);
         }
