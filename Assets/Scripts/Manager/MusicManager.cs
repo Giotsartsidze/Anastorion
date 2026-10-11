@@ -12,6 +12,7 @@ public class MusicManager : MonoBehaviour
 {
     public static MusicManager Instance { get; private set; }
 
+    public AudioClip menuMusic;
     public AudioClip defaultMusic;
     public AudioClip bossMusic;
     [Range(0f, 1f)] public float volume = 0.5f;
@@ -31,14 +32,11 @@ public class MusicManager : MonoBehaviour
         foreach (var s in new[] { a, b }) { s.loop = true; s.playOnAwake = false; s.volume = 0f; }
 
         active = a;
-        if (defaultMusic != null)
-        {
-            active.clip = defaultMusic;
-            active.volume = volume;
-            active.Play();
-        }
+        // Which track plays is driven per-scene by a SceneMusic cue (menu vs gameplay),
+        // so we don't auto-start anything here.
     }
 
+    public void PlayMenu() => CrossfadeTo(menuMusic);
     public void PlayDefault() => CrossfadeTo(defaultMusic);
     public void PlayBoss() => CrossfadeTo(bossMusic);
 

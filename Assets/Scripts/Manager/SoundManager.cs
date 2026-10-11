@@ -38,12 +38,7 @@ public class SoundManager : MonoBehaviour
 
     void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
+        Instance = this; // newest wins — survives scene reload without vanishing
 
         pool = new AudioSource[Mathf.Max(1, voices)];
         for (int i = 0; i < pool.Length; i++)

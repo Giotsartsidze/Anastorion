@@ -17,8 +17,7 @@ public class GameOverManager : MonoBehaviour
 
     void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        Instance = this; // newest wins — survives scene reload without vanishing
         if (panel != null) panel.SetActive(false);
         if (shopPanel != null) shopPanel.SetActive(false); // ← ახალი
     }

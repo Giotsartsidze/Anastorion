@@ -9,8 +9,7 @@ public class RunStats : MonoBehaviour
 
     void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        Instance = this; // newest wins — survives scene reload without vanishing
     }
 
     public void RegisterKill() => killCount++;

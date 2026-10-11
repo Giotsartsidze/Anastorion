@@ -15,12 +15,7 @@ public class HitStop : MonoBehaviour
 
     void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
+        Instance = this; // newest wins — survives scene reload without vanishing
     }
 
     void OnDestroy()

@@ -30,12 +30,7 @@ public class ScreenShake : MonoBehaviour
 
     void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
+        Instance = this; // newest wins — survives scene reload without vanishing
         if (cameraTransform == null && Camera.main != null)
             cameraTransform = Camera.main.transform;
     }
