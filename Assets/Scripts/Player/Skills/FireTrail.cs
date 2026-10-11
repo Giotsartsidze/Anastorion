@@ -11,7 +11,8 @@ public class FireTrail : MonoBehaviour
     public GameObject firePatchPrefab;   // prefab with a SpriteRenderer + FirePatch
     public float dropInterval = 0.4f;    // seconds between patches
     public float minMoveDistance = 0.4f; // only drop after moving this far
-    public bool active = true;           // flip on when unlocked
+    public bool active = false;          // turned on when the Ember Path card is picked
+    public int patchDamage = 2;          // raised by further Ember Path picks
 
     private float timer;
     private Vector3 lastDropPos;
@@ -29,7 +30,9 @@ public class FireTrail : MonoBehaviour
         if (timer >= dropInterval &&
             Vector3.Distance(transform.position, lastDropPos) >= minMoveDistance)
         {
-            Instantiate(firePatchPrefab, transform.position, Quaternion.identity);
+            GameObject patch = Instantiate(firePatchPrefab, transform.position, Quaternion.identity);
+            FirePatch fp = patch.GetComponent<FirePatch>();
+            if (fp != null) fp.damagePerTick = patchDamage;
             lastDropPos = transform.position;
             timer = 0f;
         }

@@ -18,7 +18,8 @@ public class UpgradeData : ScriptableObject
         DashCooldown,
         DashSpeed,
         DartCount,
-        DartFireRate
+        DartFireRate,
+        FireTrail
     }
     
     // იშვიათობის სისტემა

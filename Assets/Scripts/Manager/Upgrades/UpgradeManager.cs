@@ -127,6 +127,15 @@ public class UpgradeManager : MonoBehaviour
                 var dartsF = FindObjectOfType<StellarDarts>();
                 if (dartsF != null) dartsF.fireRate = Mathf.Max(0.15f, dartsF.fireRate - data.valueModifier);
                 break;
+
+            case UpgradeData.UpgradeType.FireTrail:
+                var fire = FindObjectOfType<FireTrail>();
+                if (fire != null)
+                {
+                    if (!fire.active) fire.active = true;                 // first pick: unlock
+                    else fire.patchDamage += Mathf.Max(1, Mathf.RoundToInt(data.valueModifier)); // later: stronger
+                }
+                break;
         }
 
         CheckSynergies(); // ყოველი აფგრეიდის შემდეგ ვამოწმებთ სინერგიას
