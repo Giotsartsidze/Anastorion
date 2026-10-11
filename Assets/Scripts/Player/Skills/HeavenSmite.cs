@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -15,9 +16,22 @@ public class HeavenSmite : MonoBehaviour
     public float splashRadius = 1.5f; // small AoE around the strike
     public int splashDamage = 8;
     public float vfxLifetime = 0.3f;
+    public int strikeCount = 1;       // how many enemies struck per interval
     public bool active = false;       // turned on when the Heaven's Smite card is picked
+    public bool evolved = false;      // Thunderstorm evolution
 
     private float timer;
+
+    /// <summary>Thunderstorm evolution: strikes several enemies at once, faster.</summary>
+    public void Evolve()
+    {
+        if (evolved) return;
+        evolved = true;
+        strikeCount = 3;
+        interval = Mathf.Max(0.8f, interval * 0.7f);
+        splashRadius += 0.5f;
+        splashDamage += 10;
+    }
 
     void Update()
     {
@@ -34,28 +48,33 @@ public class HeavenSmite : MonoBehaviour
     void Strike()
     {
         Collider2D[] near = Physics2D.OverlapCircleAll(transform.position, range);
+        List<Transform> struck = new List<Transform>();
+        int count = Mathf.Max(1, strikeCount);
 
-        Transform best = null;
-        int bestHp = -1;
-        bool bestIsBoss = false;
-
-        foreach (var c in near)
+        for (int n = 0; n < count; n++)
         {
-            if (!c.CompareTag("Enemy")) continue;
+            Transform best = null;
+            int bestHp = -1;
+            foreach (var c in near)
+            {
+                if (c == null || !c.CompareTag("Enemy")) continue;
+                if (struck.Contains(c.transform)) continue;
 
-            if (c.GetComponent<BossHealth>() != null)   // boss always wins priority
-            {
-                best = c.transform; bestIsBoss = true; break;
+                int hp;
+                if (c.GetComponent<BossHealth>() != null) hp = int.MaxValue; // boss priority
+                else { var eh = c.GetComponent<EnemyHealth>(); if (eh == null) continue; hp = eh.health; }
+
+                if (hp > bestHp) { bestHp = hp; best = c.transform; }
             }
-            var eh = c.GetComponent<EnemyHealth>();
-            if (!bestIsBoss && eh != null && eh.health > bestHp)
-            {
-                bestHp = eh.health; best = c.transform;
-            }
+            if (best == null) break;
+            struck.Add(best);
+            StrikeTarget(best);
         }
+    }
 
-        if (best == null) return;
-        Vector3 pos = best.position;
+    void StrikeTarget(Transform target)
+    {
+        Vector3 pos = target.position;
 
         if (boltVfxPrefab != null)
         {
@@ -63,15 +82,13 @@ public class HeavenSmite : MonoBehaviour
             Destroy(fx, vfxLifetime);
         }
 
-        // main hit
-        best.GetComponent<EnemyHealth>()?.TakeDamage(damage, pos);
-        best.GetComponent<BossHealth>()?.TakeBossDamage(damage);
+        target.GetComponent<EnemyHealth>()?.TakeDamage(damage, pos);
+        target.GetComponent<BossHealth>()?.TakeBossDamage(damage);
 
-        // splash
         Collider2D[] splash = Physics2D.OverlapCircleAll(pos, splashRadius);
         foreach (var c in splash)
         {
-            if (!c.CompareTag("Enemy") || c.transform == best) continue;
+            if (!c.CompareTag("Enemy") || c.transform == target) continue;
             c.GetComponent<EnemyHealth>()?.TakeDamage(splashDamage, pos);
         }
     }

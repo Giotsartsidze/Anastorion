@@ -30,6 +30,14 @@ public class UpgradeManager : MonoBehaviour
     private int wispLevel = 0;
     private int radiusLevel = 0;
 
+    // New-skill pick counts + evolution flags
+    private int fireTrailLevel = 0;
+    private int starfallLevel = 0;
+    private int smiteLevel = 0;
+    private bool isCometUnlocked = false;
+    private bool isMeteorStormUnlocked = false;
+    private bool isThunderstormUnlocked = false;
+
     // Cached component references
     private PlayerMovement playerMovement;
     private PlayerDash playerDash;
@@ -135,6 +143,7 @@ public class UpgradeManager : MonoBehaviour
                     if (!fire.active) fire.active = true;                 // first pick: unlock
                     else fire.patchDamage += Mathf.Max(1, Mathf.RoundToInt(data.valueModifier)); // later: stronger
                 }
+                fireTrailLevel++;
                 break;
 
             case UpgradeData.UpgradeType.Starfall:
@@ -144,6 +153,7 @@ public class UpgradeManager : MonoBehaviour
                     if (!star.active) star.active = true;                 // first pick: unlock
                     else star.meteorCount += Mathf.Max(1, Mathf.RoundToInt(data.valueModifier)); // later: more meteors
                 }
+                starfallLevel++;
                 break;
 
             case UpgradeData.UpgradeType.HeavenSmite:
@@ -153,6 +163,7 @@ public class UpgradeManager : MonoBehaviour
                     if (!smite.active) smite.active = true;               // first pick: unlock
                     else smite.damage += Mathf.Max(1, Mathf.RoundToInt(data.valueModifier)); // later: harder strikes
                 }
+                smiteLevel++;
                 break;
         }
 
@@ -166,6 +177,23 @@ public class UpgradeManager : MonoBehaviour
         if (!isSupernovaUnlocked && wispLevel >= 3 && radiusLevel >= 2)
         {
             isSupernovaUnlocked = true;
+        }
+
+        // New-skill evolutions: max the skill + its paired stat.
+        if (!isCometUnlocked && fireTrailLevel >= 3 && speedLevel >= 3)
+        {
+            isCometUnlocked = true;
+            FindObjectOfType<FireTrail>()?.Evolve();   // Comet
+        }
+        if (!isMeteorStormUnlocked && starfallLevel >= 3 && radiusLevel >= 3)
+        {
+            isMeteorStormUnlocked = true;
+            FindObjectOfType<Starfall>()?.Evolve();    // Meteor Storm
+        }
+        if (!isThunderstormUnlocked && smiteLevel >= 3 && dashLevel >= 3)
+        {
+            isThunderstormUnlocked = true;
+            FindObjectOfType<HeavenSmite>()?.Evolve(); // Thunderstorm
         }
 		if (!isLightningUnlocked && dashLevel >= 2 && speedLevel >= 2)
     	{

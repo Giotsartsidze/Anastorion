@@ -15,8 +15,20 @@ public class Starfall : MonoBehaviour
     public int meteorDamage = 12;
     public float meteorRadius = 1.5f;
     public bool active = false;       // turned on when the Starfall card is picked
+    public bool evolved = false;      // Meteor Storm evolution
 
     private float timer;
+
+    /// <summary>Meteor Storm evolution: a relentless, bigger, deadlier rain.</summary>
+    public void Evolve()
+    {
+        if (evolved) return;
+        evolved = true;
+        meteorCount += 4;
+        interval = Mathf.Max(0.5f, interval * 0.5f);
+        meteorRadius += 1f;
+        meteorDamage += 10;
+    }
 
     void Update()
     {
