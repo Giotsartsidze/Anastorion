@@ -136,6 +136,15 @@ public class UpgradeManager : MonoBehaviour
                     else fire.patchDamage += Mathf.Max(1, Mathf.RoundToInt(data.valueModifier)); // later: stronger
                 }
                 break;
+
+            case UpgradeData.UpgradeType.Starfall:
+                var star = FindObjectOfType<Starfall>();
+                if (star != null)
+                {
+                    if (!star.active) star.active = true;                 // first pick: unlock
+                    else star.meteorCount += Mathf.Max(1, Mathf.RoundToInt(data.valueModifier)); // later: more meteors
+                }
+                break;
         }
 
         CheckSynergies(); // ყოველი აფგრეიდის შემდეგ ვამოწმებთ სინერგიას

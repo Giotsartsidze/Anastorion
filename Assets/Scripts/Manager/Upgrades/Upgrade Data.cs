@@ -19,7 +19,8 @@ public class UpgradeData : ScriptableObject
         DashSpeed,
         DartCount,
         DartFireRate,
-        FireTrail
+        FireTrail,
+        Starfall
     }
     
     // იშვიათობის სისტემა
