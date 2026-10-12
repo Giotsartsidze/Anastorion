@@ -95,7 +95,7 @@ public class UpgradeManager : MonoBehaviour
                 break;
 
             case UpgradeData.UpgradeType.DashSpeed:
-                if (playerDash != null) playerDash.dashSpeed += 5f;
+                if (playerDash != null) playerDash.dashSpeed += data.valueModifier;
                 dashLevel++;
                 break;
 
@@ -123,7 +123,7 @@ public class UpgradeManager : MonoBehaviour
                 break;
 
             case UpgradeData.UpgradeType.DashCooldown:
-                if (playerDash != null) playerDash.dashCooldown -= 0.3f;
+                if (playerDash != null) playerDash.dashCooldown -= data.valueModifier;
                 break;
 
             case UpgradeData.UpgradeType.DartCount:
