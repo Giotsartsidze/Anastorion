@@ -34,6 +34,7 @@ public class EnemyHealth : MonoBehaviour
     private Knockback knockback;
     private DeathPop deathPop;
     private CharacterAnimator characterAnimator;
+    private Collider2D[] bodyColliders;
 
     void Start()
     {
@@ -55,6 +56,15 @@ public class EnemyHealth : MonoBehaviour
         if (deathPop == null) deathPop = gameObject.AddComponent<DeathPop>();
         // NOT auto-added: frame sheets must be assigned per prefab in the Inspector.
         characterAnimator = GetComponent<CharacterAnimator>();
+        bodyColliders = GetComponentsInChildren<Collider2D>();
+    }
+
+    // Pooled respawn: come back fully alive and interactive.
+    void OnEnable()
+    {
+        isDying = false;
+        if (bodyColliders != null)
+            foreach (var c in bodyColliders) if (c != null) c.enabled = true;
     }
 
     // Kept for callers that don't know the hit's origin (no knockback direction).
@@ -85,6 +95,10 @@ public class EnemyHealth : MonoBehaviour
     IEnumerator DeathSequence()
     {
         isDying = true;
+        // Go inert immediately so the dying enemy stops hurting/blocking the player
+        // while its death animation plays out.
+        if (bodyColliders != null)
+            foreach (var c in bodyColliders) if (c != null) c.enabled = false;
 
         if (SoundManager.Instance != null) SoundManager.Instance.PlayEnemyDeath();
         if (deathEffectPrefab != null)
