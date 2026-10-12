@@ -16,10 +16,15 @@ public class ObjectPooler : MonoBehaviour
     public List<Pool> pools;
     public Dictionary<string, Queue<GameObject>> poolDictionary;
 
+    // tag -> prefab, so we can recreate an instance if one was destroyed
+    // (e.g. an Exploder that Destroy()s itself, or leftovers after a scene reload).
+    private Dictionary<string, GameObject> prefabByTag;
+
     void Awake()
     {
         Instance = this;
         poolDictionary = new Dictionary<string, Queue<GameObject>>();
+        prefabByTag = new Dictionary<string, GameObject>();
 
         foreach (Pool pool in pools)
         {
@@ -32,7 +37,8 @@ public class ObjectPooler : MonoBehaviour
                 objectPool.Enqueue(obj);
             }
 
-            poolDictionary.Add(pool.tag, objectPool);
+            poolDictionary[pool.tag] = objectPool;
+            prefabByTag[pool.tag] = pool.prefab;
         }
     }
 
@@ -40,14 +46,41 @@ public class ObjectPooler : MonoBehaviour
     {
         if (!poolDictionary.ContainsKey(tag)) return null;
 
-        GameObject objectToSpawn = poolDictionary[tag].Dequeue();
+        Queue<GameObject> queue = poolDictionary[tag];
+        GameObject prefab = prefabByTag.ContainsKey(tag) ? prefabByTag[tag] : null;
 
-        objectToSpawn.SetActive(true);
-        objectToSpawn.transform.position = position;
-        objectToSpawn.transform.rotation = rotation;
+        GameObject chosen = null;
+        int n = queue.Count;
 
-        poolDictionary[tag].Enqueue(objectToSpawn);
+        // Walk the whole queue once: drop/replace destroyed refs, and prefer an
+        // object that is currently inactive so we never teleport a live enemy.
+        for (int i = 0; i < n; i++)
+        {
+            GameObject obj = queue.Dequeue();
 
-        return objectToSpawn;
+            // Unity overloads == so a destroyed object compares equal to null.
+            if (obj == null)
+            {
+                if (prefab == null) continue; // can't recreate; just drop it
+                obj = Instantiate(prefab);
+                obj.SetActive(false);
+            }
+
+            queue.Enqueue(obj);
+            if (chosen == null && !obj.activeSelf) chosen = obj;
+        }
+
+        // Everything alive (or queue was empty of usable objects): grow the pool.
+        if (chosen == null)
+        {
+            if (prefab == null) return null;
+            chosen = Instantiate(prefab);
+            chosen.SetActive(false);
+            queue.Enqueue(chosen);
+        }
+
+        chosen.transform.SetPositionAndRotation(position, rotation);
+        chosen.SetActive(true); // fires the enemy's OnEnable (resets HP / colliders)
+        return chosen;
     }
 }
