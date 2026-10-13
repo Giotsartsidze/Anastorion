@@ -14,7 +14,6 @@ public class UpgradeData : ScriptableObject
         LightRadius,
         WispCount,
         WispSpeed,
-        Pulse,
         PulseCooldown ,
         DashCooldown,
         DashSpeed,
@@ -22,7 +21,9 @@ public class UpgradeData : ScriptableObject
         DartFireRate,
         FireTrail,
         Starfall,
-        HeavenSmite
+        HeavenSmite,
+        Pulse   // MUST stay last — Unity serializes enums by index; inserting mid-list
+                // silently re-maps every existing upgrade asset to the wrong type.
     }
     
     // იშვიათობის სისტემა
