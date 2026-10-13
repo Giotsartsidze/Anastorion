@@ -14,6 +14,7 @@ public class UpgradeData : ScriptableObject
         LightRadius,
         WispCount,
         WispSpeed,
+        Pulse,
         PulseCooldown ,
         DashCooldown,
         DashSpeed,

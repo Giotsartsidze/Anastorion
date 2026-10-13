@@ -18,63 +18,61 @@ public class EliteModifier : MonoBehaviour
     public GameObject eliteIcon;
 
     private bool isElite = false;
+    private Vector3 originalScale;
+    private SpriteRenderer sr;
 
     void Awake()
     {
+        originalScale = transform.localScale;
+        sr = GetComponent<SpriteRenderer>();
         // Awake-ში ვთიშავთ ვიზუალებს, რომ საწყისში არ გამოჩნდეს
         if (auraVisual != null) auraVisual.SetActive(false);
         if (eliteIcon != null) eliteIcon.SetActive(false);
     }
 
-    void Start()
+    // Called by EnemyHealth every (re)spawn, AFTER base health is set, so the
+    // multiplier stacks on the right number and each spawn re-rolls its elite status.
+    public void RollOnSpawn()
     {
-        // რენდომ შანსი ელიტარობისთვის
-        if (Random.Range(0f, 100f) <= eliteChance)
-        {
-            MakeElite();
-        }
+        ResetEliteStatus();
+        if (Random.Range(0f, 100f) <= eliteChance) MakeElite();
     }
-public void ResetEliteStatus()
-{
-    isElite = false;
-    CancelInvoke(nameof(ApplyAuraBuff));
-    if (auraVisual != null) auraVisual.SetActive(false);
-    if (eliteIcon != null) eliteIcon.SetActive(false);
-    // დაუბრუნე საწყისი ფერი და ზომა (თუ საჭიროა)
-    GetComponent<SpriteRenderer>().color = Color.white;
-}
+
+    public void ResetEliteStatus()
+    {
+        isElite = false;
+        CancelInvoke(nameof(ApplyAuraBuff));
+        if (auraVisual != null) auraVisual.SetActive(false);
+        if (eliteIcon != null) eliteIcon.SetActive(false);
+        // restore base size + color (critical now that enemies are pooled/reused)
+        transform.localScale = originalScale;
+        if (sr != null) sr.color = Color.white;
+    }
 
     public void MakeElite()
     {
 		if (isElite) return;
         isElite = true;
-        
-        // 1. ტრანსფორმაცია
-        transform.localScale *= scaleMultiplier;
-        GetComponent<SpriteRenderer>().color = new Color(1, 0.5f, 0, 1); // ნარინჯისფერი
 
-        // 2. ჯანმრთელობის მოდიფიკაცია
+        // 1. ტრანსფორმაცია (from the cached base scale, so reuse never compounds)
+        transform.localScale = originalScale * scaleMultiplier;
+        if (sr != null) sr.color = new Color(1, 0.5f, 0, 1); // ნარინჯისფერი
+
+        // 2. ჯანმრთელობა — ყველა ელიტარი იღებს სრულ მულტიპლაიერს (აღარ კვდება სწრაფად)
         EnemyHealth healthScript = GetComponent<EnemyHealth>();
         if (healthScript != null)
         {
-            if (healthScript.dropType == EnemyHealth.DropType.Health)
-            {
-                healthScript.dropCount = 3;
-                healthScript.health = Mathf.RoundToInt(healthScript.health * healthMultiplier);
-            }
-            else
-            {
-                healthScript.dropCount = 5;
-                healthScript.health = Mathf.RoundToInt(healthScript.health * 1.5f); // ჩვეულებრივ ელიტარს 50%-ით მეტი HP
-            }
+            healthScript.health = Mathf.RoundToInt(healthScript.health * healthMultiplier);
+            healthScript.dropCount = (healthScript.dropType == EnemyHealth.DropType.Health) ? 3 : 5;
         }
 
         // 3. ვიზუალების ჩართვა
         if (auraVisual != null) auraVisual.SetActive(true);
-        if (eliteIcon != null) 
+        if (eliteIcon != null)
         {
             eliteIcon.SetActive(true);
-            eliteIcon.GetComponent<SpriteRenderer>().color = Color.yellow;
+            var isr = eliteIcon.GetComponent<SpriteRenderer>();
+            if (isr != null) isr.color = Color.yellow;
         }
 
         // 4. აურის ლოგიკის გააქტიურება

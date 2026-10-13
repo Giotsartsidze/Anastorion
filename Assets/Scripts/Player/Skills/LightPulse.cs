@@ -10,6 +10,8 @@ public class LightPulse : MonoBehaviour
     public float cooldown = 3f;
     public float knockbackForce = 2f;
     public LayerMask enemyLayer;
+    [Tooltip("Starts OFF — unlocked when the Pulse upgrade card is picked.")]
+    public bool active = false;
 
     private float timer;
 
@@ -20,6 +22,8 @@ public class LightPulse : MonoBehaviour
 
     void Update()
     {
+        if (!active) return; // no longer fires from the start of the run
+
         timer += Time.deltaTime;
         if (timer >= cooldown)
         {

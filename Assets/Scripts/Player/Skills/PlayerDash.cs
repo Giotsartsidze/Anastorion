@@ -12,7 +12,12 @@ public class PlayerDash : MonoBehaviour
     private Rigidbody2D rb;
     public TrailRenderer dashTrail;
 
-    void Start() => rb = GetComponent<Rigidbody2D>();
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        // Kill the persistent trail line before the first dash — it only streaks mid-dash now.
+        if (dashTrail != null) dashTrail.emitting = false;
+    }
 
     void Update()
     {

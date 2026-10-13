@@ -2,17 +2,28 @@ using UnityEngine;
 
 public class EnemyProjectile : MonoBehaviour
 {
-    public float speed = 7f;
+    public float speed = 5f; // slower than before (7) so it's actually dodgeable
     public int damage = 6;
+    [Tooltip("Enlarges the VISUAL so the shot is easy to see. The hitbox is kept the same size.")]
+    public float visualScale = 1.8f;
     private Vector2 targetDirection;
 
     void Start()
     {
-        Transform player = GameObject.FindGameObjectWithTag("Player").transform;
-        if (player != null)
+        // Make the shot read clearly without making it unfair: scale up the sprite,
+        // then shrink the circle collider back so the real hitbox is unchanged.
+        if (visualScale > 1f)
+        {
+            transform.localScale *= visualScale;
+            CircleCollider2D cc = GetComponent<CircleCollider2D>();
+            if (cc != null) cc.radius /= visualScale;
+        }
+
+        GameObject playerGO = GameObject.FindGameObjectWithTag("Player");
+        if (playerGO != null)
         {
             // ითვლის მიმართულებას მხოლოდ გაჩენის მომენტში (არ მიჰყვება ფლეიერს)
-            targetDirection = (player.position - transform.position).normalized;
+            targetDirection = (playerGO.transform.position - transform.position).normalized;
         }
         Destroy(gameObject, 5f); // 5 წამში გაქრეს, რომ მეხსიერება არ გაავსოს
     }

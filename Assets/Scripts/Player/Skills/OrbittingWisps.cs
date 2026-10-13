@@ -6,6 +6,8 @@ public class OrbitingWisps : MonoBehaviour
     public int count = 3;
     public float orbitSpeed = 150f;
     public float radius = 3f;
+    [Tooltip("World scale of each wisp. Bumped up so they read clearly.")]
+    public float wispScale = 2.5f;
 
     // ესენი აკლდა შენს კოდს, რაც ერორს იწვევდა:
     private GameObject[] activeWisps; 
@@ -26,8 +28,7 @@ public class OrbitingWisps : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             activeWisps[i] = Instantiate(wispPrefab, transform.position, Quaternion.identity);
-            // ვამცირებთ ზომას, რომ მოთამაშე არ დაფარონ
-            activeWisps[i].transform.localScale = Vector3.one * 0.5f;
+            activeWisps[i].transform.localScale = Vector3.one * wispScale;
         }
     }
 

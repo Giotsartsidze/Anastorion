@@ -118,8 +118,16 @@ public class UpgradeManager : MonoBehaviour
                 if (wispScript != null) wispScript.orbitSpeed += data.valueModifier;
                 break;
 
+            case UpgradeData.UpgradeType.Pulse:
+                if (lightPulse != null)
+                {
+                    if (!lightPulse.active) lightPulse.active = true;            // first pick: unlock the skill
+                    else lightPulse.maxRadius += Mathf.Max(0.5f, data.valueModifier); // later: bigger blast
+                }
+                break;
+
             case UpgradeData.UpgradeType.PulseCooldown:
-                if (lightPulse != null) lightPulse.cooldown -= data.valueModifier;
+                if (lightPulse != null) lightPulse.cooldown = Mathf.Max(0.5f, lightPulse.cooldown - data.valueModifier);
                 break;
 
             case UpgradeData.UpgradeType.DashCooldown:

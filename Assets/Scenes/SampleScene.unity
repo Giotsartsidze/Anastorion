@@ -7289,6 +7289,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f19f4931d77a3413d827d7d9e264ae66, type: 2}
   - {fileID: 11400000, guid: f2c9204c8bb784453bf647052a2d7ac6, type: 2}
   - {fileID: 11400000, guid: fee7913f5262748fbbda69d1e2f5716e, type: 2}
+  - {fileID: 11400000, guid: 350dfdece89a94f9e874b0adcec93478, type: 2}
+  - {fileID: 11400000, guid: 0a7051cada7c84e1d8368a4ca1d6b80c, type: 2}
+  - {fileID: 11400000, guid: 82db48d5ce09340e28201532de350fcc, type: 2}
+  - {fileID: 11400000, guid: 2d45a816289924e11adfd8d5333ed705, type: 2}
   lockedUpgrades:
   - {fileID: 11400000, guid: fee7913f5262748fbbda69d1e2f5716e, type: 2}
   - {fileID: 11400000, guid: f2c9204c8bb784453bf647052a2d7ac6, type: 2}
@@ -12173,6 +12177,9 @@ GameObject:
   - component: {fileID: 1470765124}
   - component: {fileID: 1470765125}
   - component: {fileID: 1470765126}
+  - component: {fileID: 1470765127}
+  - component: {fileID: 1470765128}
+  - component: {fileID: 1470765129}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -12740,6 +12747,67 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   lightningLinePrefab: {fileID: 4945538880278536144, guid: 5b48c8c13733c4488a518d3b8d044e17, type: 3}
+--- !u!114 &1470765127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1470765108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08acd3da167224c37bfadb872785ace8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firePatchPrefab: {fileID: 3165687802742882939, guid: 011b19c6aa15b4efea5cc8c5f8b9bd87, type: 3}
+  dropInterval: 0.4
+  minMoveDistance: 0.4
+  active: 0
+  patchDamage: 2
+  patchRadius: 1.2
+  evolved: 0
+--- !u!114 &1470765128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1470765108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d0abbf450e7d4b548d4641d83900765, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meteorPrefab: {fileID: 1838791654466902195, guid: 36b5e28e6cda241c6abaf4248178f295, type: 3}
+  interval: 3
+  meteorCount: 3
+  range: 8
+  meteorDamage: 12
+  meteorRadius: 1.5
+  active: 0
+  evolved: 0
+--- !u!114 &1470765129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1470765108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b99cfd73142343b781730cac1f14f43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boltVfxPrefab: {fileID: 4550254610868402834, guid: 410bb8f6694fc4709876d29418d6e269, type: 3}
+  interval: 2.5
+  range: 10
+  damage: 25
+  splashRadius: 1.5
+  splashDamage: 8
+  vfxLifetime: 0.3
+  strikeCount: 1
+  active: 0
+  evolved: 0
 --- !u!1 &1472884184
 GameObject:
   m_ObjectHideFlags: 0

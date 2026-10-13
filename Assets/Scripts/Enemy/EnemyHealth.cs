@@ -35,17 +35,12 @@ public class EnemyHealth : MonoBehaviour
     private DeathPop deathPop;
     private CharacterAnimator characterAnimator;
     private Collider2D[] bodyColliders;
+    private int baseHealth;          // inspector HP, before difficulty/elite scaling
+    private EliteModifier eliteModifier;
 
-    void Start()
+    void Awake()
     {
-        if (DifficultyManager.Instance == null)
-            DifficultyManager.Instance = FindFirstObjectByType<DifficultyManager>();
-
-        if (DifficultyManager.Instance != null)
-        {
-            float multiplier = DifficultyManager.Instance.GetDifficultyMultiplier();
-            health = Mathf.RoundToInt(health * multiplier);
-        }
+        baseHealth = health; // snapshot the designed HP once, before anything scales it
 
         // Auto-wire feel components so every enemy gets them with zero prefab setup.
         hitFlash = GetComponent<HitFlash>();
@@ -57,14 +52,32 @@ public class EnemyHealth : MonoBehaviour
         // NOT auto-added: frame sheets must be assigned per prefab in the Inspector.
         characterAnimator = GetComponent<CharacterAnimator>();
         bodyColliders = GetComponentsInChildren<Collider2D>();
+        eliteModifier = GetComponent<EliteModifier>();
     }
 
-    // Pooled respawn: come back fully alive and interactive.
+    // Pooled respawn: come back fully alive and interactive, at full HP.
     void OnEnable()
     {
         isDying = false;
         if (bodyColliders != null)
             foreach (var c in bodyColliders) if (c != null) c.enabled = true;
+        ApplySpawnHealth();
+    }
+
+    // Recompute HP from the designed base + current difficulty, then let the elite
+    // roll (if any) multiply on top. Runs on every spawn so reused enemies aren't
+    // stuck at the leftover 1 HP from their previous death.
+    void ApplySpawnHealth()
+    {
+        if (DifficultyManager.Instance == null)
+            DifficultyManager.Instance = FindFirstObjectByType<DifficultyManager>();
+
+        float multiplier = DifficultyManager.Instance != null
+            ? DifficultyManager.Instance.GetDifficultyMultiplier() : 1f;
+
+        health = Mathf.Max(1, Mathf.RoundToInt(baseHealth * multiplier));
+
+        if (eliteModifier != null) eliteModifier.RollOnSpawn(); // stacks its multiplier after this
     }
 
     // Kept for callers that don't know the hit's origin (no knockback direction).

@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a20b4fe17a88347d6862b8ad66a51fe1, type: 3}
   m_Name: Heaven_Smite
   m_EditorClassIdentifier: 
-  upgradeName: 
-  description: 
-  icon: {fileID: 0}
-  type: 0
-  rarity: 0
-  valueModifier: 0
+  upgradeName: Heaven's Smite
+  description: Lightning strikes the strongest enemy
+  icon: {fileID: -4609788468968903571, guid: 0396884bca6504364b8b31d8e10a1991, type: 3}
+  type: 11
+  rarity: 1
+  valueModifier: 10
