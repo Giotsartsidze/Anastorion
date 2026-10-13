@@ -1,6 +1,11 @@
 from PIL import Image
 import math, random
 
+# Amirani — the version we liked, with 4 tweaks:
+#  * sword removed (weapon is thrown starlight), both hands now free
+#  * golden full-body halo/aura removed (that read as a saint's glow)
+#  * chunkier broken shackles + dangling chains hanging from BOTH wrists
+#  * hair shortened a little
 W=H=48
 MAG=(255,0,255)
 OUT=(10,8,22)
@@ -24,26 +29,18 @@ class Canvas:
         for y in range(y0,y1+1):
             for x in range(x0,x1+1): s.px(x,y,c)
 
-def draw_sword(c,hx,hy,d,glow_phase,length=10):
-    dx,dy=d
-    # pommel + grip
-    c.px(hx-dx,hy-dy,GOLD,True)
-    # guard perpendicular
-    px_,py_=-dy,dx
-    for k in (-2,-1,0,1,2):
-        c.px(hx+dx+k*px_ if False else hx+dx+k*(1 if dx*dy>0 else 1)*(-dy if False else 0)+k*px_, hy+dy+k*py_, GOLD if abs(k)<2 else GOLD_D, True)
-    for i in range(2,length+1):
-        x,y=hx+dx*i,hy+dy*i
-        c.px(x,y,WHITE,True)
-        c.px(x+1 if dx<0 else x-1,y,GOLD_L if i<length else None,True)
-    # glow sparkles along blade
-    for i in range(3,length+1,3):
-        j=(i+glow_phase)%4
-        x,y=hx+dx*i,hy+dy*i
-        if j==0: c.px(x-1 if dx<0 else x+1, y-1, CYAN, True)
-        if j==2: c.px(x+2 if dx<0 else x-2, y+1, CYAN, True)
-    tx,ty=hx+dx*(length+1),hy+dy*(length+1)
-    c.px(tx,ty,CYAN if glow_phase%2 else GOLD_L,True)
+def draw_chain(c,x,y,sign):
+    # Chunky broken shackle cuff on the wrist + dangling snapped links.
+    # x,y = wrist anchor; sign = -1 drifts left, +1 drifts right.
+    for dx in (-1,0,1):
+        c.px(x+dx,y,STEEL_L if dx==0 else STEEL)
+        c.px(x+dx,y+1,STEEL if dx==0 else STEEL_L)
+    rows=((y+3,0),(y+4,0),(y+6,1),(y+7,1),(y+9,1))
+    for i,(ly,off) in enumerate(rows):
+        xx=x+sign*off
+        a=STEEL_L if i%2 else STEEL
+        b=STEEL if i%2 else STEEL_L
+        c.px(xx,ly,a); c.px(xx+sign,ly,b)
 
 def render(p):
     c=Canvas()
@@ -90,11 +87,10 @@ def render(p):
     c.px(17+L,T0,CLK_L); c.px(18+L,T0,CLK_L); c.px(21+L,T0+1,GOLD_D)
     # neck
     c.rect(22+L,T0-1,25+L,T0-1,SKIN_D)
-    # hair back/long
+    # hair back (shortened a little)
     hs=p.get('hair',0)
-    for x,y0,y1 in ((19,hy,hy+11),(28,hy,hy+11),(18,hy+3,hy+11),(29,hy+3,hy+11)):
+    for x,y0,y1 in ((19,hy,hy+7),(28,hy,hy+7),(18,hy+3,hy+7),(29,hy+3,hy+7)):
         c.rect(x+L+hs,y0,x+L+hs,y1,HAIR)
-    c.px(18+L+hs,hy+12,HAIR); c.px(29+L+hs,hy+12,HAIR)
     # face
     c.rect(20+L,hy,27+L,hy+7,SKIN); c.rect(27+L,hy,27+L,hy+7,SKIN_D)
     c.px(21+L,hy+2,SKIN_L); c.px(21+L,hy+3,SKIN_L)
@@ -115,29 +111,23 @@ def render(p):
     c.rect(20+L,hy+6,27+L,hy+7,HAIR); c.rect(21+L,hy+8,26+L,hy+8,HAIR); c.rect(22+L,hy+9,25+L,hy+9,HAIR)
     c.rect(23+L,hy+7,24+L,hy+7,SKIN_D)
     c.px(21+L,hy+6,HAIR_L)
-    # free arm (screen right)
+    # free arm (screen right) + broken chain
     ad=p.get('rad',0)
     for y in range(T0+2,T0+10+ad):
         c.px(31+L,y,SKIN); c.px(32+L,y,SKIN_D)
     c.rect(31+L,T0+6+ad,32+L,T0+7+ad,GOLD_D); c.px(31+L,T0+6+ad,GOLD)
     c.rect(31+L,T0+10+ad,32+L,T0+11+ad,SKIN)
-    # broken chain
-    for i,(cx,cy) in enumerate(((33,7),(33,8),(34,9),(34,10),(34,11))):
-        if i<p.get('chain',5): c.px(cx+L,T0+cy+ad,STEEL_L if i%2 else STEEL)
-    # sword arm (screen left)
+    if not p.get('dead'): draw_chain(c,32+L,T0+11+ad,+1)
+    # free arm (screen left) — was the sword arm; now a free fist + broken chain
     sd=p.get('lad',0)
-    for y in range(T0+2,T0+8+sd):
+    for y in range(T0+2,T0+10+sd):
         c.px(15+L,y,SKIN_L); c.px(16+L,y,SKIN)
-    c.rect(14+L,T0+8+sd,15+L,T0+9+sd,SKIN)
     c.rect(15+L,T0+5+sd,16+L,T0+6+sd,GOLD_D); c.px(15+L,T0+5+sd,GOLD)
-    hx,hyy=13+L,T0+10+sd
-    c.rect(hx,hyy,hx+1,hyy+1,SKIN)
-    sw=p.get('sword','up')
-    if sw=='up': draw_sword(c,hx,hyy,(-1,-1),p.get('glow',0))
-    elif sw=='low': draw_sword(c,hx,hyy+1,(-1,1),p.get('glow',0),8)
+    c.rect(14+L,T0+10+sd,15+L,T0+11+sd,SKIN)
+    if not p.get('dead'): draw_chain(c,15+L,T0+11+sd,-1)
     return c
 
-def finish(c,frame=0,aura=True,rim=True):
+def finish(c,frame=0,aura=False,rim=True):
     g=c.g
     filled=lambda x,y:0<=x<W and 0<=y<H and g[y][x] is not None
     # rim light (left edges)
@@ -152,11 +142,11 @@ def finish(c,frame=0,aura=True,rim=True):
             if g[y][x] is None:
                 nb=[(x+a,y+b) for a,b in ((1,0),(-1,0),(0,1),(0,-1))]
                 if any(filled(*n) for n in nb):
-                    out[y][x]=CYAN_D if any(n in c.sword for n in nb if filled(*n)) else OUT
+                    out[y][x]=OUT
     for y in range(H):
         for x in range(W):
             if out[y][x]: g[y][x]=out[y][x]
-    if aura:
+    if aura:  # off now — no more golden body halo
         cand=[]
         for y in range(H):
             for x in range(W):
@@ -198,25 +188,28 @@ for i in range(6):
 # ---------- DEATH ----------
 random.seed(7)
 death=[]
+
+def add_chain_ground(c,x0):
+    for i in range(7): c.px(x0+i,45,STEEL_L if i%2 else STEEL)
+    c.px(x0,44,STEEL); c.px(x0+6,44,STEEL)
+    c.px(x0+3,44,STEEL_L)
+
 # 0 hit flash
-c=render(dict(lean=1,glow=0,chain=5)); 
+c=render(dict(lean=1,glow=0,chain=5))
 for y in range(H):
     for x in range(W):
         if c.g[y][x]: c.g[y][x]=tuple(int(a*0.35+255*0.65) for a in c.g[y][x])
-death.append(finish(c,0,aura=False,rim=False))
+death.append(finish(c,0,rim=False))
 # 1 buckle
-death.append(finish(render(dict(bd=3,sword='low',glow=1,rad=1,lad=0,dead=True)),1))
-# 2 kneel
-c=render(dict(bd=6,sword='none',rad=2,lad=2,dead=True,llift=0,rlift=0))
-# dropped sword on ground
-for i in range(10): c.px(2+i,44,WHITE if i<9 else GOLD_L,True); c.px(2+i,45,GOLD_D if i%3 else None,True)
-c.px(12,43,GOLD,True); c.px(12,45,GOLD,True); c.px(13,44,GOLD,True)
-death.append(finish(c,2,aura=False))
+death.append(finish(render(dict(bd=3,glow=1,rad=1,lad=0,dead=True)),1))
+# 2 kneel + snapped chain on the ground
+c=render(dict(bd=6,rad=2,lad=2,dead=True,llift=0,rlift=0))
+add_chain_ground(c,3)
+death.append(finish(c,2))
 # 3 fallen: rotate an upright dead body 90deg
 def fallen_grid():
-    b=render(dict(sword='none',dead=True,rad=0,lad=0))
-    im=to_img(b).rotate(90,expand=False)  # head to the left
-    # find bbox and move to lie on ground
+    b=render(dict(dead=True,rad=0,lad=0))
+    im=to_img(b).rotate(90,expand=False)
     bb=im.getbbox(); body=im.crop(bb)
     canvas=Image.new('RGBA',(W,H),(0,0,0,0))
     ox=(W-body.width)//2; oy=45-body.height
@@ -228,11 +221,8 @@ def fallen_grid():
             if a: g[y][x]=(r,gg,bl)
     return g
 fg=fallen_grid()
-def add_sword_ground(c):
-    for i in range(10): c.px(34+i,45,WHITE if i<9 else GOLD_L,True)
-    c.px(33,44,GOLD,True); c.px(33,46,GOLD,True); c.px(32,45,GOLD,True)
-c=from_grid([row[:] for row in fg],set()); add_sword_ground(c)
-death.append(finish(c,3,aura=False))
+c=from_grid([row[:] for row in fg],set()); add_chain_ground(c,34)
+death.append(finish(c,3))
 # 4-6 dissolve to golden sparks
 body_px=[(x,y) for y in range(H) for x in range(W) if fg[y][x]]
 for step,(keep,rise,nspark) in enumerate(((0.55,4,40),(0.18,9,30),(0.0,15,14))):
@@ -240,8 +230,8 @@ for step,(keep,rise,nspark) in enumerate(((0.55,4,40),(0.18,9,30),(0.0,15,14))):
     for (x,y) in body_px:
         if random.random()<keep: g[y][x]=fg[y][x]
     c=from_grid(g,set())
-    if keep>0: add_sword_ground(c)
-    c=finish(c,4+step,aura=False)
+    if keep>0: add_chain_ground(c,34)
+    c=finish(c,4+step)
     for _ in range(nspark):
         x,y=random.choice(body_px)
         ny=y-random.randint(1,rise)-step*2
@@ -252,7 +242,6 @@ anims={'idle':idle,'run':run,'death':death}
 import os
 os.makedirs('out',exist_ok=True)
 S=4
-rows=[]
 for name,frames in anims.items():
     for bgname,bg in (('magenta',MAG),('transparent',None)):
         sheet=Image.new('RGBA',(W*len(frames),H),(0,0,0,0) if bg is None else bg+(255,))
@@ -260,20 +249,17 @@ for name,frames in anims.items():
             im=to_img(f); sheet.alpha_composite(im,(i*W,0))
         sheet.save(f'out/amirani_{name}_{bgname}_48px.png')
         sheet.resize((sheet.width*S,sheet.height*S),Image.NEAREST).save(f'out/amirani_{name}_{bgname}_x4.png')
-    # gif preview on dark bg
     dur={'idle':180,'run':90,'death':140}[name]
     gifs=[]
     for f in frames:
         bgim=Image.new('RGBA',(W,H),(14,16,34,255)); bgim.alpha_composite(to_img(f))
         gifs.append(bgim.convert('RGB').resize((W*6,H*6),Image.NEAREST))
     gifs[0].save(f'out/preview_{name}.gif',save_all=True,append_images=gifs[1:],duration=dur,loop=0)
-# combined atlas (rows: idle, run, death) magenta
 maxf=max(len(v) for v in anims.values())
 atlas=Image.new('RGBA',(W*maxf,H*3),MAG+(255,))
 for r,(n,frames) in enumerate(anims.items()):
     for i,f in enumerate(frames): atlas.alpha_composite(to_img(f),(i*W,r*H))
 atlas.save('out/amirani_atlas_magenta_48px.png')
-# review sheet on dark
 rev=Image.new('RGBA',(W*maxf,H*3),(14,16,34,255))
 for r,(n,frames) in enumerate(anims.items()):
     for i,f in enumerate(frames): rev.alpha_composite(to_img(f),(i*W,r*H))
