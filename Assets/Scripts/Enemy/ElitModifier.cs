@@ -20,14 +20,29 @@ public class EliteModifier : MonoBehaviour
     private bool isElite = false;
     private Vector3 originalScale;
     private SpriteRenderer sr;
+    private GameObject glow;        // runtime silhouette-glow behind the enemy
+    private SpriteRenderer glowSr;
 
     void Awake()
     {
         originalScale = transform.localScale;
-        sr = GetComponent<SpriteRenderer>();
+        sr = GetComponentInChildren<SpriteRenderer>();
         // Awake-ში ვთიშავთ ვიზუალებს, რომ საწყისში არ გამოჩნდეს
         if (auraVisual != null) auraVisual.SetActive(false);
         if (eliteIcon != null) eliteIcon.SetActive(false);
+    }
+
+    // A tinted copy of the enemy's sprite, slightly larger and behind it, pulsing.
+    // Reads unmistakably as "elite" and survives HitFlash (separate renderer).
+    void EnsureGlow()
+    {
+        if (glow != null || sr == null) return;
+        glow = new GameObject("EliteGlow");
+        glow.transform.SetParent(sr.transform, false);
+        glow.transform.localPosition = Vector3.zero;
+        glowSr = glow.AddComponent<SpriteRenderer>();
+        glowSr.sortingLayerID = sr.sortingLayerID;
+        glowSr.sortingOrder = sr.sortingOrder - 1; // sits behind the body
     }
 
     // Called by EnemyHealth every (re)spawn, AFTER base health is set, so the
@@ -44,6 +59,7 @@ public class EliteModifier : MonoBehaviour
         CancelInvoke(nameof(ApplyAuraBuff));
         if (auraVisual != null) auraVisual.SetActive(false);
         if (eliteIcon != null) eliteIcon.SetActive(false);
+        if (glow != null) glow.SetActive(false);
         // restore base size + color (critical now that enemies are pooled/reused)
         transform.localScale = originalScale;
         if (sr != null) sr.color = Color.white;
@@ -67,6 +83,8 @@ public class EliteModifier : MonoBehaviour
         }
 
         // 3. ვიზუალების ჩართვა
+        EnsureGlow();
+        if (glow != null) glow.SetActive(true);
         if (auraVisual != null) auraVisual.SetActive(true);
         if (eliteIcon != null)
         {
@@ -98,11 +116,24 @@ public class EliteModifier : MonoBehaviour
 
     void Update()
     {
-        // აურის "Pulse" ეფექტი
-        if (isElite && auraVisual != null)
+        if (!isElite) return;
+
+        // optional assigned aura visual
+        if (auraVisual != null)
         {
-            float pulse = 1f + Mathf.Sin(Time.time * 3f) * 0.1f;
-            auraVisual.transform.localScale = new Vector3(pulse, pulse, 1);
+            float p = 1f + Mathf.Sin(Time.time * 3f) * 0.1f;
+            auraVisual.transform.localScale = new Vector3(p, p, 1);
+        }
+
+        // runtime silhouette-glow: keep it synced to the animated sprite + pulse it
+        if (glowSr != null && sr != null)
+        {
+            glowSr.sprite = sr.sprite;
+            glowSr.flipX = sr.flipX;
+            float beat = Mathf.Sin(Time.time * 6f);
+            float scale = 1.18f + beat * 0.06f;
+            glow.transform.localScale = new Vector3(scale, scale, 1f);
+            glowSr.color = new Color(1f, 0.45f, 0.05f, 0.55f + beat * 0.15f); // pulsing orange halo
         }
     }
 
