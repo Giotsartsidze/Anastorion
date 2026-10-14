@@ -37,6 +37,7 @@ public class EnemyHealth : MonoBehaviour
     private Collider2D[] bodyColliders;
     private int baseHealth;          // inspector HP, before difficulty/elite scaling
     private EliteModifier eliteModifier;
+    [HideInInspector] public GameObject overrideDropPrefab; // mega-elite drops this (a Relic) instead of XP
 
     void Awake()
     {
@@ -59,6 +60,7 @@ public class EnemyHealth : MonoBehaviour
     void OnEnable()
     {
         isDying = false;
+        overrideDropPrefab = null; // clear any mega-drop from a previous life
         if (bodyColliders != null)
             foreach (var c in bodyColliders) if (c != null) c.enabled = true;
         ApplySpawnHealth();
@@ -132,21 +134,29 @@ public class EnemyHealth : MonoBehaviour
         else
             yield return new WaitForSeconds(deathPopDuration);
 
-        // 1. ვაჩენთ XP-ს ან სიცოცხლეს
-        GameObject prefabToSpawn = (dropType == DropType.Health) ? healthPackPrefab : coinPrefab;
-        if (prefabToSpawn != null)
+        if (overrideDropPrefab != null)
         {
-            for (int i = 0; i < dropCount; i++)
-            {
-                Vector3 offset = new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0);
-                Instantiate(prefabToSpawn, transform.position + offset, Quaternion.identity);
-            }
+            // Mega-elite: drop a single Relic instead of the usual XP/shard spray.
+            Instantiate(overrideDropPrefab, transform.position, Quaternion.identity);
         }
-
-        // 2. ვაჩენთ მუდმივ ქოინს (Shard) შანსის მიხედვით
-        if (shardPrefab != null && Random.value <= shardDropChance)
+        else
         {
-            Instantiate(shardPrefab, transform.position, Quaternion.identity);
+            // 1. ვაჩენთ XP-ს ან სიცოცხლეს
+            GameObject prefabToSpawn = (dropType == DropType.Health) ? healthPackPrefab : coinPrefab;
+            if (prefabToSpawn != null)
+            {
+                for (int i = 0; i < dropCount; i++)
+                {
+                    Vector3 offset = new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0);
+                    Instantiate(prefabToSpawn, transform.position + offset, Quaternion.identity);
+                }
+            }
+
+            // 2. ვაჩენთ მუდმივ ქოინს (Shard) შანსის მიხედვით
+            if (shardPrefab != null && Random.value <= shardDropChance)
+            {
+                Instantiate(shardPrefab, transform.position, Quaternion.identity);
+            }
         }
 
         if (RunStats.Instance != null) RunStats.Instance.RegisterKill();

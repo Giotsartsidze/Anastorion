@@ -34,6 +34,12 @@ public class WaveManager : MonoBehaviour
     private bool isEliteEventActive = false;
     private float lastEventMinute = 0;
 
+    [Header("Mega Elite Settings")]
+    [Tooltip("A mega-elite (tanky, drops a Relic) spawns this often, in seconds.")]
+    public float megaEliteInterval = 90f;
+    public GameObject megaEliteUI;      // optional "MEGA ELITE!" banner
+    private float nextMegaTime = 90f;
+
     [Header("Debug — see every enemy quickly")]
     [Tooltip("Ignores time-gates and cycles through ALL enemies one by one. Turn OFF for real play.")]
     public bool debugSpawnAll = false;
@@ -62,6 +68,13 @@ public class WaveManager : MonoBehaviour
             StartCoroutine(TriggerEliteEvent());
         }
 
+        // mega-elite on its own timer (tanky, drops a Relic)
+        if (currentTime >= nextMegaTime)
+        {
+            nextMegaTime += megaEliteInterval;
+            SpawnMegaElite(currentTime);
+        }
+
         // ბოსის სპაუნინგი
         if (!bossSpawned && currentTime >= 420f) SpawnBoss(); // boss as the ~7min climax
 
@@ -86,6 +99,42 @@ IEnumerator TriggerEliteEvent()
 
         isEliteEventActive = false;
         if (eliteEventUI != null) eliteEventUI.SetActive(false);
+    }
+
+    void SpawnMegaElite(float currentTime)
+    {
+        if (ObjectPooler.Instance == null || player == null) return;
+
+        // Only archetypes that can actually become a mega (have EliteModifier) and
+        // aren't the boss or a swarm unit.
+        List<EnemyArchetype> available = new List<EnemyArchetype>();
+        foreach (var e in enemyPool)
+        {
+            if (e.isSwarm || currentTime < e.startTime || e.prefab == null) continue;
+            if (e.prefab.GetComponent<EliteModifier>() == null) continue;
+            if (e.prefab.GetComponent<BossHealth>() != null) continue;
+            available.Add(e);
+        }
+        if (available.Count == 0) return;
+
+        EnemyArchetype pick = available[Random.Range(0, available.Count)];
+        Vector2 dir = Random.insideUnitCircle.normalized * 22f;
+        Vector3 pos = player.position + (Vector3)dir;
+
+        GameObject mega = ObjectPooler.Instance.SpawnFromPool(pick.name, pos, Quaternion.identity);
+        if (mega != null)
+        {
+            EliteModifier em = mega.GetComponent<EliteModifier>();
+            if (em != null) em.MakeMega();
+        }
+        if (megaEliteUI != null) StartCoroutine(FlashMegaUI());
+    }
+
+    IEnumerator FlashMegaUI()
+    {
+        megaEliteUI.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        if (megaEliteUI != null) megaEliteUI.SetActive(false);
     }
 
     void SpawnEnemy(float currentTime)

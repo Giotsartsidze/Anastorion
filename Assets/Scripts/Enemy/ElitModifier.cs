@@ -17,7 +17,14 @@ public class EliteModifier : MonoBehaviour
     [Header("Visual Identifier")]
     public GameObject eliteIcon;
 
+    [Header("Mega Elite")]
+    [Tooltip("Dropped when a mega-elite dies (a Relic pickup) instead of XP.")]
+    public GameObject relicPrefab;
+    public float megaHealthMultiplier = 8f;
+    public float megaScaleMultiplier = 1.8f;
+
     private bool isElite = false;
+    private bool isMega = false;
     private Vector3 originalScale;
     private SpriteRenderer sr;
     private GameObject glow;        // runtime silhouette-glow behind the enemy
@@ -56,6 +63,7 @@ public class EliteModifier : MonoBehaviour
     public void ResetEliteStatus()
     {
         isElite = false;
+        isMega = false;
         CancelInvoke(nameof(ApplyAuraBuff));
         if (auraVisual != null) auraVisual.SetActive(false);
         if (eliteIcon != null) eliteIcon.SetActive(false);
@@ -97,6 +105,28 @@ public class EliteModifier : MonoBehaviour
         InvokeRepeating(nameof(ApplyAuraBuff), 0.5f, 0.5f);
     }
 
+    /// <summary>
+    /// Promote this spawn to a mega-elite: much tankier + larger, violet glow, and
+    /// it drops a Relic instead of XP. Called by WaveManager on the mega timer.
+    /// </summary>
+    public void MakeMega()
+    {
+        MakeElite();          // base elite setup (guarded so it won't double-apply)
+        isMega = true;
+        transform.localScale = originalScale * megaScaleMultiplier;
+        if (sr != null) sr.color = new Color(0.72f, 0.42f, 1f, 1f); // violet body tint
+
+        EnemyHealth hp = GetComponent<EnemyHealth>();
+        if (hp != null)
+        {
+            // MakeElite already applied healthMultiplier; scale up to the net mega amount.
+            float extra = Mathf.Max(1f, megaHealthMultiplier / Mathf.Max(1f, healthMultiplier));
+            hp.health = Mathf.RoundToInt(hp.health * extra);
+            hp.overrideDropPrefab = relicPrefab;
+            hp.dropCount = 1;
+        }
+    }
+
     void ApplyAuraBuff()
     {
         if (!isElite) return;
@@ -131,9 +161,11 @@ public class EliteModifier : MonoBehaviour
             glowSr.sprite = sr.sprite;
             glowSr.flipX = sr.flipX;
             float beat = Mathf.Sin(Time.time * 6f);
-            float scale = 1.18f + beat * 0.06f;
+            float scale = (isMega ? 1.24f : 1.18f) + beat * 0.06f;
             glow.transform.localScale = new Vector3(scale, scale, 1f);
-            glowSr.color = new Color(1f, 0.45f, 0.05f, 0.55f + beat * 0.15f); // pulsing orange halo
+            glowSr.color = isMega
+                ? new Color(0.75f, 0.35f, 1f, 0.6f + beat * 0.18f)   // violet mega halo
+                : new Color(1f, 0.45f, 0.05f, 0.55f + beat * 0.15f); // orange elite halo
         }
     }
 

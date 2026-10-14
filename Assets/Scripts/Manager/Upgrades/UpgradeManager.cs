@@ -82,6 +82,28 @@ public class UpgradeManager : MonoBehaviour
         }
     }
 
+    // Relic reward (from a mega-elite): same panel, but biased to the best cards.
+    public void ShowRelicReward()
+    {
+        if (levelUpPanel == null) return;
+        levelUpPanel.SetActive(true);
+        Time.timeScale = 0f;
+
+        var picks = activeUpgrades
+            .OrderByDescending(u => (int)u.rarity)
+            .ThenBy(_ => Random.value)
+            .Take(3).ToList();
+
+        for (int i = 0; i < picks.Count; i++)
+        {
+            if (i < cardUI.Length && cardUI[i] != null)
+            {
+                cardUI[i].Setup(picks[i], this);
+                cardUI[i].AnimateIn(i * 0.15f);
+            }
+        }
+    }
+
     public void ApplyUpgrade(UpgradeData data)
     {
         switch (data.type)
