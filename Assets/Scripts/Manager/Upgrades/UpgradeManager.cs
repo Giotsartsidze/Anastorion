@@ -115,6 +115,7 @@ public class UpgradeManager : MonoBehaviour
                 return lightPulse == null || !lightPulse.active;
 
             case UpgradeData.UpgradeType.PulseCooldown:  // only useful once Pulse exists
+            case UpgradeData.UpgradeType.LightRadius:    // only grows the Pulse — gate it too
                 return lightPulse != null && lightPulse.active;
 
             case UpgradeData.UpgradeType.WispSpeed:      // pointless without wisps

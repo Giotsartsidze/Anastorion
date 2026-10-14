@@ -17,6 +17,9 @@ public class ChainLash : MonoBehaviour
     public float pullForce = 6f;       // yank toward the player
     public float vfxLifetime = 0.15f;
     public Color chainColor = new Color(0.78f, 0.80f, 0.90f, 1f);
+    [Tooltip("Assign chain_link.png (Texture type, Wrap: Repeat) to draw real chain links. Empty = plain line.")]
+    public Texture2D chainTexture;
+    public float chainWidth = 0.4f;
     public bool active = false;        // turned on when the Chain Lash card is picked
     public bool evolved = false;       // Titan's Wrath evolution
 
@@ -83,21 +86,40 @@ public class ChainLash : MonoBehaviour
     {
         GameObject go = new GameObject("ChainLashVfx");
         LineRenderer lr = go.AddComponent<LineRenderer>();
+
         if (lineMat == null)
         {
             Shader sh = Shader.Find("Sprites/Default");
-            if (sh != null) lineMat = new Material(sh);
+            if (sh != null)
+            {
+                lineMat = new Material(sh);
+                if (chainTexture != null)
+                {
+                    chainTexture.wrapMode = TextureWrapMode.Repeat;
+                    lineMat.mainTexture = chainTexture;
+                }
+            }
         }
         if (lineMat != null) lr.material = lineMat;
+
         lr.positionCount = 2;
         lr.SetPosition(0, a);
         lr.SetPosition(1, b);
-        lr.startWidth = 0.18f;
-        lr.endWidth = 0.10f;
-        lr.numCapVertices = 2;
-        lr.startColor = chainColor;
-        lr.endColor = chainColor;
+        lr.numCapVertices = 0;
         lr.sortingOrder = 50;
+
+        if (chainTexture != null)
+        {
+            lr.textureMode = LineTextureMode.Tile;         // repeat the links along the line
+            lr.startWidth = lr.endWidth = chainWidth;
+            lr.startColor = lr.endColor = Color.white;      // let the steel texture show true
+        }
+        else
+        {
+            lr.startWidth = 0.18f; lr.endWidth = 0.10f;      // fallback plain line
+            lr.startColor = lr.endColor = chainColor;
+        }
+
         Destroy(go, vfxLifetime);
     }
 }
