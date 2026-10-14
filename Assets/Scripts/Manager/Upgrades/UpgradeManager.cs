@@ -34,6 +34,7 @@ public class UpgradeManager : MonoBehaviour
     private int fireTrailLevel = 0;
     private int starfallLevel = 0;
     private int smiteLevel = 0;
+    private int chainLashLevel = 0;
     private bool isCometUnlocked = false;
     private bool isMeteorStormUnlocked = false;
     private bool isThunderstormUnlocked = false;
@@ -172,6 +173,17 @@ public class UpgradeManager : MonoBehaviour
                     else smite.damage += Mathf.Max(1, Mathf.RoundToInt(data.valueModifier)); // later: harder strikes
                 }
                 smiteLevel++;
+                break;
+
+            case UpgradeData.UpgradeType.ChainLash:
+                var chain = FindObjectOfType<ChainLash>();
+                if (chain != null)
+                {
+                    if (!chain.active) chain.active = true;               // first pick: unlock
+                    else { chain.lashCount += 1; chain.damage += Mathf.Max(1, Mathf.RoundToInt(data.valueModifier)); }
+                }
+                chainLashLevel++;
+                if (chainLashLevel >= 5) FindObjectOfType<ChainLash>()?.Evolve(); // Titan's Wrath
                 break;
         }
 

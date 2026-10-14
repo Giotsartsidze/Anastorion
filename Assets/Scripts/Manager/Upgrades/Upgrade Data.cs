@@ -22,8 +22,8 @@ public class UpgradeData : ScriptableObject
         FireTrail,
         Starfall,
         HeavenSmite,
-        Pulse   // MUST stay last — Unity serializes enums by index; inserting mid-list
-                // silently re-maps every existing upgrade asset to the wrong type.
+        Pulse,      // Unity serializes enums by index; ALWAYS append new types to the
+        ChainLash   // END — inserting mid-list silently re-maps every existing asset.
     }
     
     // იშვიათობის სისტემა
