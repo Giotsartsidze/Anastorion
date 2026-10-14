@@ -450,6 +450,7 @@ MonoBehaviour:
   knockbackForce: 10
   deathShakeForce: 1
   deathPopDuration: 0.15
+  overrideDropPrefab: {fileID: 0}
 --- !u!114 &-3116202858233034451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -472,6 +473,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   eliteIcon: {fileID: 3151931686144896229}
+  relicPrefab: {fileID: 3514380153798885843, guid: d961f7e636c1949cca8c744ca388064b, type: 3}
+  megaHealthMultiplier: 8
+  megaScaleMultiplier: 1.8
 --- !u!114 &3177904838914247380
 MonoBehaviour:
   m_ObjectHideFlags: 0
