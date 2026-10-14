@@ -213,6 +213,28 @@ public class UpgradeManager : MonoBehaviour
         ResumeGame();
     }
 
+    // Human-readable evolution recipes + progress, for the stats/synergy panel.
+    public string GetSynergyReport()
+    {
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine(SynLine("Supernova", "Wisps", wispLevel, 3, "Light Radius", radiusLevel, 2, isSupernovaUnlocked));
+        sb.AppendLine(SynLine("Chain Lightning", "Dash CD", dashLevel, 2, "Move Speed", speedLevel, 2, isLightningUnlocked));
+        sb.AppendLine(SynLine("Comet", "Ember Path", fireTrailLevel, 3, "Move Speed", speedLevel, 3, isCometUnlocked));
+        sb.AppendLine(SynLine("Meteor Storm", "Starfall", starfallLevel, 3, "Light Radius", radiusLevel, 3, isMeteorStormUnlocked));
+        sb.AppendLine(SynLine("Thunderstorm", "Heaven's Smite", smiteLevel, 3, "Dash CD", dashLevel, 3, isThunderstormUnlocked));
+
+        bool tw = chainLashLevel >= 5;
+        string mark = tw ? "<color=#ECB038>✓</color>" : "•";
+        sb.AppendLine($"{mark} Titan's Wrath: Chain Lash {Mathf.Min(chainLashLevel, 5)}/5");
+        return sb.ToString();
+    }
+
+    string SynLine(string name, string s1, int l1, int r1, string s2, int l2, int r2, bool done)
+    {
+        string mark = done ? "<color=#ECB038>✓</color>" : "•";
+        return $"{mark} {name}: {s1} {Mathf.Min(l1, r1)}/{r1}, {s2} {Mathf.Min(l2, r2)}/{r2}";
+    }
+
     void CheckSynergies()
     {
         // თუ პირობა სრულდება (მაგ: Wisp დონე 5 და Radius დონე 3)
