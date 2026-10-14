@@ -70,7 +70,7 @@ public class UpgradeManager : MonoBehaviour
         levelUpPanel.SetActive(true);
         Time.timeScale = 0f; 
 
-        var randomUpgrades = activeUpgrades.OrderBy(x => Random.value).Take(3).ToList();
+        var randomUpgrades = activeUpgrades.Where(IsEligible).OrderBy(x => Random.value).Take(3).ToList();
 
         for (int i = 0; i < randomUpgrades.Count; i++)
         {
@@ -90,6 +90,7 @@ public class UpgradeManager : MonoBehaviour
         Time.timeScale = 0f;
 
         var picks = activeUpgrades
+            .Where(IsEligible)
             .OrderByDescending(u => (int)u.rarity)
             .ThenBy(_ => Random.value)
             .Take(3).ToList();
@@ -101,6 +102,26 @@ public class UpgradeManager : MonoBehaviour
                 cardUI[i].Setup(picks[i], this);
                 cardUI[i].AnimateIn(i * 0.15f);
             }
+        }
+    }
+
+    // Decides whether a card should even be offered, so you never see a one-time
+    // unlock you already own, or a stat card for a skill you don't have yet.
+    bool IsEligible(UpgradeData u)
+    {
+        switch (u.type)
+        {
+            case UpgradeData.UpgradeType.Pulse:          // one-time unlock: hide once learned
+                return lightPulse == null || !lightPulse.active;
+
+            case UpgradeData.UpgradeType.PulseCooldown:  // only useful once Pulse exists
+                return lightPulse != null && lightPulse.active;
+
+            case UpgradeData.UpgradeType.WispSpeed:      // pointless without wisps
+                return wispLevel > 0;
+
+            default:
+                return true;
         }
     }
 
