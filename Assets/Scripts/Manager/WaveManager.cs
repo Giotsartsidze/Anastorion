@@ -26,6 +26,7 @@ public class WaveManager : MonoBehaviour
     public GameObject bossPrefab;
     public GameObject bossWarningUI;
     public Slider bossHealthSlider;
+    public TMP_Text bossHealthText;   // optional "X / Y" overlay on the boss bar
     private bool bossSpawned = false;
 
 [Header("Elite Event Settings")]

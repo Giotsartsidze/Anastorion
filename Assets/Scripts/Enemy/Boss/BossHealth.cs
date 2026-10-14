@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using Unity.Cinemachine;
 
 public class BossHealth : MonoBehaviour
@@ -8,6 +9,7 @@ public class BossHealth : MonoBehaviour
     private int currentHealth;
     private ShakeSource shaker;
     private Slider bossSlider;
+    private TMP_Text bossText;
     public GameObject deathEffectPrefab;
     public GameObject skillLootPrefab;
 
@@ -16,13 +18,23 @@ public class BossHealth : MonoBehaviour
         currentHealth = maxHealth;
         WaveManager waveManager = FindObjectOfType<WaveManager>();
         shaker = GetComponent<ShakeSource>();
-        
-        if (waveManager != null && waveManager.bossHealthSlider != null)
+
+        if (waveManager != null)
         {
-            bossSlider = waveManager.bossHealthSlider;
-            bossSlider.gameObject.SetActive(true);
-            bossSlider.maxValue = maxHealth;
-            bossSlider.value = currentHealth;
+            if (waveManager.bossHealthSlider != null)
+            {
+                bossSlider = waveManager.bossHealthSlider;
+                bossSlider.gameObject.SetActive(true);
+                bossSlider.maxValue = maxHealth;
+                bossSlider.value = currentHealth;
+            }
+
+            bossText = waveManager.bossHealthText;
+            if (bossText != null)
+            {
+                bossText.gameObject.SetActive(true);
+                bossText.text = currentHealth + " / " + maxHealth;
+            }
         }
     }
 
@@ -32,6 +44,7 @@ public class BossHealth : MonoBehaviour
 
         currentHealth -= amount;
         if (bossSlider != null) bossSlider.value = currentHealth;
+        if (bossText != null) bossText.text = Mathf.Max(0, currentHealth) + " / " + maxHealth;
 
         if (currentHealth <= 0)
         {
@@ -46,6 +59,7 @@ public class BossHealth : MonoBehaviour
         if (shaker != null) shaker.TriggerShake();
 
         if (bossSlider != null) bossSlider.gameObject.SetActive(false);
+        if (bossText != null) bossText.gameObject.SetActive(false);
 
         // ეფექტის გაჩენა
         if (deathEffectPrefab != null)
