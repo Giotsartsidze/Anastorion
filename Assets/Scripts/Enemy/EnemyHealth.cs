@@ -15,6 +15,8 @@ public class EnemyHealth : MonoBehaviour
     public GameObject shardPrefab;      // მუდმივი ქოინი (Energy Shard)
     public int dropCount = 1;
     [Range(0, 1)] public float shardDropChance = 0.08f; // 20% შანსი
+    [Tooltip("Global chance for ANY enemy to also drop a health pack. Needs healthPackPrefab assigned.")]
+    [Range(0, 1)] public float healthDropChance = 0.04f;
 
     [Header("Juice")]
     [Tooltip("Optional particle/effect spawned at death (e.g. a pop/burst).")]
@@ -156,6 +158,13 @@ public class EnemyHealth : MonoBehaviour
             if (shardPrefab != null && Random.value <= shardDropChance)
             {
                 Instantiate(shardPrefab, transform.position, Quaternion.identity);
+            }
+
+            // 3. small global chance for an XP enemy to also drop a heal, so you can
+            //    actually survive to the boss (health-type enemies already drop 100%).
+            if (healthPackPrefab != null && dropType != DropType.Health && Random.value <= healthDropChance)
+            {
+                Instantiate(healthPackPrefab, transform.position, Quaternion.identity);
             }
         }
 
