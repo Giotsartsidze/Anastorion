@@ -13,6 +13,8 @@ public class PlayerHealth : MonoBehaviour
     [Tooltip("Passive HP regen per second (Vitality meta-upgrade).")]
     public float regenPerSecond = 0f;
     private float regenAccum;
+    [Tooltip("Free second-chances this run (Revive meta-upgrade). Revives at half HP instead of dying.")]
+    public int revives = 0;
 
     [Header("UI References")]
     public Slider healthSlider;
@@ -95,7 +97,19 @@ public class PlayerHealth : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            Die();
+            if (revives > 0)
+            {
+                // Second wind: spend a revive, come back at half health with i-frames.
+                revives--;
+                currentHealth = Mathf.Max(1, Mathf.RoundToInt(maxHealth * 0.5f));
+                UpdateUI();
+                if (shaker != null) shaker.TriggerShake();
+                StartCoroutine(BecomeInvincible());
+            }
+            else
+            {
+                Die();
+            }
         }
         else
         {

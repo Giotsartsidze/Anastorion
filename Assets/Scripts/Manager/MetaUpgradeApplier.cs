@@ -22,6 +22,7 @@ public class MetaUpgradeApplier : MonoBehaviour
     public float xpPercentPerLevel = 0.08f;// Wisdom: +8% XP
     public float shardPercentPerLevel = 0.10f; // Greed: +10% shards
     public int dartsPerLevel = 1;          // Power: +starting darts
+    public int revivesPerLevel = 1;        // Revive: +free second-chances
 
     void Awake()
     {
@@ -33,6 +34,7 @@ public class MetaUpgradeApplier : MonoBehaviour
         int wisLvl = PlayerPrefs.GetInt("Upgrade_Wisdom", 0);
         int grdLvl = PlayerPrefs.GetInt("Upgrade_Greed", 0);
         int powLvl = PlayerPrefs.GetInt("Upgrade_Power", 0);
+        int revLvl = PlayerPrefs.GetInt("Upgrade_Revive", 0);
 
         // Max Health — raise before PlayerHealth.Start sets currentHealth = maxHealth.
         var ph = FindObjectOfType<PlayerHealth>();
@@ -41,6 +43,7 @@ public class MetaUpgradeApplier : MonoBehaviour
             ph.maxHealth += hpLvl * healthPerLevel;
             ph.armor += armLvl * armorPerLevel;              // Armor
             ph.regenPerSecond += vitLvl * regenPerLevel;     // Vitality
+            ph.revives += revLvl * revivesPerLevel;          // Revive
         }
 
         // Move Speed — raise both the force and the cap so top speed actually rises.
