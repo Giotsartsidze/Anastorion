@@ -8,6 +8,11 @@ public class PlayerHealth : MonoBehaviour
     [Header("Stats")]
     public int maxHealth = 100;
     public int currentHealth;
+    [Tooltip("Flat damage reduction (Armor meta-upgrade). Incoming hits are floored to 1.")]
+    public int armor = 0;
+    [Tooltip("Passive HP regen per second (Vitality meta-upgrade).")]
+    public float regenPerSecond = 0f;
+    private float regenAccum;
 
     [Header("UI References")]
     public Slider healthSlider;
@@ -32,6 +37,22 @@ public class PlayerHealth : MonoBehaviour
         // UI-ს ინიციალიზაცია
         if (healthSlider != null) healthSlider.maxValue = maxHealth;
         UpdateUI();
+    }
+
+    void Update()
+    {
+        // Vitality: slow passive regen while alive and hurt.
+        if (regenPerSecond > 0f && currentHealth > 0 && currentHealth < maxHealth)
+        {
+            regenAccum += regenPerSecond * Time.deltaTime;
+            if (regenAccum >= 1f)
+            {
+                int heal = Mathf.FloorToInt(regenAccum);
+                regenAccum -= heal;
+                currentHealth = Mathf.Min(currentHealth + heal, maxHealth);
+                UpdateUI();
+            }
+        }
     }
 
     // --- ფიზიკური შეხების დაფიქსირება ---
@@ -63,7 +84,8 @@ public class PlayerHealth : MonoBehaviour
     {
         if (isInvincible) return;
 
-        currentHealth -= amount;
+        int dmg = Mathf.Max(1, amount - armor); // Armor: never fully negates, floors at 1
+        currentHealth -= dmg;
         if (SoundManager.Instance != null) SoundManager.Instance.PlayPlayerHurt();
         if (shaker != null) shaker.TriggerShake();
         if(damageParticles != null) damageParticles.Play();

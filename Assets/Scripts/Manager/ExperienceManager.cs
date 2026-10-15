@@ -9,6 +9,8 @@ public class ExperienceManager : MonoBehaviour
     public int currentLevel = 1;
 	public GameObject levelUpPanel;
 
+    public static float XPMultiplier = 1f; // Wisdom meta-upgrade (set each run by MetaUpgradeApplier)
+
     void Start()
     {
         xpSlider.maxValue = targetXP;
@@ -17,7 +19,7 @@ public class ExperienceManager : MonoBehaviour
 
     public void AddExperience(int amount)
     {
-        currentXP += amount;
+        currentXP += Mathf.Max(1, Mathf.RoundToInt(amount * XPMultiplier));
         if (currentXP >= targetXP)
         {
             LevelUp();
