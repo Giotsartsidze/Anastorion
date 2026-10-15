@@ -47,6 +47,7 @@ public class WaveManager : MonoBehaviour
     public float debugSpawnInterval = 1f;
     private int debugIndex = 0;
 
+    [HideInInspector] public float spawnRateMultiplier = 1f; // raised by the Horde run modifier
     private float nextSpawnTime;
     private Transform player;
 
@@ -86,7 +87,7 @@ public class WaveManager : MonoBehaviour
             // სირთულის მიხედვით სპაუნინგის აჩქარება
             float spawnRate = debugSpawnAll
                 ? debugSpawnInterval
-                : 1.2f / DifficultyManager.Instance.GetDifficultyMultiplier();
+                : (1.2f / DifficultyManager.Instance.GetDifficultyMultiplier()) / Mathf.Max(0.1f, spawnRateMultiplier);
             nextSpawnTime = Time.time + spawnRate;
         }
     }

@@ -4,8 +4,9 @@ public class CurrencyManager : MonoBehaviour
 {
     public static CurrencyManager Instance;
     public int totalShards;
-    public float shardMultiplier = 1f; // Greed meta-upgrade (set each run by MetaUpgradeApplier)
-    private float shardAccum;          // carries fractional bonus so +10% actually pays out on 1-at-a-time drops
+    public float shardMultiplier = 1f;    // Greed meta-upgrade (set each run by MetaUpgradeApplier)
+    public float runRewardMultiplier = 1f;// Run modifiers reward (set each run by RunModifierManager)
+    private float shardAccum;             // carries fractional bonus so small % actually pay out on 1-at-a-time drops
 
     void Awake()
     {
@@ -15,7 +16,7 @@ public class CurrencyManager : MonoBehaviour
 
     public void AddShards(int amount)
     {
-        shardAccum += amount * shardMultiplier;
+        shardAccum += amount * shardMultiplier * runRewardMultiplier;
         int whole = Mathf.FloorToInt(shardAccum);
         if (whole > 0)
         {

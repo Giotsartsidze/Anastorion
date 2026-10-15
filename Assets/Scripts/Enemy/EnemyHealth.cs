@@ -79,7 +79,7 @@ public class EnemyHealth : MonoBehaviour
         float multiplier = DifficultyManager.Instance != null
             ? DifficultyManager.Instance.GetDifficultyMultiplier() : 1f;
 
-        health = Mathf.Max(1, Mathf.RoundToInt(baseHealth * multiplier));
+        health = Mathf.Max(1, Mathf.RoundToInt(baseHealth * multiplier * RunModifierManager.EnemyHealthMult));
 
         if (eliteModifier != null) eliteModifier.RollOnSpawn(); // stacks its multiplier after this
     }
@@ -162,7 +162,7 @@ public class EnemyHealth : MonoBehaviour
 
             // 3. small global chance for an XP enemy to also drop a heal, so you can
             //    actually survive to the boss (health-type enemies already drop 100%).
-            if (healthPackPrefab != null && dropType != DropType.Health && Random.value <= healthDropChance)
+            if (healthPackPrefab != null && !RunModifierManager.NoHealthDrops && dropType != DropType.Health && Random.value <= healthDropChance)
             {
                 Instantiate(healthPackPrefab, transform.position, Quaternion.identity);
             }

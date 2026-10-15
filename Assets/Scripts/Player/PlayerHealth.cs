@@ -10,6 +10,8 @@ public class PlayerHealth : MonoBehaviour
     public int currentHealth;
     [Tooltip("Flat damage reduction (Armor meta-upgrade). Incoming hits are floored to 1.")]
     public int armor = 0;
+    [Tooltip("Multiplier on damage taken (Fragile run modifier). 1 = normal.")]
+    public float damageTakenMultiplier = 1f;
     [Tooltip("Passive HP regen per second (Vitality meta-upgrade).")]
     public float regenPerSecond = 0f;
     private float regenAccum;
@@ -86,7 +88,7 @@ public class PlayerHealth : MonoBehaviour
     {
         if (isInvincible) return;
 
-        int dmg = Mathf.Max(1, amount - armor); // Armor: never fully negates, floors at 1
+        int dmg = Mathf.Max(1, Mathf.RoundToInt(Mathf.Max(1, amount - armor) * damageTakenMultiplier)); // Armor then Fragile
         currentHealth -= dmg;
         if (SoundManager.Instance != null) SoundManager.Instance.PlayPlayerHurt();
         if (shaker != null) shaker.TriggerShake();
