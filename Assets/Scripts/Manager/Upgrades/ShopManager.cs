@@ -11,7 +11,7 @@ public class ShopManager : MonoBehaviour
     public void RefreshAllItems()
     {
         if (totalShardsText != null && CurrencyManager.Instance != null)
-            totalShardsText.text = "Shards: " + CurrencyManager.Instance.totalShards;
+            totalShardsText.text = CurrencyManager.Instance.totalShards.ToString();
         if (shopItems == null) return;
         foreach (var item in shopItems)
             if (item != null) item.UpdateUI();
