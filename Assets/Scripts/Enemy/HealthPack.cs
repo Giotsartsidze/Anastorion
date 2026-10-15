@@ -32,13 +32,8 @@ public class HealthPickup : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             PlayerHealth ph = collision.GetComponent<PlayerHealth>();
-            if (ph != null)
-            {
-                // ვკურნავთ მოთამაშეს
-                ph.currentHealth = Mathf.Min(ph.currentHealth + healAmount, ph.maxHealth);
-                ph.healthSlider.value = ph.currentHealth; // UI-ს განახლება
-            }
-            
+            if (ph != null) ph.Heal(healAmount); // updates health + bar + number together
+
             Destroy(gameObject); // გული ქრება აღებისას
         }
     }
