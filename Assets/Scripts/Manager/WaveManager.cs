@@ -27,6 +27,8 @@ public class WaveManager : MonoBehaviour
     public GameObject bossWarningUI;
     public Slider bossHealthSlider;
     public TMP_Text bossHealthText;   // optional "X / Y" overlay on the boss bar
+    [Tooltip("The whole boss-bar UI container (slider + frame + text). Hidden when the boss dies.")]
+    public GameObject bossBarRoot;
     private bool bossSpawned = false;
 
 [Header("Elite Event Settings")]

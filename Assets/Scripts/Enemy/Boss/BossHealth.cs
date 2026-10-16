@@ -5,12 +5,16 @@ using Unity.Cinemachine;
 
 public class BossHealth : MonoBehaviour
 {
-    public int maxHealth = 100;
+    public int maxHealth = 1000;
+    [Tooltip("Shards awarded when the boss dies (on top of the loot drop).")]
+    public int shardReward = 50;
     private int currentHealth;
     private ShakeSource shaker;
     private Slider bossSlider;
     private TMP_Text bossText;
+    private GameObject bossBarRoot;
     public GameObject deathEffectPrefab;
+    [Tooltip("Dropped on death — assign the Relic prefab for a guaranteed upgrade reward.")]
     public GameObject skillLootPrefab;
 
     void Start()
@@ -21,6 +25,9 @@ public class BossHealth : MonoBehaviour
 
         if (waveManager != null)
         {
+            bossBarRoot = waveManager.bossBarRoot;
+            if (bossBarRoot != null) bossBarRoot.SetActive(true);
+
             if (waveManager.bossHealthSlider != null)
             {
                 bossSlider = waveManager.bossHealthSlider;
@@ -58,6 +65,8 @@ public class BossHealth : MonoBehaviour
         if (MusicManager.Instance != null) MusicManager.Instance.PlayDefault();
         if (shaker != null) shaker.TriggerShake();
 
+        // hide the whole bar (root covers slider + frame + text); fall back to parts
+        if (bossBarRoot != null) bossBarRoot.SetActive(false);
         if (bossSlider != null) bossSlider.gameObject.SetActive(false);
         if (bossText != null) bossText.gameObject.SetActive(false);
 
@@ -66,13 +75,17 @@ public class BossHealth : MonoBehaviour
         {
             Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
         }
-        
-        // ლუტის გაჩენა
+
+        // meaningful reward: the loot (assign a Relic) + a shard payout
         if (skillLootPrefab != null)
         {
             Instantiate(skillLootPrefab, transform.position, Quaternion.identity);
         }
-        
+        if (shardReward > 0 && CurrencyManager.Instance != null)
+        {
+            CurrencyManager.Instance.AddShards(shardReward);
+        }
+
         Destroy(gameObject); // მხოლოდ აქ ვშლით ობიექტს საბოლოოდ
     }
 
