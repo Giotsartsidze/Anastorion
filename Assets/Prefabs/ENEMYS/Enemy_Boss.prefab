@@ -256,12 +256,14 @@ MonoBehaviour:
   shardPrefab: {fileID: 4786673971356478334, guid: d964e9d7322784239a241b8b80c930ae, type: 3}
   dropCount: 1
   shardDropChance: 1
+  healthDropChance: 0.04
   deathEffectPrefab: {fileID: 0}
   useHitStopOnDeath: 1
   hitStopDuration: 0.08
   knockbackForce: 10
   deathShakeForce: 0.3
   deathPopDuration: 0.15
+  overrideDropPrefab: {fileID: 0}
 --- !u!114 &1673680979979543345
 MonoBehaviour:
   m_ObjectHideFlags: 0

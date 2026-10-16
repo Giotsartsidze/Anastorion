@@ -39,6 +39,7 @@ public class EnemyHealth : MonoBehaviour
     private Collider2D[] bodyColliders;
     private int baseHealth;          // inspector HP, before difficulty/elite scaling
     private EliteModifier eliteModifier;
+    private BossHealth bossHealth;   // if present, it owns HP + death; EnemyHealth is feedback-only
     [HideInInspector] public GameObject overrideDropPrefab; // mega-elite drops this (a Relic) instead of XP
 
     void Awake()
@@ -56,6 +57,7 @@ public class EnemyHealth : MonoBehaviour
         characterAnimator = GetComponent<CharacterAnimator>();
         bodyColliders = GetComponentsInChildren<Collider2D>();
         eliteModifier = GetComponent<EliteModifier>();
+        bossHealth = GetComponent<BossHealth>();
     }
 
     // Pooled respawn: come back fully alive and interactive, at full HP.
@@ -93,12 +95,18 @@ public class EnemyHealth : MonoBehaviour
     public void TakeDamage(int damage, Vector2 hitSource)
     {
         if (isDying) return;
-        health -= damage;
 
+        // Feedback always: hit sound, flash, damage number.
         if (SoundManager.Instance != null) SoundManager.Instance.PlayEnemyHit();
         if (hitFlash != null) hitFlash.Flash();
         if (DamagePopupSpawner.Instance != null)
             DamagePopupSpawner.Instance.Spawn(transform.position, damage);
+
+        // Boss: BossHealth owns the 1000-HP pool and the death. Don't kill it via this
+        // 1-HP EnemyHealth, and don't knock a boss around.
+        if (bossHealth != null) return;
+
+        health -= damage;
 
         if (knockback != null && knockbackForce > 0f)
         {

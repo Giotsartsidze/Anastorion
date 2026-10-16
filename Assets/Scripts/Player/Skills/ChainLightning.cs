@@ -28,6 +28,7 @@ public class ChainLightning : MonoBehaviour
 
             // ზიანის მიყენება
             currentTarget.GetComponent<EnemyHealth>()?.TakeDamage(damage);
+            currentTarget.GetComponent<BossHealth>()?.TakeBossDamage(damage); // also hurt the boss
             hitEnemies.Add(currentTarget);
 
             // ვეძებთ შემდეგ მსხვერპლს
