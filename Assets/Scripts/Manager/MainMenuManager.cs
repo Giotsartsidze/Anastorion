@@ -6,12 +6,14 @@ public class MainMenuManager : MonoBehaviour
     [Header("Panels")]
     public GameObject mainPanel;
     public GameObject shopPanel;
+    public GameObject modifierPanel;
 
     void Start()
     {
         Time.timeScale = 1f; // ← მნიშვნელოვანია!
         if (mainPanel != null) mainPanel.SetActive(true);
         if (shopPanel != null) shopPanel.SetActive(false);
+        if (modifierPanel != null) modifierPanel.SetActive(false);
     }
 
     public void PlayGame()
@@ -29,6 +31,18 @@ public class MainMenuManager : MonoBehaviour
     public void CloseShop()
     {
         if (shopPanel != null) shopPanel.SetActive(false);
+        if (mainPanel != null) mainPanel.SetActive(true);
+    }
+
+    public void OpenModifiers()
+    {
+        if (mainPanel != null) mainPanel.SetActive(false);
+        if (modifierPanel != null) modifierPanel.SetActive(true);
+    }
+
+    public void CloseModifiers()
+    {
+        if (modifierPanel != null) modifierPanel.SetActive(false);
         if (mainPanel != null) mainPanel.SetActive(true);
     }
 
