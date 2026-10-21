@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   upgradeName: 'Spirit Wisps'
   description: '+1 orbiting wisp.'
-    touch"
   unlockName: 'Spirit Wisps'
   unlockDescription: 'Conjure wisps that orbit you, burning what they touch.'
   icon: {fileID: -8984618052510813709, guid: a2b1c10a9b0f34526b2dfe3b3f9d4026, type: 3}
