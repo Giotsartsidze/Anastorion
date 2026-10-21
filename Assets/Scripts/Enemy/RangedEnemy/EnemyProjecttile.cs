@@ -6,6 +6,8 @@ public class EnemyProjectile : MonoBehaviour
     public int damage = 6;
     [Tooltip("Enlarges the VISUAL so the shot is easy to see. The hitbox is kept the same size.")]
     public float visualScale = 1.8f;
+    [Tooltip("Spawned where the projectile hits the player (e.g. a poison splat).")]
+    public GameObject hitVfxPrefab;
     private Vector2 targetDirection;
 
     void Start()
@@ -38,6 +40,8 @@ public class EnemyProjectile : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             collision.GetComponent<PlayerHealth>()?.TakeDamage(damage);
+            if (hitVfxPrefab != null)
+                Instantiate(hitVfxPrefab, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
     }

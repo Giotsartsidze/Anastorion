@@ -105,6 +105,22 @@ public class UpgradeManager : MonoBehaviour
         }
     }
 
+    // True on the FIRST pick of a skill (before it's active), so the card can show
+    // an "unlock" description instead of the "upgrade" one.
+    public bool IsFirstPick(UpgradeData data)
+    {
+        switch (data.type)
+        {
+            case UpgradeData.UpgradeType.Pulse:       return lightPulse != null && !lightPulse.active;
+            case UpgradeData.UpgradeType.FireTrail:   { var f = FindObjectOfType<FireTrail>();   return f != null && !f.active; }
+            case UpgradeData.UpgradeType.Starfall:    { var s = FindObjectOfType<Starfall>();     return s != null && !s.active; }
+            case UpgradeData.UpgradeType.HeavenSmite: { var h = FindObjectOfType<HeavenSmite>();  return h != null && !h.active; }
+            case UpgradeData.UpgradeType.ChainLash:   { var c = FindObjectOfType<ChainLash>();    return c != null && !c.active; }
+            case UpgradeData.UpgradeType.WispCount:   return wispLevel == 0;
+            default: return false;
+        }
+    }
+
     // Decides whether a card should even be offered, so you never see a one-time
     // unlock you already own, or a stat card for a skill you don't have yet.
     bool IsEligible(UpgradeData u)

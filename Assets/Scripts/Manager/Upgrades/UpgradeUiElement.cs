@@ -19,8 +19,9 @@ public class UpgradeUIElement : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     public void Setup(UpgradeData data, UpgradeManager manager)
     {
-        titleText.text = data.upgradeName;
-        descriptionText.text = data.description;
+        bool firstPick = manager.IsFirstPick(data);
+        titleText.text = (firstPick && !string.IsNullOrEmpty(data.unlockName)) ? data.unlockName : data.upgradeName;
+        descriptionText.text = (firstPick && !string.IsNullOrEmpty(data.unlockDescription)) ? data.unlockDescription : data.description;
         
         if (iconImage != null && data.icon != null) 
             iconImage.sprite = data.icon;

@@ -15,16 +15,25 @@ public class RangedEnemyAI : MonoBehaviour
 
     private Transform player;
     private CharacterAnimator anim;
+    private EnemyHealth health;
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         anim = GetComponent<CharacterAnimator>();
+        health = GetComponent<EnemyHealth>();
+    }
+
+    // Pooling-safe: wait a full cooldown before the first shot after (re)spawn.
+    void OnEnable()
+    {
+        nextFireTime = Time.time + fireRate;
     }
 
     void Update()
     {
         if (player == null) return;
+        if (health != null && health.IsDying) return; // no last shot while dying
 
         float distance = Vector2.Distance(transform.position, player.position);
 

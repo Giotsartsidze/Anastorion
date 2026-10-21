@@ -5,7 +5,7 @@ public class OrbiterAI : MonoBehaviour
     public float rotationSpeed = 50f;
     public float currentRadius = 8f;
     public float closingSpeed = 0.5f;   // რამდენად სწრაფად ვიწროვდება წრე
-    public float minRadius = 2.5f;       // never orbit closer than this (was 0.5 -> sat on the player)
+    public float minRadius = 1.4f;       // closes to grazing range (damages on contact), but not on top
 
     private float angle;
     private float startRadius;

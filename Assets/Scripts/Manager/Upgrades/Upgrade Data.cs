@@ -4,8 +4,12 @@ using UnityEngine;
 public class UpgradeData : ScriptableObject
 {
     public string upgradeName;
-    [TextArea] 
+    [TextArea]
     public string description;
+    [Header("Shown only on the FIRST pick (unlock). Leave empty to always use the above.")]
+    public string unlockName;
+    [TextArea]
+    public string unlockDescription;
     public Sprite icon;
 
     // დავამატეთ ყველა საჭირო ტიპი

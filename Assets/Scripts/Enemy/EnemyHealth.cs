@@ -32,6 +32,7 @@ public class EnemyHealth : MonoBehaviour
     public float deathPopDuration = 0.15f;
 
     private bool isDying = false;
+    public bool IsDying => isDying; // so AIs can stop acting (e.g. firing) while dying
     private HitFlash hitFlash;
     private Knockback knockback;
     private DeathPop deathPop;
