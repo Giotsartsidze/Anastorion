@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a20b4fe17a88347d6862b8ad66a51fe1, type: 3}
+  m_Name: Darts_speed
+  m_EditorClassIdentifier: 
+  upgradeName: 'Starlight Darts'
+  description: '+1 starlight dart per volley.'
+  unlockName: ''
+  unlockDescription: ''
+  icon: {fileID: 8949373402140117973, guid: 88d4454a9f7a145578cb5c7fb6d7d87d, type: 3}
+  type: 7
+  rarity: 0
+  valueModifier: 1

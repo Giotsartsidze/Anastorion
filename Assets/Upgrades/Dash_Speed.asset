@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a20b4fe17a88347d6862b8ad66a51fe1, type: 3}
   m_Name: Dash_Speed
   m_EditorClassIdentifier: 
-  upgradeName: Quick Dash
-  description: Dash farther and faste
+  upgradeName: 'Surge Dash'
+  description: 'Dash farther and faster.'
+  unlockName: ''
+  unlockDescription: ''
   icon: {fileID: 1167796931371075748, guid: 78169e343bf444f9f8cf7f140f000ff0, type: 3}
   type: 6
   rarity: 0

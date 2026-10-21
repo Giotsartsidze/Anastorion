@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a20b4fe17a88347d6862b8ad66a51fe1, type: 3}
   m_Name: Pulse
   m_EditorClassIdentifier: 
-  upgradeName: Pulse Circle
-  description: Pulse Circle
+  upgradeName: 'Light Pulse'
+  description: 'Your pulse blasts wider.'
+  unlockName: 'Light Pulse'
+  unlockDescription: 'Release a shockwave that damages and hurls back everything around you.'
   icon: {fileID: -8985981145868982324, guid: a035442a930a9463691bab745f5e220a, type: 3}
   type: 12
   rarity: 0

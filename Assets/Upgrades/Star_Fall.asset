@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a20b4fe17a88347d6862b8ad66a51fe1, type: 3}
   m_Name: Star_Fall
   m_EditorClassIdentifier: 
-  upgradeName: Starfall
-  description: Rain meteors onto the horde
+  upgradeName: 'Starfall'
+  description: '+meteors per volley.'
+  unlockName: 'Starfall'
+  unlockDescription: 'Call meteors down onto the horde around you.'
   icon: {fileID: -861092827983046635, guid: 3462af90151764e5caff2a72bad90420, type: 3}
   type: 10
   rarity: 1

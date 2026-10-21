@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a20b4fe17a88347d6862b8ad66a51fe1, type: 3}
   m_Name: Ember_Path
   m_EditorClassIdentifier: 
-  upgradeName: Ember Path
-  description: Leave a trail of fire that burns enemies
+  upgradeName: 'Ember Path'
+  description: 'Your embers burn hotter.'
+  unlockName: 'Ember Path'
+  unlockDescription: 'Leave a trail of fire as you move; anything chasing you burns.'
   icon: {fileID: -9200061195997626129, guid: 2038c69dd0b6d4eeca90a8e597689896, type: 3}
   type: 9
   rarity: 1

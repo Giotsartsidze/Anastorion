@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a20b4fe17a88347d6862b8ad66a51fe1, type: 3}
+  m_Name: PulseCooldown
+  m_EditorClassIdentifier: 
+  upgradeName: 'Afterglow'
+  description: 'Your pulse recharges faster.'
+  unlockName: ''
+  unlockDescription: ''
+  icon: {fileID: -8024919112059364324, guid: 137e44b18fc8e4b5195af4fa18ed73f9, type: 3}
+  type: 4
+  rarity: 0
+  valueModifier: -0.5
