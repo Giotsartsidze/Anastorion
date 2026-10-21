@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Vitality
   m_EditorClassIdentifier: 
   upgradeName: Vitality
+  description: 'Slowly heal over time.'
   baseCost: 150
   costMultiplier: 1.5
   maxLevel: 5

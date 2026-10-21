@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: SO_MoveSpeed
   m_EditorClassIdentifier: 
   upgradeName: MoveSpeed
+  description: 'Move faster, permanently.'
   baseCost: 80
   costMultiplier: 1.4
   maxLevel: 5

@@ -6,6 +6,7 @@ public class ShopItemUI : MonoBehaviour
 {
     public UpgradeData1 data;
     public TextMeshProUGUI nameText;
+    public TextMeshProUGUI descriptionText;
     public TextMeshProUGUI costText;
     public TextMeshProUGUI levelText;
     public Button buyButton;
@@ -17,6 +18,7 @@ public class ShopItemUI : MonoBehaviour
     if (data == null) return; // ← დამატება
 
     nameText.text = data.upgradeName;
+    if (descriptionText != null) descriptionText.text = data.description;
     int level = data.GetCurrentLevel();
 
     if (level >= data.maxLevel)

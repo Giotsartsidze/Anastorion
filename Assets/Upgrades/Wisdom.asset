@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Wisdom
   m_EditorClassIdentifier: 
   upgradeName: Wisdom
+  description: 'Gain more XP - level up faster.'
   baseCost: 120
   costMultiplier: 1.5
   maxLevel: 5

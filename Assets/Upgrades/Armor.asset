@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Armor
   m_EditorClassIdentifier: 
   upgradeName: Armor
+  description: 'Take less damage from every hit.'
   baseCost: 150
   costMultiplier: 1.5
   maxLevel: 5

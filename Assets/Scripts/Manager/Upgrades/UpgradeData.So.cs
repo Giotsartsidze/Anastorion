@@ -4,6 +4,7 @@ using UnityEngine;
 public class UpgradeData1 : ScriptableObject
 {
     public string upgradeName;
+    [TextArea] public string description;
     public int baseCost = 100;
     public float costMultiplier = 1.5f; // ფასი ყოველ ლეველზე იზრდება
     public int maxLevel = 5;

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Power
   m_EditorClassIdentifier: 
   upgradeName: Power
+  description: 'Begin each run with extra darts.'
   baseCost: 200
   costMultiplier: 1.6
   maxLevel: 3

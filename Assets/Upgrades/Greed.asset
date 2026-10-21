@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Greed
   m_EditorClassIdentifier: 
   upgradeName: Greed
+  description: 'Earn more shards each run.'
   baseCost: 120
   costMultiplier: 1.5
   maxLevel: 5

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Revive
   m_EditorClassIdentifier: 
   upgradeName: Revive
+  description: 'Fall once and rise again at half health.'
   baseCost: 500
   costMultiplier: 2
   maxLevel: 2

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: SO_MagnetRange
   m_EditorClassIdentifier: 
   upgradeName: MagnetRange
+  description: 'Pickups pull in from farther.'
   baseCost: 120
   costMultiplier: 1.6
   maxLevel: 3
