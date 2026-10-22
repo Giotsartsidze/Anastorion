@@ -5,13 +5,17 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement Settings")]
     public float moveSpeed = 15f; // ძალა, რომლითაც ვაწვებით პერსონაჟს
     public float maxSpeed = 12f;  // უმაღლესი სიჩქარე (upgrades won't exceed this)
-    
+    [Tooltip("How hard the player brakes when no key is held (higher = snappier stop).")]
+    public float stopDeceleration = 100f;
+
     private Rigidbody2D rb;
     private Vector2 moveInput;
+    private PlayerDash dash;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        dash = GetComponent<PlayerDash>();
     }
 
     void Update()
@@ -30,11 +34,18 @@ public class PlayerMovement : MonoBehaviour
 
     void MovePlayer()
     {
+        bool dashing = dash != null && dash.IsDashing;
+
         if (moveInput != Vector2.zero)
         {
-            // ვიყენებთ AddForce-ს, რომ მივიღოთ რბილი, წყალქვეშა ცურვის ეფექტი
             rb.AddForce(moveInput.normalized * moveSpeed, ForceMode2D.Force);
         }
+        else if (!dashing)
+        {
+            // brake quickly when no key is held, so the player stops instead of coasting
+            rb.linearVelocity = Vector2.MoveTowards(rb.linearVelocity, Vector2.zero, stopDeceleration * Time.fixedDeltaTime);
+        }
+
         // clamp so speed upgrades don't make the player infinitely fast
         rb.linearVelocity = Vector2.ClampMagnitude(rb.linearVelocity, maxSpeed);
     }

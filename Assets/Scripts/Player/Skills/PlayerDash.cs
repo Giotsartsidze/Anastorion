@@ -9,6 +9,7 @@ public class PlayerDash : MonoBehaviour
 
     private bool canDash = true;
     private bool isDashing;
+    public bool IsDashing => isDashing; // so movement doesn't brake mid-dash
     private Rigidbody2D rb;
     public TrailRenderer dashTrail;
 
