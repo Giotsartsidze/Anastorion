@@ -19,7 +19,7 @@ public class PauseMenu : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (IsPaused) Resume();
-            else if (Time.timeScale != 0f) Pause(); // don't steal another menu's pause
+            else if (Time.timeScale != 0f && !MenuGuard.AnyOpen) Pause(); // don't steal another menu's pause
         }
     }
 
@@ -28,6 +28,7 @@ public class PauseMenu : MonoBehaviour
         IsPaused = true;
         if (pausePanel) pausePanel.SetActive(true);
         Time.timeScale = 0f;
+        MenuGuard.AnyOpen = true;
     }
 
     public void Resume()
@@ -36,6 +37,7 @@ public class PauseMenu : MonoBehaviour
         if (settingsPanel) settingsPanel.SetActive(false);
         if (pausePanel) pausePanel.SetActive(false);
         Time.timeScale = 1f;
+        MenuGuard.AnyOpen = false;
     }
 
     public void OpenSettings()

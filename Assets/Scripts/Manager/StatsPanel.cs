@@ -27,17 +27,21 @@ public class StatsPanel : MonoBehaviour
 
     public void Toggle()
     {
-        open = !open;
-        if (panel != null) panel.SetActive(open);
-
-        if (open)
+        if (!open)
         {
+            if (MenuGuard.AnyOpen) return; // another panel is open — one at a time
+            open = true;
+            if (panel != null) panel.SetActive(true);
             Refresh();
             Time.timeScale = 0f;
+            MenuGuard.AnyOpen = true;
         }
         else
         {
+            open = false;
+            if (panel != null) panel.SetActive(false);
             Time.timeScale = 1f;
+            MenuGuard.AnyOpen = false;
         }
     }
 

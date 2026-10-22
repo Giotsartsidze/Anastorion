@@ -68,7 +68,8 @@ public class UpgradeManager : MonoBehaviour
     public void ShowUpgrades()
     {
         levelUpPanel.SetActive(true);
-        Time.timeScale = 0f; 
+        Time.timeScale = 0f;
+        MenuGuard.AnyOpen = true;
 
         var randomUpgrades = activeUpgrades.Where(IsEligible).OrderBy(x => Random.value).Take(3).ToList();
 
@@ -88,6 +89,7 @@ public class UpgradeManager : MonoBehaviour
         if (levelUpPanel == null) return;
         levelUpPanel.SetActive(true);
         Time.timeScale = 0f;
+        MenuGuard.AnyOpen = true;
 
         var picks = activeUpgrades
             .Where(IsEligible)
@@ -321,6 +323,7 @@ public class UpgradeManager : MonoBehaviour
     {
         levelUpPanel.SetActive(false);
         Time.timeScale = 1f;
+        MenuGuard.AnyOpen = false;
     }
 
 public void TryTriggerLightning()
