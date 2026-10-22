@@ -25,6 +25,12 @@ public class PlayerHealth : MonoBehaviour
     [Header("I-Frame Settings")]
     public float iFrameDuration = 1f;
     private bool isInvincible = false;
+
+    [Header("Revive (Second Wind)")]
+    [Range(0.1f, 1f)] public float reviveHealthFraction = 0.5f;
+    public float reviveIFrames = 2.5f;     // longer safety window than a normal hit
+    public float reviveClearRadius = 4.5f; // shove the horde back so you don't instantly re-die
+    public float reviveKnockback = 16f;
     
     [Header("Juice Effects")]
     public ParticleSystem damageParticles; // ეს ხაზი აკლდა
@@ -101,12 +107,13 @@ public class PlayerHealth : MonoBehaviour
         {
             if (revives > 0)
             {
-                // Second wind: spend a revive, come back at half health with i-frames.
+                // Second Wind: spend a revive, come back with a cleared space + long i-frames.
                 revives--;
-                currentHealth = Mathf.Max(1, Mathf.RoundToInt(maxHealth * 0.5f));
+                currentHealth = Mathf.Max(1, Mathf.RoundToInt(maxHealth * reviveHealthFraction));
                 UpdateUI();
                 if (shaker != null) shaker.TriggerShake();
-                StartCoroutine(BecomeInvincible());
+                ClearSpaceOnRevive();
+                StartCoroutine(BecomeInvincible(reviveIFrames));
             }
             else
             {
@@ -115,15 +122,32 @@ public class PlayerHealth : MonoBehaviour
         }
         else
         {
-            StartCoroutine(BecomeInvincible());
+            StartCoroutine(BecomeInvincible(iFrameDuration));
         }
     }
 
-    IEnumerator BecomeInvincible()
+    // Shove every nearby enemy away so a revive isn't instantly undone by the horde.
+    void ClearSpaceOnRevive()
+    {
+        Collider2D[] near = Physics2D.OverlapCircleAll(transform.position, reviveClearRadius);
+        foreach (var c in near)
+        {
+            if (c == null || !c.CompareTag("Enemy")) continue;
+            Rigidbody2D erb = c.GetComponent<Rigidbody2D>();
+            if (erb != null)
+            {
+                Vector2 dir = ((Vector2)c.transform.position - (Vector2)transform.position).normalized;
+                if (dir.sqrMagnitude < 0.0001f) dir = Vector2.up;
+                erb.AddForce(dir * reviveKnockback, ForceMode2D.Impulse);
+            }
+        }
+    }
+
+    IEnumerator BecomeInvincible(float duration)
     {
         isInvincible = true;
-        
-        for (float i = 0; i < iFrameDuration; i += 0.2f)
+
+        for (float i = 0; i < duration; i += 0.2f)
         {
             sprite.color = new Color(1, 1, 1, 0.2f);
             yield return new WaitForSeconds(0.1f);
