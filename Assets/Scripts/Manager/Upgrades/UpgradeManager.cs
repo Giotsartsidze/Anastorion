@@ -46,6 +46,7 @@ public class UpgradeManager : MonoBehaviour
 
     void Start()
     {
+        MenuGuard.AnyOpen = false; // fresh run — nothing open (clears any stale guard)
         playerMovement = FindObjectOfType<PlayerMovement>();
         playerDash = FindObjectOfType<PlayerDash>();
         lightPulse = FindObjectOfType<LightPulse>();
