@@ -79,7 +79,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 323844899486875899, guid: 509a8183ab161447f8fd68d14e468b27, type: 3}
+  m_Sprite: {fileID: 6424783492948138907, guid: 9849cf98e312242868b99b87b75cc9f6, type: 3}
   m_Color: {r: 1, g: 0.06763682, b: 0.0047169924, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -141,6 +141,7 @@ MonoBehaviour:
   speed: 7
   damage: 10
   visualScale: 1.8
+  hitVfxPrefab: {fileID: 6001689503573406368, guid: 82d23a98ad0b249a883f07d3b4b58e92, type: 3}
 --- !u!114 &-5208813212522056289
 MonoBehaviour:
   m_ObjectHideFlags: 0
