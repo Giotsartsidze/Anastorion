@@ -7,6 +7,8 @@ public class EnemyHealth : MonoBehaviour
 
     [Header("Stats")]
     public int health = 1;
+    [Tooltip("Damage this enemy deals to the player on contact (tanks/big foes should hurt more).")]
+    public int contactDamage = 8;
     public DropType dropType = DropType.XP;
 
     [Header("Drop Prefabs")]

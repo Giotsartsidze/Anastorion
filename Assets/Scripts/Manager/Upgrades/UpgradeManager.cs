@@ -39,10 +39,25 @@ public class UpgradeManager : MonoBehaviour
     private bool isMeteorStormUnlocked = false;
     private bool isThunderstormUnlocked = false;
 
-    // Cached component references
+    [Header("Rarity gating by level")]
+    [Tooltip("Rare cards start appearing at this level; Legendary at the next. Below, only Common.")]
+    public int rareUnlockLevel = 4;
+    public int legendaryUnlockLevel = 8;
+    public float commonWeight = 100f;
+    public float rareWeight = 30f;
+    public float legendaryWeight = 8f;
+
+    // Cached component references (no per-upgrade FindObjectOfType anymore)
     private PlayerMovement playerMovement;
     private PlayerDash playerDash;
     private LightPulse lightPulse;
+    private FireTrail fireTrail;
+    private Starfall starfall;
+    private HeavenSmite heavenSmite;
+    private ChainLash chainLash;
+    private OrbitingWisps wisps;
+    private StellarDarts stellarDarts;
+    private ExperienceManager xpManager;
 
     void Start()
     {
@@ -50,6 +65,13 @@ public class UpgradeManager : MonoBehaviour
         playerMovement = FindObjectOfType<PlayerMovement>();
         playerDash = FindObjectOfType<PlayerDash>();
         lightPulse = FindObjectOfType<LightPulse>();
+        fireTrail = FindObjectOfType<FireTrail>();
+        starfall = FindObjectOfType<Starfall>();
+        heavenSmite = FindObjectOfType<HeavenSmite>();
+        chainLash = FindObjectOfType<ChainLash>();
+        wisps = FindObjectOfType<OrbitingWisps>();
+        stellarDarts = FindObjectOfType<StellarDarts>();
+        xpManager = FindObjectOfType<ExperienceManager>();
 
         if (debugUnlockSynergies)
         {
@@ -72,15 +94,54 @@ public class UpgradeManager : MonoBehaviour
         Time.timeScale = 0f;
         MenuGuard.AnyOpen = true;
 
-        var randomUpgrades = activeUpgrades.Where(IsEligible).OrderBy(x => Random.value).Take(3).ToList();
+        // Rarity gate: Common only early, Rare from rareUnlockLevel, Legendary from legendaryUnlockLevel.
+        int level = xpManager != null ? xpManager.currentLevel : 1;
+        int maxRarity = (level >= legendaryUnlockLevel) ? 2 : (level >= rareUnlockLevel ? 1 : 0);
 
-        for (int i = 0; i < randomUpgrades.Count; i++)
+        var pool = activeUpgrades.Where(IsEligible).Where(u => (int)u.rarity <= maxRarity).ToList();
+        if (pool.Count == 0) pool = activeUpgrades.Where(IsEligible).ToList(); // never show an empty screen
+
+        var picks = WeightedPick(pool, 3); // rarity-weighted so Common shows more than Legendary
+
+        for (int i = 0; i < picks.Count; i++)
         {
-            if (i < cardUI.Length && cardUI[i] != null) 
+            if (i < cardUI.Length && cardUI[i] != null)
             {
-                cardUI[i].Setup(randomUpgrades[i], this);
+                cardUI[i].Setup(picks[i], this);
                 cardUI[i].AnimateIn(i * 0.15f); // შენი ანიმაცია
             }
+        }
+    }
+
+    // Pick `count` distinct upgrades, weighted by rarity (Common most likely).
+    List<UpgradeData> WeightedPick(List<UpgradeData> source, int count)
+    {
+        var result = new List<UpgradeData>();
+        var work = new List<UpgradeData>(source);
+        for (int n = 0; n < count && work.Count > 0; n++)
+        {
+            float total = 0f;
+            foreach (var u in work) total += RarityWeight(u.rarity);
+            float r = Random.value * total;
+            UpgradeData chosen = work[work.Count - 1];
+            foreach (var u in work)
+            {
+                r -= RarityWeight(u.rarity);
+                if (r <= 0f) { chosen = u; break; }
+            }
+            result.Add(chosen);
+            work.Remove(chosen);
+        }
+        return result;
+    }
+
+    float RarityWeight(UpgradeData.Rarity rar)
+    {
+        switch (rar)
+        {
+            case UpgradeData.Rarity.Rare: return rareWeight;
+            case UpgradeData.Rarity.Legendary: return legendaryWeight;
+            default: return commonWeight;
         }
     }
 
@@ -115,10 +176,10 @@ public class UpgradeManager : MonoBehaviour
         switch (data.type)
         {
             case UpgradeData.UpgradeType.Pulse:       return lightPulse != null && !lightPulse.active;
-            case UpgradeData.UpgradeType.FireTrail:   { var f = FindObjectOfType<FireTrail>();   return f != null && !f.active; }
-            case UpgradeData.UpgradeType.Starfall:    { var s = FindObjectOfType<Starfall>();     return s != null && !s.active; }
-            case UpgradeData.UpgradeType.HeavenSmite: { var h = FindObjectOfType<HeavenSmite>();  return h != null && !h.active; }
-            case UpgradeData.UpgradeType.ChainLash:   { var c = FindObjectOfType<ChainLash>();    return c != null && !c.active; }
+            case UpgradeData.UpgradeType.FireTrail:   { var f = fireTrail;   return f != null && !f.active; }
+            case UpgradeData.UpgradeType.Starfall:    { var s = starfall;     return s != null && !s.active; }
+            case UpgradeData.UpgradeType.HeavenSmite: { var h = heavenSmite;  return h != null && !h.active; }
+            case UpgradeData.UpgradeType.ChainLash:   { var c = chainLash;    return c != null && !c.active; }
             case UpgradeData.UpgradeType.WispCount:   return wispLevel == 0;
             default: return false;
         }
@@ -169,7 +230,7 @@ public class UpgradeManager : MonoBehaviour
                 break;
 
             case UpgradeData.UpgradeType.WispCount:
-                var wisps = FindObjectOfType<OrbitingWisps>();
+                var wisps = wisps;
                 if (wisps != null) {
                     wisps.count++;
                     wisps.ActivateSkill();
@@ -178,7 +239,7 @@ public class UpgradeManager : MonoBehaviour
                 break;
 
             case UpgradeData.UpgradeType.WispSpeed:
-                var wispScript = FindObjectOfType<OrbitingWisps>();
+                var wispScript = wisps;
                 if (wispScript != null) wispScript.orbitSpeed += data.valueModifier;
                 break;
 
@@ -199,17 +260,17 @@ public class UpgradeManager : MonoBehaviour
                 break;
 
             case UpgradeData.UpgradeType.DartCount:
-                var dartsC = FindObjectOfType<StellarDarts>();
+                var dartsC = stellarDarts;
                 if (dartsC != null) dartsC.dartCount += Mathf.Max(1, Mathf.RoundToInt(data.valueModifier));
                 break;
 
             case UpgradeData.UpgradeType.DartFireRate:
-                var dartsF = FindObjectOfType<StellarDarts>();
+                var dartsF = stellarDarts;
                 if (dartsF != null) dartsF.fireRate = Mathf.Max(0.15f, dartsF.fireRate - data.valueModifier);
                 break;
 
             case UpgradeData.UpgradeType.FireTrail:
-                var fire = FindObjectOfType<FireTrail>();
+                var fire = fireTrail;
                 if (fire != null)
                 {
                     if (!fire.active) fire.active = true;                 // first pick: unlock
@@ -219,7 +280,7 @@ public class UpgradeManager : MonoBehaviour
                 break;
 
             case UpgradeData.UpgradeType.Starfall:
-                var star = FindObjectOfType<Starfall>();
+                var star = starfall;
                 if (star != null)
                 {
                     if (!star.active) star.active = true;                 // first pick: unlock
@@ -229,7 +290,7 @@ public class UpgradeManager : MonoBehaviour
                 break;
 
             case UpgradeData.UpgradeType.HeavenSmite:
-                var smite = FindObjectOfType<HeavenSmite>();
+                var smite = heavenSmite;
                 if (smite != null)
                 {
                     if (!smite.active) smite.active = true;               // first pick: unlock
@@ -239,14 +300,14 @@ public class UpgradeManager : MonoBehaviour
                 break;
 
             case UpgradeData.UpgradeType.ChainLash:
-                var chain = FindObjectOfType<ChainLash>();
+                var chain = chainLash;
                 if (chain != null)
                 {
                     if (!chain.active) chain.active = true;               // first pick: unlock
                     else { chain.lashCount += 1; chain.damage += Mathf.Max(1, Mathf.RoundToInt(data.valueModifier)); }
                 }
                 chainLashLevel++;
-                if (chainLashLevel >= 5) FindObjectOfType<ChainLash>()?.Evolve(); // Titan's Wrath
+                if (chainLashLevel >= 5) chainLash?.Evolve(); // Titan's Wrath
                 break;
         }
 
@@ -288,17 +349,17 @@ public class UpgradeManager : MonoBehaviour
         if (!isCometUnlocked && fireTrailLevel >= 3 && speedLevel >= 3)
         {
             isCometUnlocked = true;
-            FindObjectOfType<FireTrail>()?.Evolve();   // Comet
+            fireTrail?.Evolve();   // Comet
         }
         if (!isMeteorStormUnlocked && starfallLevel >= 3 && radiusLevel >= 3)
         {
             isMeteorStormUnlocked = true;
-            FindObjectOfType<Starfall>()?.Evolve();    // Meteor Storm
+            starfall?.Evolve();    // Meteor Storm
         }
         if (!isThunderstormUnlocked && smiteLevel >= 3 && dashLevel >= 3)
         {
             isThunderstormUnlocked = true;
-            FindObjectOfType<HeavenSmite>()?.Evolve(); // Thunderstorm
+            heavenSmite?.Evolve(); // Thunderstorm
         }
 		if (!isLightningUnlocked && dashLevel >= 2 && speedLevel >= 2)
     	{

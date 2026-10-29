@@ -46,7 +46,9 @@ public class PlayerMovement : MonoBehaviour
             rb.linearVelocity = Vector2.MoveTowards(rb.linearVelocity, Vector2.zero, stopDeceleration * Time.fixedDeltaTime);
         }
 
-        // clamp so speed upgrades don't make the player infinitely fast
-        rb.linearVelocity = Vector2.ClampMagnitude(rb.linearVelocity, maxSpeed);
+        // clamp so speed upgrades don't make the player infinitely fast — but NOT during a
+        // dash, so the dash actually reaches its Dash Speed instead of being capped to maxSpeed.
+        if (!dashing)
+            rb.linearVelocity = Vector2.ClampMagnitude(rb.linearVelocity, maxSpeed);
     }
 }

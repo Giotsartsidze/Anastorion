@@ -80,7 +80,9 @@ public class PlayerHealth : MonoBehaviour
     {
         if (go.CompareTag("Enemy"))
         {
-            TakeDamage(8);
+            EnemyHealth eh = go.GetComponent<EnemyHealth>();
+            if (eh == null) eh = go.GetComponentInParent<EnemyHealth>();
+            TakeDamage(eh != null ? eh.contactDamage : 8);
         }
     }
 
