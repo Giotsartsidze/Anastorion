@@ -41,6 +41,8 @@ public class WaveManager : MonoBehaviour
     [Tooltip("A mega-elite (tanky, drops a Relic) spawns this often, in seconds.")]
     public float megaEliteInterval = 90f;
     public GameObject megaEliteUI;      // optional "MEGA ELITE!" banner
+    [Tooltip("Assign the Relic prefab ONCE here — every mega-elite will drop it, regardless of enemy.")]
+    public GameObject megaRelicPrefab;
     private float nextMegaTime = 90f;
 
     [Header("Debug — see every enemy quickly")]
@@ -129,7 +131,11 @@ IEnumerator TriggerEliteEvent()
         if (mega != null)
         {
             EliteModifier em = mega.GetComponent<EliteModifier>();
-            if (em != null) em.MakeMega();
+            if (em != null)
+            {
+                if (megaRelicPrefab != null) em.relicPrefab = megaRelicPrefab; // so EVERY mega drops a relic
+                em.MakeMega();
+            }
         }
         if (megaEliteUI != null) StartCoroutine(FlashMegaUI());
     }
