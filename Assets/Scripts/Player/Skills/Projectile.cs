@@ -4,11 +4,20 @@ public class Projectile : MonoBehaviour
 {
     public float speed = 10f;
     public int damage = 1;
+    [Tooltip("Return to the pool after this long if it hasn't hit anything (so strays don't pile up).")]
+    public float life = 3f;
+
+    private float timer;
+
+    void OnEnable() => timer = 0f; // pooling-safe reset
 
     void Update()
     {
         // ისარი მუდმივად მიფრინავს წინ (მარჯვნივ თავისი ლოკალური ღერძით)
         transform.Translate(Vector3.right * speed * Time.deltaTime);
+
+        timer += Time.deltaTime;
+        if (timer >= life) SimplePool.Despawn(gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -16,12 +25,9 @@ public class Projectile : MonoBehaviour
         // თუ მოთამაშეს მოხვდა (ბოსის ნასროლი)
         if (collision.CompareTag("Player"))
         {
-            PlayerHealth player = collision.GetComponent<PlayerHealth>();
-            if (player != null)
-            {
-                player.TakeDamage(10); // დავაკლოთ 10 HP
-                Destroy(gameObject);   // ისარი ქრება
-            }
+            collision.GetComponent<PlayerHealth>()?.TakeDamage(10);
+            SimplePool.Despawn(gameObject);
+            return;
         }
 
         // თუ მტერს მოხვდა (მოთამაშის ნასროლი)
@@ -29,7 +35,7 @@ public class Projectile : MonoBehaviour
         {
             collision.GetComponent<EnemyHealth>()?.TakeDamage(damage, transform.position);
             collision.GetComponent<BossHealth>()?.TakeBossDamage(damage);
-            Destroy(gameObject);
+            SimplePool.Despawn(gameObject);
         }
     }
 }

@@ -62,6 +62,7 @@ public class UpgradeManager : MonoBehaviour
     void Start()
     {
         MenuGuard.AnyOpen = false; // fresh run — nothing open (clears any stale guard)
+        SimplePool.Reset();        // clear pooled projectiles/VFX from the previous run
         playerMovement = FindObjectOfType<PlayerMovement>();
         playerDash = FindObjectOfType<PlayerDash>();
         lightPulse = FindObjectOfType<LightPulse>();

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
@@ -29,30 +30,38 @@ public class DamagePopupSpawner : MonoBehaviour
         if (Instance == this) Instance = null;
     }
 
+    // Pooled so a hit-heavy horde doesn't build a fresh TextMeshPro every single hit.
+    private readonly Queue<DamagePopup> pool = new Queue<DamagePopup>();
+
     public void Spawn(Vector3 worldPos, int amount)
     {
-        DamagePopup popup;
+        DamagePopup popup = GetOrCreate();
+        popup.transform.position = worldPos;
+        popup.gameObject.SetActive(true);
+        popup.Setup(amount);
+    }
+
+    DamagePopup GetOrCreate()
+    {
+        while (pool.Count > 0) { var p = pool.Dequeue(); if (p != null) return p; } // reuse
 
         if (popupPrefab != null)
-        {
-            popup = Instantiate(popupPrefab, worldPos, Quaternion.identity);
-        }
-        else
-        {
-            // Build a world-space number from scratch. TextMeshPro (the 3D component)
-            // renders via MeshRenderer, so transform.position is real world space.
-            GameObject go = new GameObject("DamagePopup");
-            go.transform.position = worldPos;
+            return Instantiate(popupPrefab);
 
-            TextMeshPro tmp = go.AddComponent<TextMeshPro>();
-            tmp.fontSize = fontSize;
-            tmp.color = color;
-            tmp.alignment = TextAlignmentOptions.Center;
-            tmp.rectTransform.sizeDelta = new Vector2(4f, 2f);
+        // Build a world-space number from scratch (TextMeshPro renders via MeshRenderer).
+        GameObject go = new GameObject("DamagePopup");
+        TextMeshPro tmp = go.AddComponent<TextMeshPro>();
+        tmp.fontSize = fontSize;
+        tmp.color = color;
+        tmp.alignment = TextAlignmentOptions.Center;
+        tmp.rectTransform.sizeDelta = new Vector2(4f, 2f);
+        return go.AddComponent<DamagePopup>();
+    }
 
-            popup = go.AddComponent<DamagePopup>();
-        }
-
-        popup.Setup(amount);
+    public void Return(DamagePopup p)
+    {
+        if (p == null) return;
+        p.gameObject.SetActive(false);
+        pool.Enqueue(p);
     }
 }

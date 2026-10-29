@@ -42,7 +42,7 @@ public class StellarDarts : MonoBehaviour
                 int extra = i - enemies.Length + 1;
                 angle += extra * 12f * (extra % 2 == 0 ? 1 : -1); // alternating spread
             }
-            Instantiate(dartPrefab, transform.position, Quaternion.Euler(0, 0, angle));
+            SimplePool.Spawn(dartPrefab, transform.position, Quaternion.Euler(0, 0, angle));
         }
 
         if (SoundManager.Instance != null) SoundManager.Instance.PlayShoot();

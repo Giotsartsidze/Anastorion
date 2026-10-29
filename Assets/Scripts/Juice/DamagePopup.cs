@@ -67,6 +67,10 @@ public class DamagePopup : MonoBehaviour
         c.a = Mathf.Lerp(1f, 0f, t);
         tmp.color = c;
 
-        if (timer >= lifetime) Destroy(gameObject);
+        if (timer >= lifetime)
+        {
+            if (DamagePopupSpawner.Instance != null) DamagePopupSpawner.Instance.Return(this);
+            else Destroy(gameObject);
+        }
     }
 }
