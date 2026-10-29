@@ -231,7 +231,6 @@ public class UpgradeManager : MonoBehaviour
                 break;
 
             case UpgradeData.UpgradeType.WispCount:
-                var wisps = wisps;
                 if (wisps != null) {
                     wisps.count++;
                     wisps.ActivateSkill();
@@ -240,8 +239,7 @@ public class UpgradeManager : MonoBehaviour
                 break;
 
             case UpgradeData.UpgradeType.WispSpeed:
-                var wispScript = wisps;
-                if (wispScript != null) wispScript.orbitSpeed += data.valueModifier;
+                if (wisps != null) wisps.orbitSpeed += data.valueModifier;
                 break;
 
             case UpgradeData.UpgradeType.Pulse:
