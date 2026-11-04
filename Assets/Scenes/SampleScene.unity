@@ -10098,6 +10098,7 @@ MonoBehaviour:
   eliteEventUI: {fileID: 0}
   megaEliteInterval: 90
   megaEliteUI: {fileID: 0}
+  megaRelicPrefab: {fileID: 3514380153798885843, guid: d961f7e636c1949cca8c744ca388064b, type: 3}
   debugSpawnAll: 0
   debugSpawnInterval: 1
   spawnRateMultiplier: 1

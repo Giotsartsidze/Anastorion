@@ -250,6 +250,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 1
+  contactDamage: 30
   dropType: 0
   coinPrefab: {fileID: 4083271637325336818, guid: cc35205c7abb04d9abf2abfe7b9d2160, type: 3}
   healthPackPrefab: {fileID: 5905213398975661970, guid: a248ffc326784415595c0cce8077184e, type: 3}
@@ -277,6 +278,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 1000
+  shardReward: 50
   deathEffectPrefab: {fileID: 6413490928674798708, guid: 2a49367b831ff4b2d999fce5c6b23f5d, type: 3}
   skillLootPrefab: {fileID: 7670888100493032557, guid: 45e41582ab1b14e4687f96baa0e04b81, type: 3}
 --- !u!114 &-3432169207953959111
