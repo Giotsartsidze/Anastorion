@@ -17,6 +17,10 @@ public class RunModifierManager : MonoBehaviour
     public float blackoutVisionCut = 0.35f;     // -35% vision
     public float shardRewardPerModifier = 0.25f;// +25% shards per active modifier
 
+    [Header("Darkness")]
+    [Tooltip("Global Light 2D: ON for a normal (lit) run, switched OFF when Blackout is chosen.")]
+    public GameObject globalLight;
+
     void Awake()
     {
         // reset the statics each run (scene reload re-runs this)
@@ -42,6 +46,9 @@ public class RunModifierManager : MonoBehaviour
             var ph = FindObjectOfType<PlayerHealth>();
             if (ph != null) ph.damageTakenMultiplier *= 1f + fragileDamageBonus;
         }
+        // Darkness is now a Blackout-only effect: the ambient light is on for a normal
+        // run and switched off (plus the vision cut) only when Blackout is chosen.
+        if (globalLight != null) globalLight.SetActive(!blackout);
         if (blackout)
         {
             var pv = FindObjectOfType<PlayerVision>();

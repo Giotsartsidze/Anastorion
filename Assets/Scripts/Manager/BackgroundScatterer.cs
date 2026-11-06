@@ -66,6 +66,8 @@ public class BackgroundScatterer : MonoBehaviour
 
             float b = Random.Range(brightnessRange.x, brightnessRange.y);
             sr.color = new Color(b, b, b, 1f);
+
+            ShadowFx.Attach(p.transform, 0.7f, 0.28f); // subtle shadow grounds the prop
         }
 
         Random.state = prev;

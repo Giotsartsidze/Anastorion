@@ -8,17 +8,25 @@ public class MainMenuManager : MonoBehaviour
     public GameObject shopPanel;
     public GameObject modifierPanel;
 
+    [Header("Intro cutscene (optional)")]
+    public StorybookCutscene introCutscene;
+
     void Start()
     {
         Time.timeScale = 1f; // ← მნიშვნელოვანია!
         if (mainPanel != null) mainPanel.SetActive(true);
         if (shopPanel != null) shopPanel.SetActive(false);
         if (modifierPanel != null) modifierPanel.SetActive(false);
+
+        UiSkin.Frame(modifierPanel, Vector2.zero); // shared gold frame (auto-fit to content)
     }
 
     public void PlayGame()
     {
-        SceneManager.LoadScene("SampleScene");
+        if (introCutscene != null)
+            introCutscene.Play(() => SceneManager.LoadScene("SampleScene"));
+        else
+            SceneManager.LoadScene("SampleScene");
     }
 
     public void OpenShop()

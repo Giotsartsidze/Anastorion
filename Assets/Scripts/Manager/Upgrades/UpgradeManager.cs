@@ -306,7 +306,11 @@ public class UpgradeManager : MonoBehaviour
                     else { chain.lashCount += 1; chain.damage += Mathf.Max(1, Mathf.RoundToInt(data.valueModifier)); }
                 }
                 chainLashLevel++;
-                if (chainLashLevel >= 5) chainLash?.Evolve(); // Titan's Wrath
+                if (chainLashLevel == 5)                              // exactly at the threshold, once
+                {
+                    chainLash?.Evolve(); // Titan's Wrath
+                    EvolutionAnnouncer.Instance?.Announce("Titan's Wrath");
+                }
                 break;
         }
 
@@ -314,15 +318,30 @@ public class UpgradeManager : MonoBehaviour
         ResumeGame();
     }
 
+    // Read-only accessors so the stats panel can draw synergy progress graphically.
+    public int WispLevel => wispLevel;
+    public int RadiusLevel => radiusLevel;
+    public int SpeedLevel => speedLevel;
+    public int DashLevel => dashLevel;
+    public int FireTrailLevel => fireTrailLevel;
+    public int StarfallLevel => starfallLevel;
+    public int SmiteLevel => smiteLevel;
+    public int ChainLashLevel => chainLashLevel;
+    public bool SupernovaUnlocked => isSupernovaUnlocked;
+    public bool LightningUnlocked => isLightningUnlocked;
+    public bool CometUnlocked => isCometUnlocked;
+    public bool MeteorStormUnlocked => isMeteorStormUnlocked;
+    public bool ThunderstormUnlocked => isThunderstormUnlocked;
+
     // Human-readable evolution recipes + progress, for the stats/synergy panel.
     public string GetSynergyReport()
     {
         var sb = new System.Text.StringBuilder();
         sb.AppendLine(SynLine("Supernova", "Wisps", wispLevel, 3, "Light Radius", radiusLevel, 2, isSupernovaUnlocked));
-        sb.AppendLine(SynLine("Chain Lightning", "Dash CD", dashLevel, 2, "Move Speed", speedLevel, 2, isLightningUnlocked));
+        sb.AppendLine(SynLine("Chain Lightning", "Dash Speed", dashLevel, 2, "Move Speed", speedLevel, 2, isLightningUnlocked));
         sb.AppendLine(SynLine("Comet", "Ember Path", fireTrailLevel, 3, "Move Speed", speedLevel, 3, isCometUnlocked));
         sb.AppendLine(SynLine("Meteor Storm", "Starfall", starfallLevel, 3, "Light Radius", radiusLevel, 3, isMeteorStormUnlocked));
-        sb.AppendLine(SynLine("Thunderstorm", "Heaven's Smite", smiteLevel, 3, "Dash CD", dashLevel, 3, isThunderstormUnlocked));
+        sb.AppendLine(SynLine("Thunderstorm", "Heaven's Smite", smiteLevel, 3, "Dash Speed", dashLevel, 3, isThunderstormUnlocked));
 
         bool tw = chainLashLevel >= 5;
         string mark = tw ? "<color=#ECB038>✓</color>" : "•";
@@ -342,6 +361,7 @@ public class UpgradeManager : MonoBehaviour
         if (!isSupernovaUnlocked && wispLevel >= 3 && radiusLevel >= 2)
         {
             isSupernovaUnlocked = true;
+            EvolutionAnnouncer.Instance?.Announce("Supernova");
         }
 
         // New-skill evolutions: max the skill + its paired stat.
@@ -349,21 +369,25 @@ public class UpgradeManager : MonoBehaviour
         {
             isCometUnlocked = true;
             fireTrail?.Evolve();   // Comet
+            EvolutionAnnouncer.Instance?.Announce("Comet");
         }
         if (!isMeteorStormUnlocked && starfallLevel >= 3 && radiusLevel >= 3)
         {
             isMeteorStormUnlocked = true;
             starfall?.Evolve();    // Meteor Storm
+            EvolutionAnnouncer.Instance?.Announce("Meteor Storm");
         }
         if (!isThunderstormUnlocked && smiteLevel >= 3 && dashLevel >= 3)
         {
             isThunderstormUnlocked = true;
             heavenSmite?.Evolve(); // Thunderstorm
+            EvolutionAnnouncer.Instance?.Announce("Thunderstorm");
         }
 		if (!isLightningUnlocked && dashLevel >= 2 && speedLevel >= 2)
     	{
         	isLightningUnlocked = true;
-    	}	
+            EvolutionAnnouncer.Instance?.Announce("Chain Lightning");
+    	}
     }
 
     void Update()
@@ -373,8 +397,9 @@ public class UpgradeManager : MonoBehaviour
             supernovaTimer += Time.deltaTime;
             if (supernovaTimer >= supernovaCooldown)
             {
-                // ვაჩენთ სუპერნოვას მოთამაშის პოზიციაზე
-                Instantiate(supernovaPrefab, transform.position, Quaternion.identity, transform);
+                // spawn on the PLAYER (this manager lives on the Canvas, so transform.position is useless)
+                Vector3 at = playerMovement != null ? playerMovement.transform.position : transform.position;
+                Instantiate(supernovaPrefab, at, Quaternion.identity);
                 supernovaTimer = 0;
             }
         }
@@ -391,8 +416,9 @@ public void TryTriggerLightning()
 {
     if (!isLightningUnlocked) return;
 
-    // ვეძებთ უახლოეს მტერს, რომ დავიწყოთ ჯაჭვი
-    Collider2D firstEnemy = Physics2D.OverlapCircle(transform.position, 6f, LayerMask.GetMask("Enemies"));
+    // search around the PLAYER (manager is on the Canvas, so transform.position is useless)
+    Vector3 at = playerMovement != null ? playerMovement.transform.position : transform.position;
+    Collider2D firstEnemy = Physics2D.OverlapCircle(at, 6f, LayerMask.GetMask("Enemies"));
     if (firstEnemy != null)
     {
         chainLightningScript.TriggerChain(firstEnemy.transform);

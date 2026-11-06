@@ -9,6 +9,7 @@ public class HealthPickup : MonoBehaviour
 
     void Start()
     {
+        GlowFx.Attach(transform, new Color(0.45f, 1f, 0.55f, 0.75f), 1.4f); // green health glow
         player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 

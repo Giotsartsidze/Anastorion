@@ -15,18 +15,30 @@ public class GameOverManager : MonoBehaviour
     [Header("Shop")] // ← ახალი
     public GameObject shopPanel;
 
+    [Header("Dream outro (optional)")]
+    public StorybookCutscene outro;
+
     void Awake()
     {
         Instance = this; // newest wins — survives scene reload without vanishing
         if (panel != null) panel.SetActive(false);
         if (shopPanel != null) shopPanel.SetActive(false); // ← ახალი
+        UiSkin.Frame(panel, new Vector2(560, 400)); // shared gold frame
     }
 
     public void ShowGameOver()
     {
         Time.timeScale = 0f;
-        if (panel != null) panel.SetActive(true);
 
+        // Dream framing: death = waking up. Play the outro (shards folded in), then
+        // return to the bedroom menu. Falls back to the results panel if no outro is set.
+        if (outro != null)
+        {
+            outro.Play(() => { Time.timeScale = 1f; SceneManager.LoadScene("MainMenu"); });
+            return;
+        }
+
+        if (panel != null) panel.SetActive(true);
         if (RunStats.Instance != null)
         {
             if (timeText != null)  timeText.text  = "Time Survived: " + RunStats.Instance.GetFormattedTime();

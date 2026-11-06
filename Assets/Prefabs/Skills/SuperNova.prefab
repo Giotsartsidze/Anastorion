@@ -138,5 +138,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 25
+  radius: 4.5
   knockbackForce: 10
-  duration: 0.5
+  duration: 2

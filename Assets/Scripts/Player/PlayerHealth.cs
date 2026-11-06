@@ -43,6 +43,7 @@ public class PlayerHealth : MonoBehaviour
         currentHealth = maxHealth;
         sprite = GetComponent<SpriteRenderer>();
         shaker = GetComponent<ShakeSource>();
+        ShadowFx.Attach(transform); // drop shadow under the hero
 
         // UI-ს ინიციალიზაცია
         if (healthSlider != null) healthSlider.maxValue = maxHealth;

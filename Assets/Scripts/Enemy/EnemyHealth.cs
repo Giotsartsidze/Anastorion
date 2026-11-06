@@ -29,7 +29,7 @@ public class EnemyHealth : MonoBehaviour
     [Tooltip("How hard hits shove this enemy back. 0 = no knockback.")]
     public float knockbackForce = 10f;
     [Tooltip("Screen-shake strength on death. Throttled globally so swarms don't rumble.")]
-    public float deathShakeForce = 0.3f;
+    public float deathShakeForce = 0.1f;
     [Tooltip("Length of the death pop animation (scale-punch + fade), seconds.")]
     public float deathPopDuration = 0.15f;
 
@@ -54,6 +54,8 @@ public class EnemyHealth : MonoBehaviour
         if (hitFlash == null) hitFlash = gameObject.AddComponent<HitFlash>();
         knockback = GetComponent<Knockback>();
         if (knockback == null) knockback = gameObject.AddComponent<Knockback>();
+
+        ShadowFx.Attach(transform); // soft drop shadow so the enemy sits in the world
         deathPop = GetComponent<DeathPop>();
         if (deathPop == null) deathPop = gameObject.AddComponent<DeathPop>();
         // NOT auto-added: frame sheets must be assigned per prefab in the Inspector.

@@ -9,6 +9,7 @@ public class ShopItemUI : MonoBehaviour
     public TextMeshProUGUI descriptionText;
     public TextMeshProUGUI costText;
     public TextMeshProUGUI levelText;
+    public Image levelPips;        // gold pip bar (Image type = Filled, Horizontal); fillAmount = level/maxLevel
     public Button buyButton;
 
     void Start() => UpdateUI();
@@ -21,17 +22,21 @@ public class ShopItemUI : MonoBehaviour
     if (descriptionText != null) descriptionText.text = data.description;
     int level = data.GetCurrentLevel();
 
+    // level progress as gold pips
+    if (levelPips != null)
+        levelPips.fillAmount = data.maxLevel > 0 ? (float)level / data.maxLevel : 0f;
+
     if (level >= data.maxLevel)
     {
         costText.text = "MAX";
-        levelText.text = $"Lvl: {level}/{data.maxLevel}";
+        if (levelText != null) levelText.text = $"Lvl: {level}/{data.maxLevel}";
         buyButton.interactable = false;
     }
     else
     {
         int cost = data.GetCurrentCost();
         costText.text = cost.ToString();
-        levelText.text = $"Lvl: {level}/{data.maxLevel}";
+        if (levelText != null) levelText.text = $"Lvl: {level}/{data.maxLevel}";
 
         // ✅ null check დამატებულია
         if (CurrencyManager.Instance != null)

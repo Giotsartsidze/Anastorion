@@ -50,6 +50,23 @@ rect(g,2,2,3,17,GOLD_L)
 rect(g,2,16,29,17,GOLD_D)     # bottom shade
 save(g,'shop_button.png')
 
+# ---- LEVEL PIPS -------------------------------------------------------------
+# A 5-cell horizontal bar. Two aligned sprites: a dark track (all 5 pips) and a
+# gold fill (all 5 pips). The fill is used as a UI Image type=Filled Horizontal,
+# so fillAmount = level/maxLevel reveals exactly N gold pips over the dark track.
+# Geometry: 5 cells x 10px = 50px wide, 10px tall. Pip body x in [cell+1 .. cell+8].
+PIP_W, PIP_H, CELLS, CELL = 50, 10, 5, 10
+def pip_bar(body, edge):
+    g=grid(PIP_W,PIP_H)
+    for c in range(CELLS):
+        x0=c*CELL
+        rect(g, x0+1, 1, x0+8, PIP_H-2, edge)   # outline
+        rect(g, x0+2, 2, x0+7, PIP_H-3, body)   # body
+        rect(g, x0+2, 2, x0+7, 2, GOLD_L if body==GOLD else NAVY_L)  # top sheen
+    return g
+save(pip_bar(NAVY_L, OUT),  'shop_pip_track.png')  # empty slots
+save(pip_bar(GOLD,   OUT),  'shop_pip_fill.png')   # owned levels (Filled image)
+
 # ---- MOCKUP of one styled row so the look is clear ----
 scale=6
 panel=Image.open('out/shop_panel.png').resize((64*8,48*8),Image.NEAREST)

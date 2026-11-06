@@ -12,6 +12,7 @@ public class XPOrb : MonoBehaviour
 
     void Start()
     {
+        GlowFx.Attach(transform, new Color(0.45f, 0.78f, 1f, 0.75f), 1.5f); // bright cyan XP glow
         // ვეძებთ მოთამაშეს
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null)

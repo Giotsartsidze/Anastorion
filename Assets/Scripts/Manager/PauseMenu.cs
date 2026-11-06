@@ -14,6 +14,11 @@ public class PauseMenu : MonoBehaviour
 
     public bool IsPaused { get; private set; }
 
+    void Start()
+    {
+        UiSkin.Frame(pausePanel, new Vector2(430, 330)); // shared gold frame
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))

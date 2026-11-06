@@ -205,7 +205,7 @@ MonoBehaviour:
   useHitStopOnDeath: 0
   hitStopDuration: 0.08
   knockbackForce: 10
-  deathShakeForce: 0.3
+  deathShakeForce: 0.1
   deathPopDuration: 0.15
   overrideDropPrefab: {fileID: 0}
 --- !u!114 &-1799164331101771587

@@ -9,6 +9,7 @@ public class EnergyShard : MonoBehaviour
 
     void Start()
     {
+        GlowFx.Attach(transform, new Color(1f, 0.95f, 0.65f, 0.8f), 1.5f); // bright gold shard glow
         // ვპოულობთ ფლეიერს თეგის მიხედვით
         GameObject p = GameObject.FindGameObjectWithTag("Player");
         if (p != null) player = p.transform;

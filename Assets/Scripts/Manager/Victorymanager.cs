@@ -21,6 +21,7 @@ public class VictoryManager : MonoBehaviour
     {
         Instance = this; // newest wins — survives scene reload without vanishing
         if (panel != null) panel.SetActive(false);
+        UiSkin.Frame(panel, new Vector2(620, 440)); // shared gold frame
     }
 
     void Update()
