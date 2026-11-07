@@ -104,7 +104,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7478513448722915515}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
   m_Name: 
@@ -309,6 +309,31 @@ MonoBehaviour:
   meleeRange: 7.5
   biteDamage: 20
   biteCooldown: 2.5
+  canSummon: 1
+  summonPrefabs: []
+  summonCount: 3
+  summonInterval: 10
+  summonRadius: 4
+  canEnrage: 1
+  enrageHealthPct: 0.5
+  canCharge: 1
+  chargeInterval: 7
+  chargeTelegraph: 0.6
+  chargeSpeed: 16
+  chargeDuration: 0.5
+  chargeDamage: 35
+  canShockwave: 1
+  shockwaveInterval: 9
+  shockwaveProjectiles: 18
+  canAimedVolley: 1
+  aimedInterval: 5
+  aimedShots: 3
+  aimedSpread: 10
+  canSpiral: 1
+  spiralInterval: 12
+  spiralDuration: 2.2
+  spiralShotDelay: 0.07
+  spiralStep: 24
 --- !u!114 &-8699165996741751958
 MonoBehaviour:
   m_ObjectHideFlags: 0
