@@ -6084,6 +6084,13 @@ MonoBehaviour:
   brightnessRange: {x: 0.6, y: 1}
   sortingLayerName: Default
   sortingOrder: -100
+  buildWalls: 1
+  arenaSize: {x: 80, y: 50}
+  wallOverhang: 90
+  wallColor: {r: 0.035, g: 0.045, b: 0.085, a: 1}
+  trimColor: {r: 0.93, g: 0.78, b: 0.42, a: 1}
+  colliderThickness: 2
+  wallSortingOrder: 40
 --- !u!4 &288496585
 Transform:
   m_ObjectHideFlags: 0
@@ -8715,6 +8722,7 @@ MonoBehaviour:
   xpColor: {r: 0.878, g: 0.659, b: 0.204, a: 1}
   hpColor: {r: 0.816, g: 0.271, b: 0.29, a: 1}
   hpLow: {r: 0.9, g: 0.3, b: 0.2, a: 1}
+  bossColor: {r: 0.72, g: 0.16, b: 0.28, a: 1}
 --- !u!1 &940394629
 GameObject:
   m_ObjectHideFlags: 0
@@ -10180,11 +10188,6 @@ MonoBehaviour:
     spawnChance: 6
     startTime: 390
     isSwarm: 0
-  - name: Boss
-    prefab: {fileID: 7478513448722915515, guid: b6bfc44fd7a50494985ccf43665fc167, type: 3}
-    spawnChance: 100
-    startTime: 500
-    isSwarm: 0
   - name: Goblin
     prefab: {fileID: 1388909818033448563, guid: 21bd32172428d40d198bcf23cebc7976, type: 3}
     spawnChance: 4
@@ -10208,6 +10211,8 @@ MonoBehaviour:
   spawnPoints: []
   timerText: {fileID: 40669348}
   bossPrefab: {fileID: 7478513448722915515, guid: b6bfc44fd7a50494985ccf43665fc167, type: 3}
+  bossSpawnTime: 10
+  stopSpawnsDuringBoss: 1
   bossWarningUI: {fileID: 1861674241}
   bossHealthSlider: {fileID: 1162555101}
   bossHealthText: {fileID: 1425832971}
@@ -12744,7 +12749,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1698383981
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12778,7 +12783,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bf1f19f66a214ff1b995d7245714eff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panel: {fileID: 0}
   victoryDelay: 1.2
 --- !u!225 &1698383983
 CanvasGroup:
