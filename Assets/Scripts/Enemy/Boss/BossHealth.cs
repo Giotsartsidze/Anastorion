@@ -65,6 +65,9 @@ public class BossHealth : MonoBehaviour
         if (MusicManager.Instance != null) MusicManager.Instance.PlayDefault();
         if (shaker != null) shaker.TriggerShake();
 
+        // The boss is the demo's win condition — defeating it triggers Victory.
+        if (VictoryManager.Instance != null) VictoryManager.Instance.OnBossDefeated();
+
         // hide the whole bar (root covers slider + frame + text); fall back to parts
         if (bossBarRoot != null) bossBarRoot.SetActive(false);
         if (bossSlider != null) bossSlider.gameObject.SetActive(false);
