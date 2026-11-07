@@ -21,6 +21,32 @@ public static class UiSkin
         return _panel;
     }
 
+    static Sprite _card, _button, _medallion, _disc;
+
+    // Slightly lighter navy than the big panel, so a card reads as "on" the panel.
+    public static Sprite CardSprite()
+    {
+        if (_card == null)
+            _card = RoundRect(112, 112, 20,
+                new Color(0.105f, 0.130f, 0.245f), new Color(0.060f, 0.078f, 0.150f),
+                new Color(0.80f, 0.63f, 0.30f), 2.6f, new Vector4(20, 20, 20, 20));
+        return _card;
+    }
+
+    public static Sprite ButtonSprite()
+    {
+        if (_button == null)
+            _button = RoundRectGloss(128, 72, 16,
+                new Color(0.99f, 0.83f, 0.42f), new Color(0.82f, 0.58f, 0.16f),
+                new Color(0.55f, 0.38f, 0.10f), 3f, new Vector4(16, 16, 16, 16));
+        return _button;
+    }
+
+    // Gold-ringed navy disc to seat an upgrade icon in.
+    public static Sprite Medallion() { if (_medallion == null) _medallion = MakeMedallion(112); return _medallion; }
+    // Plain white circle, tint per use (rarity pips, dots).
+    public static Sprite Disc() { if (_disc == null) _disc = MakeDisc(48); return _disc; }
+
     /// <summary>Add the shared gold-framed card behind this panel's content.
     /// Pass cardSize.x/y <= 0 to auto-fit the card to the content bounds.</summary>
     public static void Frame(GameObject root, Vector2 cardSize, Vector2 offset = default)
@@ -164,5 +190,72 @@ public static class UiSkin
         }
         tex.SetPixels(px); tex.Apply();
         return Sprite.Create(tex, new Rect(0, 0, w, h), new Vector2(0.5f, 0.5f), 100f, 0, SpriteMeshType.FullRect, slice);
+    }
+
+    static Sprite RoundRectGloss(int w, int h, int r, Color top, Color bot, Color border, float bw, Vector4 slice)
+    {
+        var tex = new Texture2D(w, h, TextureFormat.RGBA32, false);
+        tex.filterMode = FilterMode.Bilinear; tex.wrapMode = TextureWrapMode.Clamp;
+        var px = new Color[w * h];
+        for (int y = 0; y < h; y++)
+        {
+            float t = (h <= 1) ? 0f : (float)y / (h - 1);
+            Color fill = Color.Lerp(bot, top, t);
+            float g = Mathf.Clamp01((t - 0.52f) / 0.48f);
+            fill = Color.Lerp(fill, new Color(Mathf.Min(1, fill.r + 0.3f), Mathf.Min(1, fill.g + 0.28f), Mathf.Min(1, fill.b + 0.24f)), g * g * 0.85f);
+            float lg = Mathf.Clamp01((0.40f - t) / 0.40f);
+            fill = Color.Lerp(fill, fill * 0.82f, lg * 0.5f);
+            for (int x = 0; x < w; x++)
+            {
+                float d = SdRound(x + 0.5f, y + 0.5f, w, h, r);
+                float cov = Mathf.Clamp01(0.5f - d);
+                Color c = fill; float inside = -d;
+                if (bw > 0 && inside >= 0 && inside < bw)
+                    c = Color.Lerp(c, border, Mathf.Clamp01((1f - inside / bw) * 1.25f));
+                px[y * w + x] = new Color(c.r, c.g, c.b, cov);
+            }
+        }
+        tex.SetPixels(px); tex.Apply();
+        return Sprite.Create(tex, new Rect(0, 0, w, h), new Vector2(0.5f, 0.5f), 100f, 0, SpriteMeshType.FullRect, slice);
+    }
+
+    static Sprite MakeMedallion(int size)
+    {
+        var tex = new Texture2D(size, size, TextureFormat.RGBA32, false);
+        tex.filterMode = FilterMode.Bilinear; tex.wrapMode = TextureWrapMode.Clamp;
+        var px = new Color[size * size];
+        float cx = size / 2f, cy = size / 2f, R = size / 2f - 1.5f;
+        float ringW = size * 0.09f;
+        Color navyT = new Color(0.16f, 0.21f, 0.38f), navyB = new Color(0.07f, 0.09f, 0.19f);
+        Color gold = new Color(0.86f, 0.66f, 0.30f), goldHi = new Color(1f, 0.86f, 0.5f);
+        for (int y = 0; y < size; y++)
+            for (int x = 0; x < size; x++)
+            {
+                float dx = x + 0.5f - cx, dy = y + 0.5f - cy, dist = Mathf.Sqrt(dx * dx + dy * dy);
+                float cov = Mathf.Clamp01(R - dist + 0.5f);
+                float t = (float)y / (size - 1);
+                Color c = Color.Lerp(navyB, navyT, t);
+                float ring = Mathf.Clamp01(1f - Mathf.Abs(dist - (R - ringW * 0.5f)) / (ringW * 0.5f));
+                c = Color.Lerp(c, Color.Lerp(gold, goldHi, t), ring);
+                px[y * size + x] = new Color(c.r, c.g, c.b, cov);
+            }
+        tex.SetPixels(px); tex.Apply();
+        return Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f), 100f);
+    }
+
+    static Sprite MakeDisc(int size)
+    {
+        var tex = new Texture2D(size, size, TextureFormat.RGBA32, false);
+        tex.filterMode = FilterMode.Bilinear; tex.wrapMode = TextureWrapMode.Clamp;
+        var px = new Color[size * size];
+        float cx = size / 2f, cy = size / 2f, R = size / 2f - 1f;
+        for (int y = 0; y < size; y++)
+            for (int x = 0; x < size; x++)
+            {
+                float dx = x + 0.5f - cx, dy = y + 0.5f - cy, dist = Mathf.Sqrt(dx * dx + dy * dy);
+                px[y * size + x] = new Color(1, 1, 1, Mathf.Clamp01(R - dist + 0.5f));
+            }
+        tex.SetPixels(px); tex.Apply();
+        return Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f), 100f);
     }
 }

@@ -1,14 +1,28 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 using System.Linq;
 
 public class UpgradeManager : MonoBehaviour
 {
-    public List<UpgradeData> allUpgrades; 
-    public UpgradeUIElement[] cardUI;     
+    public List<UpgradeData> allUpgrades;
+    public UpgradeUIElement[] cardUI;
     public GameObject levelUpPanel;
     public List<UpgradeData> activeUpgrades;
     public List<UpgradeData> lockedUpgrades;
+
+    [Header("Level-up panel chrome")]
+    public TMP_FontAsset uiFont;     // Cinzel
+    public TMP_FontAsset pixelFont;  // Pixelify
+    // Rerolls are NOT free — they come from the "Reroll" meta-shop upgrade.
+    // Owned level (PlayerPrefs "Upgrade_Reroll") = rerolls granted each level-up.
+    const string RerollPrefKey = "Upgrade_Reroll";
+    int rerollsOwned;   // how many the player bought (per level-up)
+    int rerollsLeft;    // remaining this level-up
+    bool chromeBuilt;
+    TMP_Text rerollLabel, levelLabel;
+    Button rerollButton, skipButton;
 
     [Header("Supernova Synergy")]
     public GameObject supernovaPrefab;
@@ -94,8 +108,16 @@ public class UpgradeManager : MonoBehaviour
         levelUpPanel.SetActive(true);
         Time.timeScale = 0f;
         MenuGuard.AnyOpen = true;
+        EnsureChrome();
+        rerollsOwned = PlayerPrefs.GetInt(RerollPrefKey, 0);
+        rerollsLeft = rerollsOwned;
+        RollUpgrades();
+        UpdateChrome();
+    }
 
-        // Rarity gate: Common only early, Rare from rareUnlockLevel, Legendary from legendaryUnlockLevel.
+    // Picks + fills the three cards (rarity-gated, rarity-weighted). Called on open and reroll.
+    void RollUpgrades()
+    {
         int level = xpManager != null ? xpManager.currentLevel : 1;
         int maxRarity = (level >= legendaryUnlockLevel) ? 2 : (level >= rareUnlockLevel ? 1 : 0);
 
@@ -104,14 +126,138 @@ public class UpgradeManager : MonoBehaviour
 
         var picks = WeightedPick(pool, 3); // rarity-weighted so Common shows more than Legendary
 
-        for (int i = 0; i < picks.Count; i++)
+        for (int i = 0; i < cardUI.Length; i++)
         {
-            if (i < cardUI.Length && cardUI[i] != null)
+            if (cardUI[i] == null) continue;
+            if (i < picks.Count)
             {
+                cardUI[i].gameObject.SetActive(true);
                 cardUI[i].Setup(picks[i], this);
-                cardUI[i].AnimateIn(i * 0.15f); // შენი ანიმაცია
+                cardUI[i].AnimateIn(i * 0.12f);
             }
+            else cardUI[i].gameObject.SetActive(false);
         }
+    }
+
+    public void Reroll()
+    {
+        if (rerollsLeft <= 0) return;
+        rerollsLeft--;
+        RollUpgrades();
+        UpdateChrome();
+    }
+
+    public void Skip() { ResumeGame(); }
+
+    void UpdateChrome()
+    {
+        // No reroll owned → hide the button entirely and center Skip.
+        bool owns = rerollsOwned > 0;
+        if (rerollButton != null) rerollButton.gameObject.SetActive(owns);
+        if (skipButton != null)
+            ((RectTransform)skipButton.transform).anchoredPosition = owns ? new Vector2(108, -196) : new Vector2(0, -196);
+
+        if (owns && rerollLabel != null) rerollLabel.text = rerollsLeft > 0 ? "REROLL (" + rerollsLeft + ")" : "NO REROLLS";
+        if (rerollButton != null) rerollButton.interactable = rerollsLeft > 0;
+        if (levelLabel != null && xpManager != null) levelLabel.text = "LEVEL " + xpManager.currentLevel;
+    }
+
+    // Builds the title / subtitle / level label / reroll+skip buttons once, centers the
+    // three cards, and drops the shared gold frame behind everything.
+    void EnsureChrome()
+    {
+        if (chromeBuilt || levelUpPanel == null) return;
+        chromeBuilt = true;
+
+        // This panel ships with a HorizontalLayoutGroup that force-lays-out every child
+        // (squeezing cards + our chrome into thin columns). Turn off any layout driver so
+        // our explicit anchoredPosition / sizeDelta actually take effect.
+        foreach (var lg in levelUpPanel.GetComponents<LayoutGroup>()) lg.enabled = false;
+        var csf = levelUpPanel.GetComponent<ContentSizeFitter>(); if (csf != null) csf.enabled = false;
+
+        if (uiFont == null) uiFont = FindFont("cinzel");
+        if (pixelFont == null) pixelFont = FindFont("pixelify");
+        var panel = (RectTransform)levelUpPanel.transform;
+
+        // Scalable content wrapper: lets us size the whole composition (title +
+        // cards + buttons + gold frame) as ONE unit with margin, while the panel's
+        // own navy fill stays behind it as the dim backdrop.
+        var wrap = new GameObject("LevelUpContent", typeof(RectTransform)).GetComponent<RectTransform>();
+        wrap.SetParent(panel, false);
+        wrap.anchorMin = Vector2.zero; wrap.anchorMax = Vector2.one;
+        wrap.offsetMin = wrap.offsetMax = Vector2.zero;
+        wrap.pivot = new Vector2(0.5f, 0.5f);
+        wrap.localScale = Vector3.one * 0.82f; // shrink the whole panel for breathing room
+        Transform host = wrap;
+
+        Color gold = new Color(0.93f, 0.78f, 0.42f);
+        Color slate = new Color(0.52f, 0.57f, 0.68f);
+
+        float[] xs = { -236f, 0f, 236f };
+        for (int i = 0; i < cardUI.Length && i < 3; i++)
+        {
+            if (cardUI[i] == null) continue;
+            var rt = (RectTransform)cardUI[i].transform;
+            rt.SetParent(host, false);
+            rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0.5f); rt.pivot = new Vector2(0.5f, 0.5f);
+            rt.sizeDelta = new Vector2(206, 290);
+            rt.anchoredPosition = new Vector2(xs[i], -20f);
+        }
+
+        // Narrow text rects so they don't inflate the auto-fit frame width.
+        MakeText(host, "LEVEL UP", new Vector2(0, 196), new Vector2(560, 46), 34, gold, true, 7f, TextAlignmentOptions.Center);
+        MakeText(host, "· choose your boon ·", new Vector2(0, 168), new Vector2(560, 24), 15, slate, false, 6f, TextAlignmentOptions.Center);
+        levelLabel = MakeText(host, "LEVEL 1", new Vector2(0, 148), new Vector2(560, 20), 12, gold, false, 4f, TextAlignmentOptions.Center);
+
+        rerollButton = MakeButton(host, "REROLL", new Vector2(-108, -196), new Vector2(188, 50), Reroll, out rerollLabel);
+        skipButton = MakeButton(host, "SKIP", new Vector2(108, -196), new Vector2(188, 50), Skip, out _);
+
+        UiSkin.Frame(wrap.gameObject, Vector2.zero); // shared gold frame, auto-fit to content
+    }
+
+    static TMP_FontAsset FindFont(string contains)
+    {
+        foreach (var f in Resources.FindObjectsOfTypeAll<TMP_FontAsset>())
+            if (f != null && f.name.ToLowerInvariant().Contains(contains)) return f;
+        return null;
+    }
+
+    TMP_Text MakeText(Transform parent, string text, Vector2 pos, Vector2 size, float fs, Color c, bool bold, float spacing, TextAlignmentOptions align)
+    {
+        var go = new GameObject("Chrome_" + text, typeof(RectTransform));
+        go.transform.SetParent(parent, false);
+        var rt = (RectTransform)go.transform;
+        rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0.5f); rt.pivot = new Vector2(0.5f, 0.5f);
+        rt.anchoredPosition = pos; rt.sizeDelta = size;
+        var t = go.AddComponent<TextMeshProUGUI>();
+        if (uiFont != null) t.font = uiFont;
+        t.text = text; t.fontSize = fs; t.color = c; t.alignment = align; t.characterSpacing = spacing;
+        if (bold) t.fontStyle = FontStyles.Bold;
+        t.enableWordWrapping = false; t.raycastTarget = false;
+        return t;
+    }
+
+    Button MakeButton(Transform parent, string label, Vector2 pos, Vector2 size, UnityEngine.Events.UnityAction action, out TMP_Text labelOut)
+    {
+        var go = new GameObject("ChromeBtn_" + label, typeof(RectTransform));
+        go.transform.SetParent(parent, false);
+        var rt = (RectTransform)go.transform;
+        rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0.5f); rt.pivot = new Vector2(0.5f, 0.5f);
+        rt.anchoredPosition = pos; rt.sizeDelta = size;
+        var img = go.AddComponent<Image>(); img.sprite = UiSkin.ButtonSprite(); img.type = Image.Type.Sliced; img.color = Color.white;
+        var b = go.AddComponent<Button>(); b.targetGraphic = img;
+        var colors = b.colors; colors.highlightedColor = new Color(1.08f, 1.08f, 1.08f, 1f);
+        colors.disabledColor = new Color(0.55f, 0.52f, 0.45f, 1f); b.colors = colors;
+        b.onClick.AddListener(action);
+        var t = new GameObject("Label", typeof(RectTransform)).AddComponent<TextMeshProUGUI>();
+        t.transform.SetParent(go.transform, false);
+        var lrt = t.rectTransform; lrt.anchorMin = Vector2.zero; lrt.anchorMax = Vector2.one; lrt.offsetMin = lrt.offsetMax = Vector2.zero;
+        if (uiFont != null) t.font = uiFont;
+        t.text = label; t.fontSize = 19; t.color = new Color(0.16f, 0.10f, 0.02f);
+        t.alignment = TextAlignmentOptions.Center; t.fontStyle = FontStyles.Bold; t.characterSpacing = 3f;
+        t.enableWordWrapping = false; t.raycastTarget = false;
+        labelOut = t;
+        return b;
     }
 
     // Pick `count` distinct upgrades, weighted by rarity (Common most likely).
@@ -153,6 +299,8 @@ public class UpgradeManager : MonoBehaviour
         levelUpPanel.SetActive(true);
         Time.timeScale = 0f;
         MenuGuard.AnyOpen = true;
+        EnsureChrome();
+        rerollsOwned = 0; rerollsLeft = 0; // relic rewards aren't rerollable
 
         var picks = activeUpgrades
             .Where(IsEligible)
@@ -160,14 +308,18 @@ public class UpgradeManager : MonoBehaviour
             .ThenBy(_ => Random.value)
             .Take(3).ToList();
 
-        for (int i = 0; i < picks.Count; i++)
+        for (int i = 0; i < cardUI.Length; i++)
         {
-            if (i < cardUI.Length && cardUI[i] != null)
+            if (cardUI[i] == null) continue;
+            if (i < picks.Count)
             {
+                cardUI[i].gameObject.SetActive(true);
                 cardUI[i].Setup(picks[i], this);
-                cardUI[i].AnimateIn(i * 0.15f);
+                cardUI[i].AnimateIn(i * 0.12f);
             }
+            else cardUI[i].gameObject.SetActive(false);
         }
+        UpdateChrome();
     }
 
     // True on the FIRST pick of a skill (before it's active), so the card can show
