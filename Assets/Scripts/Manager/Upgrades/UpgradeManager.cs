@@ -155,7 +155,7 @@ public class UpgradeManager : MonoBehaviour
         bool owns = rerollsOwned > 0;
         if (rerollButton != null) rerollButton.gameObject.SetActive(owns);
         if (skipButton != null)
-            ((RectTransform)skipButton.transform).anchoredPosition = owns ? new Vector2(108, -196) : new Vector2(0, -196);
+            ((RectTransform)skipButton.transform).anchoredPosition = owns ? new Vector2(92, -196) : new Vector2(0, -196);
 
         if (owns && rerollLabel != null) rerollLabel.text = rerollsLeft > 0 ? "REROLL (" + rerollsLeft + ")" : "NO REROLLS";
         if (rerollButton != null) rerollButton.interactable = rerollsLeft > 0;
@@ -174,6 +174,12 @@ public class UpgradeManager : MonoBehaviour
         // our explicit anchoredPosition / sizeDelta actually take effect.
         foreach (var lg in levelUpPanel.GetComponents<LayoutGroup>()) lg.enabled = false;
         var csf = levelUpPanel.GetComponent<ContentSizeFitter>(); if (csf != null) csf.enabled = false;
+
+        // Hide the panel's own navy background Image. The content wrapper is scaled to
+        // 0.82, so this full-size fill was peeking out around the gold frame as a dark
+        // band on the left/right. The frame + cards are the only backdrop we need.
+        var panelBg = levelUpPanel.GetComponent<Image>();
+        if (panelBg != null) panelBg.enabled = false;
 
         if (uiFont == null) uiFont = FindFont("cinzel");
         if (pixelFont == null) pixelFont = FindFont("pixelify");
@@ -209,8 +215,8 @@ public class UpgradeManager : MonoBehaviour
         MakeText(host, "· choose your boon ·", new Vector2(0, 168), new Vector2(560, 24), 15, slate, false, 6f, TextAlignmentOptions.Center);
         levelLabel = MakeText(host, "LEVEL 1", new Vector2(0, 148), new Vector2(560, 20), 12, gold, false, 4f, TextAlignmentOptions.Center);
 
-        rerollButton = MakeButton(host, "REROLL", new Vector2(-108, -196), new Vector2(188, 50), Reroll, out rerollLabel);
-        skipButton = MakeButton(host, "SKIP", new Vector2(108, -196), new Vector2(188, 50), Skip, out _);
+        rerollButton = MakeButton(host, "REROLL", new Vector2(-92, -196), new Vector2(156, 44), Reroll, out rerollLabel);
+        skipButton = MakeButton(host, "SKIP", new Vector2(92, -196), new Vector2(156, 44), Skip, out _);
 
         UiSkin.Frame(wrap.gameObject, Vector2.zero); // shared gold frame, auto-fit to content
     }
@@ -253,7 +259,7 @@ public class UpgradeManager : MonoBehaviour
         t.transform.SetParent(go.transform, false);
         var lrt = t.rectTransform; lrt.anchorMin = Vector2.zero; lrt.anchorMax = Vector2.one; lrt.offsetMin = lrt.offsetMax = Vector2.zero;
         if (uiFont != null) t.font = uiFont;
-        t.text = label; t.fontSize = 19; t.color = new Color(0.16f, 0.10f, 0.02f);
+        t.text = label; t.fontSize = 16; t.color = new Color(0.16f, 0.10f, 0.02f);
         t.alignment = TextAlignmentOptions.Center; t.fontStyle = FontStyles.Bold; t.characterSpacing = 3f;
         t.enableWordWrapping = false; t.raycastTarget = false;
         labelOut = t;

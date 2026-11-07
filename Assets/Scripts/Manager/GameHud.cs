@@ -18,9 +18,12 @@ public class GameHud : MonoBehaviour
     public Color xpColor = new Color(.878f, .659f, .204f);   // gold
     public Color hpColor = new Color(.816f, .271f, .290f);   // crimson
     public Color hpLow   = new Color(.90f, .30f, .20f);
+    public Color bossColor = new Color(.72f, .16f, .28f);    // boss crimson
     static readonly Color INK = new Color(.047f, .047f, .078f);
     static readonly Color GOLD_L = new Color(1f, .886f, .541f);
     static readonly Color TXT = new Color(1f, .925f, .745f);
+
+    public static GameHud Instance;
 
     ExperienceManager xp;
     PlayerHealth hp;
@@ -28,6 +31,15 @@ public class GameHud : MonoBehaviour
     GameObject hudRoot;
     Image xpFill, hpFill;
     TextMeshProUGUI lvlText, xpText, hpText;
+
+    // Boss bar (driven by BossHealth)
+    GameObject bossBarRoot;
+    Image bossFill;
+    TextMeshProUGUI bossText, bossNameText;
+    int bossCur, bossMax;
+    bool bossActive;
+
+    void Awake() { Instance = this; }
 
     void Start()
     {
@@ -59,7 +71,25 @@ public class GameHud : MonoBehaviour
             if (hpFill != null) { hpFill.fillAmount = t; hpFill.color = t < 0.3f ? hpLow : hpColor; }
             if (hpText != null) hpText.text = Mathf.Max(0, hp.currentHealth) + " / " + hp.maxHealth;
         }
+        if (bossActive && bossBarRoot != null)
+        {
+            float t = bossMax > 0 ? Mathf.Clamp01((float)bossCur / bossMax) : 0f;
+            if (bossFill != null) bossFill.fillAmount = t;
+            if (bossText != null) bossText.text = Mathf.Max(0, bossCur) + " / " + bossMax;
+        }
     }
+
+    // ---- Boss bar API (called by BossHealth) ----
+    public void ShowBoss(string name, int cur, int max)
+    {
+        bossCur = cur; bossMax = max; bossActive = true;
+        if (bossNameText != null) bossNameText.text = name;
+        if (bossFill != null) bossFill.fillAmount = max > 0 ? Mathf.Clamp01((float)cur / max) : 0f;
+        if (bossText != null) bossText.text = cur + " / " + max;
+        if (bossBarRoot != null) bossBarRoot.SetActive(true);
+    }
+    public void UpdateBoss(int cur, int max) { bossCur = cur; bossMax = max; }
+    public void HideBoss() { bossActive = false; if (bossBarRoot != null) bossBarRoot.SetActive(false); }
 
     void BuildUI()
     {
@@ -99,6 +129,22 @@ public class GameHud : MonoBehaviour
         var hpLbl = Text("HpLbl", hpBar, "HP", 15f, new Color(1, 1, 1, .7f));
         hpLbl.alignment = TextAlignmentOptions.Left; var hlt = hpLbl.rectTransform;
         Stretch(hlt); hlt.offsetMin = new Vector2(16, 0); hlt.offsetMax = new Vector2(-16, 0);
+
+        // ---- Boss bar: wide, bottom-center, hidden until a boss spawns ----
+        var bossBar = NewRect("BossBar", go.transform);
+        bossBar.anchorMin = bossBar.anchorMax = new Vector2(.5f, 0f); bossBar.pivot = new Vector2(.5f, 0f);
+        bossBar.anchoredPosition = new Vector2(0, 40); bossBar.sizeDelta = new Vector2(1000, 32);
+        bossBarRoot = bossBar.gameObject;
+        Img("BossTrack", bossBar, barTrack, Color.white, stretch: true);
+        bossFill = Img("BossFill", bossBar, barFill, bossColor, stretch: true);
+        bossFill.type = Image.Type.Filled; bossFill.fillMethod = Image.FillMethod.Horizontal; bossFill.fillOrigin = 0; bossFill.fillAmount = 1f;
+        bossText = Text("BossNum", bossBar, "", 17f, Color.white); bossText.fontStyle = FontStyles.Bold; Stretch(bossText.rectTransform);
+        bossNameText = Text("BossName", bossBar, "", 20f, GOLD_L);
+        var nrt = bossNameText.rectTransform;
+        nrt.anchorMin = nrt.anchorMax = new Vector2(.5f, 1f); nrt.pivot = new Vector2(.5f, 0f);
+        nrt.anchoredPosition = new Vector2(0, 5); nrt.sizeDelta = new Vector2(1000, 26);
+        bossNameText.fontStyle = FontStyles.Bold; bossNameText.characterSpacing = 6f;
+        bossBarRoot.SetActive(false);
     }
 
     RectTransform NewRect(string n, Transform parent) { var g = new GameObject(n); g.transform.SetParent(parent, false); return g.AddComponent<RectTransform>(); }

@@ -24,6 +24,11 @@ public class WaveManager : MonoBehaviour
 
     [Header("Boss Settings")]
     public GameObject bossPrefab;
+    [Tooltip("Seconds into the run when the single boss spawns. Set LOW (e.g. 10) to test.")]
+    public float bossSpawnTime = 420f;
+    [Tooltip("While the boss is alive, stop spawning outside enemies/elites so the fight is 1v1 (plus the boss's own summons).")]
+    public bool stopSpawnsDuringBoss = true;
+    private bool bossActive;
     public GameObject bossWarningUI;
     public Slider bossHealthSlider;
     public TMP_Text bossHealthText;   // optional "X / Y" overlay on the boss bar
@@ -67,25 +72,29 @@ public class WaveManager : MonoBehaviour
         float currentTime = DifficultyManager.Instance.gameTime;
         UpdateTimerUI(currentTime);
 
+        // ბოსის სპაუნინგი
+        if (!bossSpawned && currentTime >= bossSpawnTime) SpawnBoss(); // the one scripted boss climax
+
+        // While the boss is up, the arena belongs to it (plus its own summons): no outside
+        // waves, elite events, or mega-elites. Keeps the climax a clean duel.
+        bool bossLockdown = bossActive && stopSpawnsDuringBoss;
+
 		float currentMinute = Mathf.Floor(currentTime / 120f); // elite event every 2 minutes
-        if (currentMinute > lastEventMinute && currentMinute > 0)
+        if (!bossLockdown && currentMinute > lastEventMinute && currentMinute > 0)
         {
             lastEventMinute = currentMinute;
             StartCoroutine(TriggerEliteEvent());
         }
 
         // mega-elite on its own timer (tanky, drops a Relic)
-        if (currentTime >= nextMegaTime)
+        if (!bossLockdown && currentTime >= nextMegaTime)
         {
             nextMegaTime += megaEliteInterval;
             SpawnMegaElite(currentTime);
         }
 
-        // ბოსის სპაუნინგი
-        if (!bossSpawned && currentTime >= 420f) SpawnBoss(); // boss as the ~7min climax
-
         // სპაუნინგის ლოგიკა
-        if (Time.time >= nextSpawnTime)
+        if (!bossLockdown && Time.time >= nextSpawnTime)
         {
             SpawnEnemy(currentTime);
             // სირთულის მიხედვით სპაუნინგის აჩქარება
@@ -155,6 +164,7 @@ IEnumerator TriggerEliteEvent()
         List<EnemyArchetype> availableEnemies = new List<EnemyArchetype>();
         foreach (var enemy in enemyPool)
         {
+            if (IsBoss(enemy)) continue; // the boss only ever comes from SpawnBoss(), never the pool
             if (currentTime >= enemy.startTime) availableEnemies.Add(enemy);
         }
 
@@ -200,6 +210,7 @@ IEnumerator TriggerEliteEvent()
 
         EnemyArchetype e = enemyPool[debugIndex % enemyPool.Count];
         debugIndex++;
+        if (IsBoss(e)) return; // never cycle the boss in as a regular debug spawn
 
         Vector2 spawnDir = Random.insideUnitCircle.normalized * 22f;
         Vector3 spawnPos = player.position + (Vector3)spawnDir;
@@ -209,6 +220,10 @@ IEnumerator TriggerEliteEvent()
         else if (ObjectPooler.Instance != null)
             ObjectPooler.Instance.SpawnFromPool(e.name, spawnPos, Quaternion.identity);
     }
+
+    // The boss is a scripted, one-time climax (SpawnBoss). If it's accidentally left in
+    // the enemyPool it must never spawn as a regular/swarm enemy, or you get a horde of bosses.
+    static bool IsBoss(EnemyArchetype e) => e != null && e.prefab != null && e.prefab.GetComponent<BossHealth>() != null;
 
     EnemyArchetype GetRandomEnemy(List<EnemyArchetype> pool)
     {
@@ -238,13 +253,22 @@ IEnumerator TriggerEliteEvent()
     void SpawnBoss()
     {
         bossSpawned = true;
+        bossActive = true; // lock down outside spawns for the duel
+        if (bossPrefab == null) { Debug.LogError("WaveManager: bossPrefab is not assigned — no boss to spawn."); return; }
         if (MusicManager.Instance != null) MusicManager.Instance.PlayBoss();
-        bossWarningUI.SetActive(true);
-        Invoke(nameof(HideWarning), 3f);
-        Instantiate(bossPrefab, player.position + new Vector3(0, 15, 0), Quaternion.identity);
+        if (bossWarningUI != null) { bossWarningUI.SetActive(true); Invoke(nameof(HideWarning), 3f); }
+        // Spawn just inside the top of the view (camera half-height is ~10) so the boss
+        // is visible immediately and descends toward the player, instead of lurking
+        // off-screen. Raise this for a longer "approaching from the dark" entrance.
+        Vector3 at = (player != null ? player.position : Vector3.zero) + new Vector3(0, 8f, 0);
+        GameObject boss = Instantiate(bossPrefab, at, Quaternion.identity);
+        Debug.Log("WaveManager: boss spawned at " + at + " (name: " + boss.name + ")");
     }
 
-    void HideWarning() => bossWarningUI.SetActive(false);
+    void HideWarning() { if (bossWarningUI != null) bossWarningUI.SetActive(false); }
+
+    // Called by BossHealth on boss death — lifts the spawn lockdown.
+    public void NotifyBossDefeated() { bossActive = false; }
 
     void UpdateTimerUI(float time)
     {

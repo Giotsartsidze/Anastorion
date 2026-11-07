@@ -36,8 +36,8 @@ Transform:
   m_GameObject: {fileID: 7478513448722915515}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.49, y: -0.44, z: 0}
-  m_LocalScale: {x: 6, y: 4.5, z: 1.5}
+  m_LocalPosition: {x: 5.49, y: 0, z: 0}
+  m_LocalScale: {x: 4, y: 3, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -278,6 +278,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 1000
+  bossName: GVELESHAPI
   shardReward: 50
   deathEffectPrefab: {fileID: 6413490928674798708, guid: 2a49367b831ff4b2d999fce5c6b23f5d, type: 3}
   skillLootPrefab: {fileID: 7670888100493032557, guid: 45e41582ab1b14e4687f96baa0e04b81, type: 3}
@@ -305,7 +306,7 @@ MonoBehaviour:
   - {fileID: 8256498148389629041, guid: 63aac8bd940114744837042ba7ec9102, type: 3}
   - {fileID: 8739266664483850364, guid: 63aac8bd940114744837042ba7ec9102, type: 3}
   - {fileID: -7201328924026826374, guid: 63aac8bd940114744837042ba7ec9102, type: 3}
-  meleeRange: 3
+  meleeRange: 7.5
   biteDamage: 20
   biteCooldown: 2.5
 --- !u!114 &-8699165996741751958

@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 4064976638688365738}
   - component: {fileID: 6393197470655986133}
   - component: {fileID: 7848028418464395311}
-  - component: {fileID: -6083262662874909824}
   - component: {fileID: -394217616800908321}
   m_Layer: 8
   m_Name: BossProjectile
@@ -169,21 +168,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   damage: 10
---- !u!114 &-6083262662874909824
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6289872999900617585}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f62a128a22f3847e3af3c0adf13dcbdd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 100
-  deathEffectPrefab: {fileID: 6413490928674798708, guid: 2a49367b831ff4b2d999fce5c6b23f5d, type: 3}
-  skillLootPrefab: {fileID: 5765246111510740352, guid: 05270a1a435244a628867298999addf2, type: 3}
 --- !u!114 &-394217616800908321
 MonoBehaviour:
   m_ObjectHideFlags: 0

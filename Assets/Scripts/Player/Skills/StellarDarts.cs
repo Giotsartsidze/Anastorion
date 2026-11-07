@@ -22,7 +22,9 @@ public class StellarDarts : MonoBehaviour
 
     void ShootNearestEnemy()
     {
-        Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, range, enemyLayer);
+        Collider2D[] found = Physics2D.OverlapCircleAll(transform.position, range, enemyLayer);
+        // Only target enemies INSIDE the arena walls — don't snipe things in the void beyond.
+        Collider2D[] enemies = System.Array.FindAll(found, e => e != null && BackgroundScatterer.InsideArena(e.transform.position));
         if (enemies.Length == 0) return;
 
         // nearest first

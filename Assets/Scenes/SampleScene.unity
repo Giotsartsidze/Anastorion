@@ -6717,6 +6717,8 @@ MonoBehaviour:
   lockedUpgrades:
   - {fileID: 11400000, guid: fee7913f5262748fbbda69d1e2f5716e, type: 2}
   - {fileID: 11400000, guid: f2c9204c8bb784453bf647052a2d7ac6, type: 2}
+  uiFont: {fileID: 0}
+  pixelFont: {fileID: 0}
   supernovaPrefab: {fileID: 3832247937898278526, guid: c8be5f85c194841b5bb3abb3adddda71, type: 3}
   supernovaCooldown: 60
   chainLightningScript: {fileID: 289654457947297808, guid: 5b48c8c13733c4488a518d3b8d044e17, type: 3}
@@ -8533,8 +8535,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 107.49999, y: -167.99998}
-  m_SizeDelta: {x: 214.99998, y: 335.99997}
+  m_AnchoredPosition: {x: 107.49999, y: -195.1975}
+  m_SizeDelta: {x: 214.99998, y: 390.395}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &863997421
 MonoBehaviour:
@@ -8939,7 +8941,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 43, y: -11}
+  m_AnchoredPosition: {x: 44.1, y: -11}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1014228569
@@ -9885,8 +9887,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 597.49994, y: -167.99998}
-  m_SizeDelta: {x: 214.99998, y: 335.99997}
+  m_AnchoredPosition: {x: 597.49994, y: -195.1975}
+  m_SizeDelta: {x: 214.99998, y: 390.395}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1182477377
 MonoBehaviour:
@@ -10286,8 +10288,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 352.49997, y: -167.99998}
-  m_SizeDelta: {x: 214.99998, y: 335.99997}
+  m_AnchoredPosition: {x: 352.49997, y: -195.1975}
+  m_SizeDelta: {x: 214.99998, y: 390.395}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1265784070
 MonoBehaviour:
@@ -12742,7 +12744,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1698383981
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12777,10 +12779,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panel: {fileID: 0}
-  timeText: {fileID: 0}
-  killsText: {fileID: 0}
-  levelText: {fileID: 0}
-  surviveMinutes: 10
+  victoryDelay: 1.2
 --- !u!225 &1698383983
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -13994,7 +13993,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1985865377
 RectTransform:
   m_ObjectHideFlags: 0

@@ -6,44 +6,47 @@ using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Victory is the demo's climax: it fires when the BOSS is defeated (not on a timer).
-/// The results panel is built in code to match the shared gold-on-navy UI
-/// (title, subtitle, run stats, Play Again / Main Menu).
+/// Fully self-contained — it builds its OWN root canvas + results panel in code
+/// (gold-on-navy, matching the other panels), so it needs no scene wiring and can't
+/// be broken by an unassigned reference or a disabled panel object.
 /// </summary>
 public class VictoryManager : MonoBehaviour
 {
     public static VictoryManager Instance;
 
-    [Header("UI")]
-    public GameObject panel;
-
     [Tooltip("Seconds (realtime) to let the boss-death effects play before the panel appears.")]
     public float victoryDelay = 1.2f;
 
-    static readonly Color Gold      = new Color(0.93f, 0.78f, 0.42f);
-    static readonly Color GoldBright= new Color(0.96f, 0.86f, 0.52f);
-    static readonly Color Slate     = new Color(0.55f, 0.60f, 0.72f);
-    static readonly Color Ink       = new Color(0.16f, 0.10f, 0.02f);
+    static readonly Color Gold       = new Color(0.93f, 0.78f, 0.42f);
+    static readonly Color GoldBright = new Color(0.96f, 0.86f, 0.52f);
+    static readonly Color Slate      = new Color(0.55f, 0.60f, 0.72f);
+    static readonly Color Ink        = new Color(0.16f, 0.10f, 0.02f);
 
+    GameObject panel;           // the framed results card (built in code)
     TMP_FontAsset uiFont, pixelFont;
     TMP_Text timeText, killsText, levelText;
     bool victoryShown;
     bool built;
 
-    void Awake()
+    void Awake() { Instance = this; }
+
+    /// <summary>
+    /// Robust entry point for BossHealth: works even if no active VictoryManager exists
+    /// (finds a disabled one and wakes it, or spins up a fresh one).
+    /// </summary>
+    public static void ReportBossDefeated()
     {
-        Instance = this; // newest wins — survives scene reload without vanishing
-        if (panel != null)
-        {
-            BuildUI();
-            UiSkin.Frame(panel, new Vector2(620, 440)); // shared gold frame
-            panel.SetActive(false);
-        }
+        var vm = Instance;
+        if (vm == null) vm = FindObjectOfType<VictoryManager>(true); // include inactive
+        if (vm == null) vm = new GameObject("VictoryManager").AddComponent<VictoryManager>();
+        if (!vm.gameObject.activeSelf) vm.gameObject.SetActive(true);
+        vm.OnBossDefeated();
     }
 
-    // Called by BossHealth when the boss dies — THIS is the win condition.
     public void OnBossDefeated()
     {
         if (victoryShown) return;
+        if (!gameObject.activeInHierarchy) gameObject.SetActive(true);
         StartCoroutine(VictoryAfterDelay());
     }
 
@@ -58,57 +61,82 @@ public class VictoryManager : MonoBehaviour
         if (victoryShown) return;
         victoryShown = true;
 
+        EnsureBuilt();
         Time.timeScale = 0f;
-        if (panel != null) panel.SetActive(true);
         MenuGuard.AnyOpen = true;
+        if (panel != null) panel.SetActive(true);
 
         if (RunStats.Instance != null)
         {
-            if (timeText  != null) timeText.text  = Stat("Time Survived",   RunStats.Instance.GetFormattedTime());
-            if (killsText != null) killsText.text = Stat("Enemies Slain",    RunStats.Instance.killCount.ToString());
-            if (levelText != null) levelText.text = Stat("Level Reached",    RunStats.Instance.GetLevel().ToString());
+            if (timeText  != null) timeText.text  = Stat("Time Survived", RunStats.Instance.GetFormattedTime());
+            if (killsText != null) killsText.text = Stat("Enemies Slain", RunStats.Instance.killCount.ToString());
+            if (levelText != null) levelText.text = Stat("Level Reached", RunStats.Instance.GetLevel().ToString());
         }
     }
 
     static string Stat(string label, string value) =>
         $"<color=#8C93A6>{label}</color>    <color=#F2D692>{value}</color>";
 
-    // ---- UI construction -------------------------------------------------
+    // ---- UI construction (own canvas, so nothing in the scene needs wiring) -----
 
-    void BuildUI()
+    void EnsureBuilt()
     {
         if (built) return; built = true;
         uiFont    = FindFont("cinzel");
         pixelFont = FindFont("pixelify");
-        var panelRT = (RectTransform)panel.transform;
 
+        // ROOT canvas above the HUD (which sits at 1400).
+        var canvasGO = new GameObject("VictoryCanvas");
+        var canvas = canvasGO.AddComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvas.sortingOrder = 1500;
+        var sc = canvasGO.AddComponent<CanvasScaler>();
+        sc.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        sc.referenceResolution = new Vector2(1920, 1080);
+        sc.matchWidthOrHeight = 0.5f;
+        canvasGO.AddComponent<GraphicRaycaster>();
+
+        // The results card.
+        panel = new GameObject("VictoryPanel", typeof(RectTransform));
+        var prt = (RectTransform)panel.transform;
+        prt.SetParent(canvasGO.transform, false);
+        prt.anchorMin = prt.anchorMax = new Vector2(0.5f, 0.5f); prt.pivot = new Vector2(0.5f, 0.5f);
+        prt.anchoredPosition = Vector2.zero; prt.sizeDelta = new Vector2(620, 440);
+
+        BuildUI();
+        UiSkin.Frame(panel, new Vector2(620, 440)); // shared gold frame
+        panel.SetActive(false);
+    }
+
+    void BuildUI()
+    {
         // dim backdrop so the card pops over the frozen battlefield. Oversized +
         // center-anchored so it covers the whole screen even if the panel rect is small.
-        var scrim = NewImage("scrim", panelRT);
+        var scrim = NewImage("scrim", panel.transform);
         scrim.color = new Color(0f, 0f, 0f, 0.72f);
         var srt = scrim.rectTransform;
         srt.anchorMin = srt.anchorMax = new Vector2(0.5f, 0.5f); srt.pivot = new Vector2(0.5f, 0.5f);
         srt.sizeDelta = new Vector2(4000, 4000); srt.anchoredPosition = Vector2.zero;
 
-        MakeText("VICTORY", new Vector2(0, 150), new Vector2(560, 60), 46, GoldBright, uiFont, 8f, FontStyles.Normal);
-        MakeText("· the dream endures ·", new Vector2(0, 110), new Vector2(560, 28), 18, Slate, uiFont, 6f, FontStyles.Normal);
+        MakeText("VICTORY", new Vector2(0, 150), new Vector2(560, 60), 46, GoldBright, uiFont, 8f);
+        MakeText("· the dream endures ·", new Vector2(0, 110), new Vector2(560, 28), 18, Slate, uiFont, 6f);
 
         // thin gold divider
-        var rule = NewImage("Rule", panelRT);
+        var rule = NewImage("Rule", panel.transform);
         rule.color = new Color(Gold.r, Gold.g, Gold.b, 0.45f);
         var rrt = rule.rectTransform;
         rrt.anchorMin = rrt.anchorMax = new Vector2(0.5f, 0.5f); rrt.pivot = new Vector2(0.5f, 0.5f);
         rrt.sizeDelta = new Vector2(360, 2); rrt.anchoredPosition = new Vector2(0, 84);
 
-        timeText  = MakeText("", new Vector2(0,  44), new Vector2(520, 34), 24, Color.white, pixelFont, 0f, FontStyles.Normal);
-        killsText = MakeText("", new Vector2(0,   2), new Vector2(520, 34), 24, Color.white, pixelFont, 0f, FontStyles.Normal);
-        levelText = MakeText("", new Vector2(0, -40), new Vector2(520, 34), 24, Color.white, pixelFont, 0f, FontStyles.Normal);
+        timeText  = MakeText("", new Vector2(0,  44), new Vector2(520, 34), 24, Color.white, pixelFont, 0f);
+        killsText = MakeText("", new Vector2(0,   2), new Vector2(520, 34), 24, Color.white, pixelFont, 0f);
+        levelText = MakeText("", new Vector2(0, -40), new Vector2(520, 34), 24, Color.white, pixelFont, 0f);
 
         MakeButton("PLAY AGAIN", new Vector2(-108, -148), new Vector2(196, 56), Restart);
         MakeButton("MAIN MENU",  new Vector2( 108, -148), new Vector2(196, 56), ToMenu);
     }
 
-    TMP_Text MakeText(string text, Vector2 pos, Vector2 size, float fs, Color c, TMP_FontAsset font, float spacing, FontStyles style)
+    TMP_Text MakeText(string text, Vector2 pos, Vector2 size, float fs, Color c, TMP_FontAsset font, float spacing)
     {
         var go = new GameObject("Text", typeof(RectTransform));
         go.transform.SetParent(panel.transform, false);
@@ -117,7 +145,7 @@ public class VictoryManager : MonoBehaviour
         rt.anchoredPosition = pos; rt.sizeDelta = size;
         var t = go.AddComponent<TextMeshProUGUI>();
         if (font != null) t.font = font;
-        t.text = text; t.fontSize = fs; t.color = c; t.characterSpacing = spacing; t.fontStyle = style;
+        t.text = text; t.fontSize = fs; t.color = c; t.characterSpacing = spacing;
         t.alignment = TextAlignmentOptions.Center; t.richText = true;
         t.enableWordWrapping = false; t.raycastTarget = false;
         return t;

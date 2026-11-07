@@ -28,8 +28,31 @@ public class BackgroundScatterer : MonoBehaviour
     [Tooltip("Very negative so props render behind the ground gameplay.")]
     public int sortingOrder = -100;
 
+    [Header("Arena Walls")]
+    [Tooltip("Ring the playable area with visible walls + a physical barrier.")]
+    public bool buildWalls = true;
+    [Tooltip("Playable arena size — match BG_Floor (80 x 50). Walls border this rectangle.")]
+    public Vector2 arenaSize = new Vector2(80f, 50f);
+    [Tooltip("How far the dark shadow band extends outward to hide the void past the arena.")]
+    public float wallOverhang = 90f;
+    public Color wallColor = new Color(0.035f, 0.045f, 0.085f, 1f); // shadow
+    public Color trimColor = new Color(0.93f, 0.78f, 0.42f, 1f);    // gold
+    [Tooltip("Thickness of the invisible barrier that stops the player.")]
+    public float colliderThickness = 2f;
+    [Tooltip("Below the player/enemies (sorting 0) so they walk IN FRONT of the wall, " +
+             "but above the scattered props (-100) so the void beyond stays hidden.")]
+    public int wallSortingOrder = -50;
+    static Sprite _solid;
+
+    // The playable rectangle in world space, published once the walls are built, so
+    // other systems (e.g. auto-aim) can ignore anything that wandered outside it.
+    public static Rect ArenaBounds;
+    public static bool HasArenaBounds;
+    public static bool InsideArena(Vector2 p) => !HasArenaBounds || ArenaBounds.Contains(p);
+
     void Start()
     {
+        if (buildWalls) BuildWalls();
         if (propSprites == null || propSprites.Length == 0) return;
 
         // Seed locally, then restore global RNG so we don't disturb gameplay randomness.
@@ -71,6 +94,80 @@ public class BackgroundScatterer : MonoBehaviour
         }
 
         Random.state = prev;
+    }
+
+    // Visible boundary around the arena: dark shadow bands (hide the void beyond),
+    // a gold inner trim, and thin colliders that physically contain the player.
+    void BuildWalls()
+    {
+        float hx = arenaSize.x * 0.5f, hy = arenaSize.y * 0.5f;
+        Vector3 c = transform.position;
+        Transform root = new GameObject("ArenaWalls").transform;
+        root.SetParent(transform, false);
+
+        // Publish the playable rectangle so auto-aim / skills can skip out-of-bounds enemies.
+        ArenaBounds = new Rect(c.x - hx, c.y - hy, arenaSize.x, arenaSize.y);
+        HasArenaBounds = true;
+
+        // Dark shadow bands. Top/bottom span full width (incl. corners); left/right fill the sides.
+        MakePanel(root, c + new Vector3(0, hy + wallOverhang * 0.5f, 0), new Vector2(arenaSize.x + wallOverhang * 2f, wallOverhang));
+        MakePanel(root, c + new Vector3(0, -hy - wallOverhang * 0.5f, 0), new Vector2(arenaSize.x + wallOverhang * 2f, wallOverhang));
+        MakePanel(root, c + new Vector3(-hx - wallOverhang * 0.5f, 0, 0), new Vector2(wallOverhang, arenaSize.y));
+        MakePanel(root, c + new Vector3(hx + wallOverhang * 0.5f, 0, 0), new Vector2(wallOverhang, arenaSize.y));
+
+        // Gold trim along the inner edges.
+        float t = 0.6f;
+        MakeTrim(root, c + new Vector3(0, hy, 0), new Vector2(arenaSize.x, t));
+        MakeTrim(root, c + new Vector3(0, -hy, 0), new Vector2(arenaSize.x, t));
+        MakeTrim(root, c + new Vector3(-hx, 0, 0), new Vector2(t, arenaSize.y));
+        MakeTrim(root, c + new Vector3(hx, 0, 0), new Vector2(t, arenaSize.y));
+
+        // Physical barriers just outside each edge (block the player's rigidbody).
+        MakeCollider(root, c + new Vector3(0, hy + colliderThickness * 0.5f, 0), new Vector2(arenaSize.x, colliderThickness));
+        MakeCollider(root, c + new Vector3(0, -hy - colliderThickness * 0.5f, 0), new Vector2(arenaSize.x, colliderThickness));
+        MakeCollider(root, c + new Vector3(-hx - colliderThickness * 0.5f, 0, 0), new Vector2(colliderThickness, arenaSize.y));
+        MakeCollider(root, c + new Vector3(hx + colliderThickness * 0.5f, 0, 0), new Vector2(colliderThickness, arenaSize.y));
+    }
+
+    void MakePanel(Transform parent, Vector3 pos, Vector2 size)
+    {
+        var go = new GameObject("WallPanel");
+        go.transform.SetParent(parent, false); go.transform.position = pos;
+        go.transform.localScale = new Vector3(size.x, size.y, 1f);
+        var sr = go.AddComponent<SpriteRenderer>();
+        sr.sprite = SolidSprite(); sr.color = wallColor;
+        if (!string.IsNullOrEmpty(sortingLayerName)) sr.sortingLayerName = sortingLayerName;
+        sr.sortingOrder = wallSortingOrder;
+    }
+
+    void MakeTrim(Transform parent, Vector3 pos, Vector2 size)
+    {
+        var go = new GameObject("WallTrim");
+        go.transform.SetParent(parent, false); go.transform.position = pos;
+        go.transform.localScale = new Vector3(size.x, size.y, 1f);
+        var sr = go.AddComponent<SpriteRenderer>();
+        sr.sprite = SolidSprite(); sr.color = trimColor;
+        if (!string.IsNullOrEmpty(sortingLayerName)) sr.sortingLayerName = sortingLayerName;
+        sr.sortingOrder = wallSortingOrder + 2;
+    }
+
+    void MakeCollider(Transform parent, Vector3 pos, Vector2 size)
+    {
+        var go = new GameObject("WallCollider");
+        go.transform.SetParent(parent, false); go.transform.position = pos;
+        var bc = go.AddComponent<BoxCollider2D>();
+        bc.size = size;
+    }
+
+    static Sprite SolidSprite()
+    {
+        if (_solid != null) return _solid;
+        var tex = new Texture2D(4, 4, TextureFormat.RGBA32, false);
+        var px = new Color[16]; for (int i = 0; i < 16; i++) px[i] = Color.white;
+        tex.SetPixels(px); tex.Apply();
+        tex.wrapMode = TextureWrapMode.Clamp;
+        _solid = Sprite.Create(tex, new Rect(0, 0, 4, 4), new Vector2(0.5f, 0.5f), 4f); // 1 world unit
+        return _solid;
     }
 
     void OnDrawGizmosSelected()
